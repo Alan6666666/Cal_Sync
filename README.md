@@ -1,6 +1,8 @@
 # 企微CalDAV到iCloud日历同步工具
 基本情况介绍：
 
+注意：本工具需要借助icloud和AppleScript，只能在mac os环境下运行
+
 任务背景
 - 企业微信的日历导出使用Caldev或exchange用户，大部分日程会议安排整合产品均不支持
 - 经过调查发现，icloud日历可以借助苹果账户，导出ics的url链接，且可以通过编写applescript自动修改icloud日历中的日程内容；Mac本地日历支持Caldev账户，说明Mac os可以很方便地导入该账户类型
