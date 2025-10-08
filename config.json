@@ -2,8 +2,8 @@
     "caldav": {
         "server": "caldav.wecom.work",
         "base_url": "https://caldav.wecom.work/calendar/",
-        "username": "wangyifan@jfrjeffery.wecom.work",
-        "password": "Vx3h8iUk8LPmP4xF",
+        "username": "xxx@jfrjeffery.wecom.work",
+        "password": "",
         "calendar_url": "",
         "selected_calendars": []
     },
