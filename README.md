@@ -159,7 +159,7 @@ python3 cal_sync.py
 - **app_private_password**: iCloud专用密码（推荐使用）
 
 #### 同步配置
-- **interval_minutes**: 同步间隔时间（分钟）
+- **interval_minutes**: 同步间隔时间（分钟）修改后需要重启timer才会作用
 - **sync_past_days**: 同步过去多少天的事件
 - **sync_future_days**: 同步未来多少天的事件
 - **expand_recurring**: 是否展开循环事件为具体实例

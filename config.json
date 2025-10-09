@@ -2,21 +2,21 @@
     "caldav": {
         "server": "caldav.wecom.work",
         "base_url": "https://caldav.wecom.work/calendar/",
-        "username": "hanqian@jfrjeffery.wecom.work",
-        "password": "XUKgw9EqeaGXqXcT",
+        "username": "wuqiong@jfrjeffery.wecom.work",
+        "password": "RsTwG4s4A8XEq2et",
         "calendar_url": "",
-        "selected_calendars": []
+        "selected_calendars": [1]
     },
     "icloud": {
         "username": "laiyuqin1@icloud.com",
         "password": "QBS4lsg31",
-        "calendar_name": "企微同步",
+        "calendar_name": "测试",
         "app_private_password": "ggcl-sles-nwzj-lfiq"
     },
     "sync": {
-        "interval_minutes": 1,
-        "sync_past_days": 15,
-        "sync_future_days": 45,
+        "interval_minutes": 5,
+        "sync_past_days": 30,
+        "sync_future_days": 60,
         "expand_recurring": true,
         "verify_threshold": 1,
         "override_icloud_deletions": true

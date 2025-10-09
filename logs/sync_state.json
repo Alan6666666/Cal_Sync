@@ -1,77 +1,389 @@
 {
-    "last_sync": "2025-10-09T10:56:18.608974",
+    "last_sync": "2025-10-09T18:44:30.950142",
     "events": {
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-09-26T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "a9a8253159ebe9ab38097c03df8dd17f",
-            "last_sync": "2025-10-09T10:44:19.043432"
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-10T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "b2276b738d713bc4d541e2501eff377c",
+            "last_sync": "2025-10-09T18:41:29.512837"
         },
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-03T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "a6759bfd1fa406d909c39ac77e37ff7d",
-            "last_sync": "2025-10-09T10:44:19.384313"
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-10T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "f52b19c6de18a324cf1053db7473d9fe",
+            "last_sync": "2025-10-09T18:41:29.512847"
         },
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-10T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "4d459cd63ee4a47b37111c6e1b426000",
-            "last_sync": "2025-10-09T10:44:19.733059"
+        "29c99715240831715afbfc1bba68a9fedbatndce": {
+            "uid": "29c99715240831715afbfc1bba68a9fedbatndce",
+            "summary": "周琬淯-品宣销售",
+            "hash": "f09563d5fce65ca42590c9da96235808",
+            "last_sync": "2025-10-09T18:41:29.512851"
         },
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-17T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "6b28fd71d42fbfd1669c12db1ab84bc4",
-            "last_sync": "2025-10-09T10:44:20.076520"
+        "97ef812e6415a6fce49dc48f9d454fa4ackkfdob": {
+            "uid": "97ef812e6415a6fce49dc48f9d454fa4ackkfdob",
+            "summary": "陈奕纶-客户经理",
+            "hash": "cd01a408901c85040b62bda3d10811bb",
+            "last_sync": "2025-10-09T18:41:29.512854"
         },
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-24T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "6b6b7b1dd9aab8175b70803838408397",
-            "last_sync": "2025-10-09T10:44:20.410627"
+        "d89487c6c2e97e0fdffa7b7ea3abbe2fdxayevea": {
+            "uid": "d89487c6c2e97e0fdffa7b7ea3abbe2fdxayevea",
+            "summary": "杨燃-市场营销策划",
+            "hash": "4d08b396aab14adcc550bfacf6ccc965",
+            "last_sync": "2025-10-09T18:41:29.512858"
         },
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-31T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "2ca4483a5329e586e5e6aefa1d3dcb41",
-            "last_sync": "2025-10-09T10:44:20.748615"
+        "814b4df4900bbea07e14107c1fb9f8bcnzfgjhnq": {
+            "uid": "814b4df4900bbea07e14107c1fb9f8bcnzfgjhnq",
+            "summary": "齐晗之-AM客户经理",
+            "hash": "4c642de2069a45885ddf2b417d12c09a",
+            "last_sync": "2025-10-09T18:41:29.512861"
         },
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-11-07T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "94a95d0756af861fd8eaa6c0038a385a",
-            "last_sync": "2025-10-09T10:44:21.091862"
+        "19b15f17a57c34aa81f71085a8a6eaf5kgkmryjw": {
+            "uid": "19b15f17a57c34aa81f71085a8a6eaf5kgkmryjw",
+            "summary": "客户经理例会",
+            "hash": "4df86410a34bb172a2a331d19c3e1b5f",
+            "last_sync": "2025-10-09T18:41:29.512867"
         },
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-11-14T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "aa7cf06f6af1ec0f0bff7532acece401",
-            "last_sync": "2025-10-09T10:44:21.423822"
+        "1089b0e009b9f33e71be3f3d6a573c81gkbgiifs": {
+            "uid": "1089b0e009b9f33e71be3f3d6a573c81gkbgiifs",
+            "summary": "刘梦霖-高级设计",
+            "hash": "33a5773ac15b8c564d0dd0d2603faf8b",
+            "last_sync": "2025-10-09T18:41:29.512870"
         },
-        "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-11-21T10:30:00+08:00": {
-            "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
-            "summary": "创研部例会",
-            "hash": "6193419cc04d4b7d5a24a3d470f1c2f5",
-            "last_sync": "2025-10-09T10:44:21.756634"
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-09-15T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "96d2238acda260ba8cf94b68a609f5d7",
+            "last_sync": "2025-10-09T18:43:45.536217"
         },
-        "1014c507bbe527d78c5c6c32f383fd54exolgltz": {
-            "uid": "1014c507bbe527d78c5c6c32f383fd54exolgltz",
-            "summary": "NUS OAR陈会长国大接待",
-            "hash": "478ccbab3d4d49fc167d2fd55a3f2928",
-            "last_sync": "2025-10-09T10:44:22.092467"
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-09-22T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "2429fdf157bd10124bdb8a1a1f9e394b",
+            "last_sync": "2025-10-09T18:43:45.900707"
         },
-        "606e7aa75bb9089252c34932c068ec63xsouungv": {
-            "uid": "606e7aa75bb9089252c34932c068ec63xsouungv",
-            "summary": "test modify",
-            "hash": "a39efd73d3eb5bab8631f3596eba1476",
-            "last_sync": "2025-10-09T10:44:22.425690"
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-09-29T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "e0815d2feec744697156b89d391fe44e",
+            "last_sync": "2025-10-09T18:43:46.280750"
         },
-        "c8f5c115d1d48ca82c1d13ef4b6314d8fsdsnuua": {
-            "uid": "c8f5c115d1d48ca82c1d13ef4b6314d8fsdsnuua",
-            "summary": "test2",
-            "hash": "e9c831ecae031036fd3b3ef2dc6fec6c",
-            "last_sync": "2025-10-09T10:44:23.077330"
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-10-13T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "a8cbbbea9225e7edee7d582cd7e03981",
+            "last_sync": "2025-10-09T18:43:46.615341"
+        },
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-10-20T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "0f6c045071e5b0f2a28bd80f04e56d3a",
+            "last_sync": "2025-10-09T18:43:46.999597"
+        },
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-10-27T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "740ea3496c084cdabd860b633c637455",
+            "last_sync": "2025-10-09T18:43:47.315474"
+        },
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-11-03T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "5ce7beb910fcdfb3230ef6df680fb8f2",
+            "last_sync": "2025-10-09T18:43:47.745384"
+        },
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-11-10T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "70af5e12a6ad3b2a9e94ac5166d40f23",
+            "last_sync": "2025-10-09T18:43:48.366274"
+        },
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-11-17T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "51b63da533c173ea9a93e823deeafa8c",
+            "last_sync": "2025-10-09T18:43:49.011309"
+        },
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-11-24T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "08fc8b8fdc01b58e6c6576a3db426069",
+            "last_sync": "2025-10-09T18:43:49.638951"
+        },
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-12-01T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "d0cb3dca0b4ecad69dd930f050c6b469",
+            "last_sync": "2025-10-09T18:43:50.276494"
+        },
+        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-12-08T09:30:00+08:00": {
+            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+            "summary": "客户经理例会",
+            "hash": "3d74eedad600aa0e85473bfbb4eb4792",
+            "last_sync": "2025-10-09T18:43:50.935828"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-09-12T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "4eb85473b8ad94fcc75689a96f148ae2",
+            "last_sync": "2025-10-09T18:43:51.548445"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-09-19T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "93dd9c8aeecf66eb09e0e75a3e00f508",
+            "last_sync": "2025-10-09T18:43:52.157143"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-09-26T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "82c4313fd58e7948de39c6e279534355",
+            "last_sync": "2025-10-09T18:43:53.083023"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-03T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "e57fa6a0571df1b7376cb1aa8aa50f71",
+            "last_sync": "2025-10-09T18:43:54.068640"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-17T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "bf12b22dbf1310b7bc5802e6159aaa2a",
+            "last_sync": "2025-10-09T18:43:55.030543"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-24T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "a51398bf74445896f8c937c47564cb99",
+            "last_sync": "2025-10-09T18:43:55.964912"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-31T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "9517cfee15843e5dc37cd37c3065d753",
+            "last_sync": "2025-10-09T18:43:57.105282"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-11-07T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "252dca591d456b634b1c0551ae3c86d0",
+            "last_sync": "2025-10-09T18:43:58.044090"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-11-14T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "af31052587d3b082dfe90a929d49b874",
+            "last_sync": "2025-10-09T18:43:59.012341"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-11-21T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "329237f3d669095ed1ebe843c48f2084",
+            "last_sync": "2025-10-09T18:43:59.975258"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-11-28T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "4fc5871b1cfae496c64913e62070193a",
+            "last_sync": "2025-10-09T18:44:00.942595"
+        },
+        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-12-05T17:00:00+08:00": {
+            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
+            "summary": "例会表填写",
+            "hash": "81b679a75e459b99ae4d980b637edb86",
+            "last_sync": "2025-10-09T18:44:01.932952"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-09-12T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "5e58922c527b7708dd2cb33bfb7f61ba",
+            "last_sync": "2025-10-09T18:44:02.903849"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-09-19T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "02b8e69833f9ac3ba51534c5d4676b1d",
+            "last_sync": "2025-10-09T18:44:03.862862"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-09-26T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "f689c1f4aaa812496901631bbe648e8f",
+            "last_sync": "2025-10-09T18:44:04.867713"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-03T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "0bb063db9b4293188336a622a7e8a2d1",
+            "last_sync": "2025-10-09T18:44:05.946310"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-17T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "d48359eb97ca5a4ad6c2a4f45e6aca83",
+            "last_sync": "2025-10-09T18:44:06.966354"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-24T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "174772b5800285d09d46a675592ce588",
+            "last_sync": "2025-10-09T18:44:07.947185"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-31T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "54d398279b8ebc8b7616dbd9d346fc31",
+            "last_sync": "2025-10-09T18:44:08.920679"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-11-07T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "68a0e3d077c53ffdf1816c99127bde34",
+            "last_sync": "2025-10-09T18:44:09.942430"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-11-14T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "d05c07bae2893c343e53fae5a6ac2b24",
+            "last_sync": "2025-10-09T18:44:10.896381"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-11-21T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "7234c6865814403bc7bd4404d7ad01de",
+            "last_sync": "2025-10-09T18:44:11.867798"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-11-28T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "27b7f2f53c45de402f86a6cbbc79ee30",
+            "last_sync": "2025-10-09T18:44:12.817807"
+        },
+        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-12-05T14:00:00+08:00": {
+            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
+            "summary": "周会汇报表填写",
+            "hash": "b77ee321cf4b9ad3bb78f235177b3838",
+            "last_sync": "2025-10-09T18:44:13.982824"
+        },
+        "5bb069677c92502b7f1e1863c22ef5ddnomahfgb#2025-09-24T14:30:00+08:00": {
+            "uid": "5bb069677c92502b7f1e1863c22ef5ddnomahfgb",
+            "summary": "社保医保公积金汇缴",
+            "hash": "148fa0f7a1597072d7bb22d375e15b3b",
+            "last_sync": "2025-10-09T18:44:14.982307"
+        },
+        "5bb069677c92502b7f1e1863c22ef5ddnomahfgb#2025-10-24T14:30:00+08:00": {
+            "uid": "5bb069677c92502b7f1e1863c22ef5ddnomahfgb",
+            "summary": "社保医保公积金汇缴",
+            "hash": "3a9d53f734a9fbe8e85fdda609ea9d7b",
+            "last_sync": "2025-10-09T18:44:15.966131"
+        },
+        "5bb069677c92502b7f1e1863c22ef5ddnomahfgb#2025-11-24T14:30:00+08:00": {
+            "uid": "5bb069677c92502b7f1e1863c22ef5ddnomahfgb",
+            "summary": "社保医保公积金汇缴",
+            "hash": "db2eedf65be382088e0dc67a2d0c930f",
+            "last_sync": "2025-10-09T18:44:16.919271"
+        },
+        "bd7806c97854ef2be5263b0f281f7409pdaqnjyt": {
+            "uid": "bd7806c97854ef2be5263b0f281f7409pdaqnjyt",
+            "summary": "林香丽-资深小红书运营",
+            "hash": "69db62ce0ce312c490e957e8a4d658b6",
+            "last_sync": "2025-10-09T18:44:17.948816"
+        },
+        "bd91b877fa17fd5bed34a771e49cc97fxguusdht": {
+            "uid": "bd91b877fa17fd5bed34a771e49cc97fxguusdht",
+            "summary": "王洪铃-高级设计",
+            "hash": "8bd57ad0f7a594b383cf1bc8af573132",
+            "last_sync": "2025-10-09T18:44:18.899641"
+        },
+        "a91d28c01f0819ebb4be8aa69166c3bcyvuezbyt": {
+            "uid": "a91d28c01f0819ebb4be8aa69166c3bcyvuezbyt",
+            "summary": "收拾杂物间",
+            "hash": "c097b3956c179ad4768a36c11e4b1258",
+            "last_sync": "2025-10-09T18:44:19.225833"
+        },
+        "318221fcc0ee98e0d14cd7184ec63651zzbnbzte": {
+            "uid": "318221fcc0ee98e0d14cd7184ec63651zzbnbzte",
+            "summary": "刘瑾瑜-广告优化师",
+            "hash": "8f32fd29a9cf066a27f06e3696606030",
+            "last_sync": "2025-10-09T18:44:19.517521"
+        },
+        "d2e2e7ae2122f8e4e7268a121dd027dctmpfcfvi": {
+            "uid": "d2e2e7ae2122f8e4e7268a121dd027dctmpfcfvi",
+            "summary": "彭小烜-国际销售总监/客户执行",
+            "hash": "4890ba1815a421ec1907a2a5e83fa895",
+            "last_sync": "2025-10-09T18:44:19.833866"
+        },
+        "0510883e1c859d9f046d578155aacc9fhssqmcfd": {
+            "uid": "0510883e1c859d9f046d578155aacc9fhssqmcfd",
+            "summary": "李咏馨-品宣策划岗",
+            "hash": "174d262a755100933d2d6a083a3aff8f",
+            "last_sync": "2025-10-09T18:44:20.142296"
+        },
+        "ff94c2de27ee7743ea4649796c4e2b62thrilggr": {
+            "uid": "ff94c2de27ee7743ea4649796c4e2b62thrilggr",
+            "summary": "代宇-高级设计",
+            "hash": "353439c939cb815cea53e957c850c34b",
+            "last_sync": "2025-10-09T18:44:20.755062"
+        },
+        "1fb3b03c8840bb40cfa9e8231ef1dac2udcbfubn": {
+            "uid": "1fb3b03c8840bb40cfa9e8231ef1dac2udcbfubn",
+            "summary": "Info Call with Sara",
+            "hash": "26b8f27c3ddf6400b1efbed74afe25da",
+            "last_sync": "2025-10-09T18:44:21.748278"
+        },
+        "b68750fe7c2d4ffdd5c91f71bfaf3456tokwobzu": {
+            "uid": "b68750fe7c2d4ffdd5c91f71bfaf3456tokwobzu",
+            "summary": "徐伟-AI视频研究员",
+            "hash": "e185a2d09e0daae0f10342e55fb26151",
+            "last_sync": "2025-10-09T18:44:22.763916"
+        },
+        "3c7faaae79f8d18b89e4364e2c14e602foufrkhv": {
+            "uid": "3c7faaae79f8d18b89e4364e2c14e602foufrkhv",
+            "summary": "魏林-高级设计",
+            "hash": "b76d31db5918034d5be69bcf3c8b755d",
+            "last_sync": "2025-10-09T18:44:23.744659"
+        },
+        "446eca8bb0d80efdbd1375b116bc003exuswfntq": {
+            "uid": "446eca8bb0d80efdbd1375b116bc003exuswfntq",
+            "summary": "夏丝雨-AI视频",
+            "hash": "313a43a738a9e7eaa953cbc5ffa94f18",
+            "last_sync": "2025-10-09T18:44:24.904252"
+        },
+        "3380be2c14f32847901d5a456ad5cfe0iobdmkid": {
+            "uid": "3380be2c14f32847901d5a456ad5cfe0iobdmkid",
+            "summary": "陈雅楠-高级设计",
+            "hash": "a222f7b1ca7181abd96f05f6d77ecdec",
+            "last_sync": "2025-10-09T18:44:25.893055"
+        },
+        "e0c720e25f93e76bedb64fe6db9ab7a0uoevjocd": {
+            "uid": "e0c720e25f93e76bedb64fe6db9ab7a0uoevjocd",
+            "summary": "牟韵伊-客户执行",
+            "hash": "0344fda96611f2cc85e559c610ebd5a7",
+            "last_sync": "2025-10-09T18:44:26.895326"
+        },
+        "2146f211a71389b2255629c965f7064dxlvhaqxp": {
+            "uid": "2146f211a71389b2255629c965f7064dxlvhaqxp",
+            "summary": "樊译蔚-品宣销售",
+            "hash": "ba0f4c8cfd9502a4db7fda8cd0fbabb3",
+            "last_sync": "2025-10-09T18:44:28.009285"
+        },
+        "0c10793aeff98ccedc9b31e380bfb3f3gfchvedn": {
+            "uid": "0c10793aeff98ccedc9b31e380bfb3f3gfchvedn",
+            "summary": "王紫菱-高级设计",
+            "hash": "ee4640b967d5d25dfaa3395a5e056bf2",
+            "last_sync": "2025-10-09T18:44:28.987607"
+        },
+        "2e29580b15b663975461388fb7842f26ztztjprb": {
+            "uid": "2e29580b15b663975461388fb7842f26ztztjprb",
+            "summary": "李渊-高级设计",
+            "hash": "7e370e6124611e80b8a70266a4c69941",
+            "last_sync": "2025-10-09T18:44:29.967276"
+        },
+        "be5792a83a15dfb9266ab5ce5827ca5dwdflkcil": {
+            "uid": "be5792a83a15dfb9266ab5ce5827ca5dwdflkcil",
+            "summary": "张梓萌-AE客户执行",
+            "hash": "ceab22a23dc62390f75dcbd467a9cd52",
+            "last_sync": "2025-10-09T18:44:30.949501"
         }
     }
 }

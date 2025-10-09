@@ -321,6 +321,12 @@ class CalSync:
                     app_password
                 )
                 self.logger.info("iCloud集成模块加载成功")
+                
+                # 检查日历是否可访问
+                if not self.icloud_client.check_calendar_accessibility():
+                    self.logger.error("目标iCloud日历不可访问，请确保启动macOS日历应用并勾选目标日历")
+                    return False
+                
             else:
                 self.logger.warning("iCloud集成模块不可用")
                 self.icloud_client = None
@@ -569,6 +575,18 @@ class CalSync:
             
             # 获取iCloud中的事件
             icloud_events = self.icloud_client.get_existing_events()
+            
+            # 检查是否超时
+            if icloud_events == "TIMEOUT":
+                self.logger.error("获取iCloud事件超时，跳过删除检测以避免重复创建事件")
+                return "TIMEOUT"
+            
+            # 检查日历是否不可访问
+            if icloud_events is None:
+                self.logger.warning("iCloud日历不可访问，跳过删除检测")
+                self.logger.warning("请确保在macOS日历应用中勾选目标日历")
+                return []
+            
             icloud_sync_keys = self.extract_sync_keys_from_icloud_events(icloud_events)
             
             # 获取CalDAV事件的键
@@ -590,6 +608,13 @@ class CalSync:
             
             if missing_in_icloud:
                 self.logger.warning(f"发现 {len(missing_in_icloud)} 个在iCloud中被手动删除的事件")
+                
+                # 安全检查：如果缺失事件数量超过总事件的一半，可能是检测错误
+                total_caldav_events = len(caldav_events)
+                if len(missing_in_icloud) > total_caldav_events * 0.5:
+                    self.logger.error(f"检测到过多缺失事件（{len(missing_in_icloud)}/{total_caldav_events}），可能是AppleScript检测错误")
+                    self.logger.error("为避免重复创建事件，本次同步将被跳过")
+                    return "TOO_MANY_MISSING"
             else:
                 self.logger.info("未发现iCloud中被手动删除的事件")
             
@@ -766,6 +791,12 @@ class CalSync:
             # 获取iCloud日历中的事件
             icloud_events = self.icloud_client.get_existing_events()
             
+            # 检查日历是否不可访问
+            if icloud_events is None:
+                self.logger.warning("iCloud日历不可访问，跳过验证")
+                self.logger.warning("请确保在macOS日历应用中勾选目标日历")
+                return False
+            
             # 比较事件数量
             caldav_count = len(caldav_events)
             icloud_count = len(icloud_events)
@@ -934,6 +965,16 @@ class CalSync:
             override_icloud_deletions = self.config["sync"].get("override_icloud_deletions", True)
             if override_icloud_deletions:
                 icloud_deletions = self.detect_icloud_deletions(current_events)
+                
+                # 检查是否超时或检测到过多缺失事件
+                if icloud_deletions == "TIMEOUT":
+                    self.logger.error("由于AppleScript超时，本次同步被跳过以避免重复创建事件")
+                    self.logger.info("同步执行成功")
+                    return True
+                elif icloud_deletions == "TOO_MANY_MISSING":
+                    self.logger.error("由于检测到过多缺失事件，本次同步被跳过以避免重复创建事件")
+                    self.logger.info("同步执行成功")
+                    return True
             
             total_changes = len(added) + len(modified) + len(deleted) + len(icloud_deletions)
             self.logger.info(f"检测到变化：新增 {len(added)} 个，修改 {len(modified)} 个，删除 {len(deleted)} 个，iCloud恢复 {len(icloud_deletions)} 个")

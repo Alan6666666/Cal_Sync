@@ -35,7 +35,7 @@ class ICloudIntegration:
                 ["osascript", "-e", script],
                 capture_output=True,
                 text=True,
-                timeout=30
+                timeout=60
             )
             
             if result.returncode == 0:
@@ -83,6 +83,31 @@ class ICloudIntegration:
             self.logger.info(f"日历操作结果：{result}")
             return "Error:" not in result
         return False
+    
+    def check_calendar_accessibility(self) -> bool:
+        """检查目标日历是否可访问"""
+        script = f'''
+        tell application "Calendar"
+            try
+                set targetCalendar to calendar "{self.calendar_name}"
+                return "Calendar accessible"
+            on error errMsg
+                return "Error: " & errMsg
+            end try
+        end tell
+        '''
+        
+        success, result = self._run_applescript(script)
+        if success and "Error:" not in result:
+            self.logger.info(f"日历 '{self.calendar_name}' 可访问")
+            return True
+        else:
+            if "不能获得" in result and "calendar" in result:
+                self.logger.warning(f"日历 '{self.calendar_name}' 不可访问：{result}")
+                self.logger.warning("请确保在macOS日历应用中勾选目标日历")
+            else:
+                self.logger.error(f"检查日历可访问性失败：{result}")
+            return False
     
     def create_event(self, event: Dict) -> bool:
         """创建日历事件"""
@@ -320,8 +345,21 @@ class ICloudIntegration:
                 self.logger.error(f"原始结果: {result}")
                 return []
         else:
-            self.logger.error(f"获取现有事件失败：{result}")
-            return []
+            # 检查是否是超时错误
+            if "执行超时" in result:
+                self.logger.error("AppleScript执行超时，无法获取iCloud事件列表")
+                self.logger.warning("为避免重复创建事件，本次同步将被跳过")
+                # 返回特殊标记，表示超时
+                return "TIMEOUT"
+            # 检查是否是日历不可访问的错误
+            elif "不能获得" in result and "calendar" in result:
+                self.logger.warning(f"目标iCloud日历 '{self.calendar_name}' 不可访问，可能未在日历应用中勾选")
+                self.logger.warning("请确保在macOS日历应用中勾选目标日历，然后重新运行同步")
+                # 返回特殊标记，表示日历不可访问
+                return None
+            else:
+                self.logger.error(f"获取现有事件失败：{result}")
+                return []
     
     def clear_all_events(self) -> bool:
         """清空日历中的所有事件"""

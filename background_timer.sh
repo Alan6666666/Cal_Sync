@@ -32,13 +32,13 @@ case "${1:-status}" in
         
         echo ""
         echo "检查日志文件..."
-        if [ -f "$SCRIPT_DIR/cal_sync.log" ]; then
+        if [ -f "$SCRIPT_DIR/logs/cal_sync.log" ]; then
             echo "✅ 日志文件存在"
-            echo "最后修改时间: $(stat -f "%Sm" "$SCRIPT_DIR/cal_sync.log")"
-            echo "文件大小: $(stat -f "%z" "$SCRIPT_DIR/cal_sync.log") 字节"
+            echo "最后修改时间: $(stat -f "%Sm" "$SCRIPT_DIR/logs/cal_sync.log")"
+            echo "文件大小: $(stat -f "%z" "$SCRIPT_DIR/logs/cal_sync.log") 字节"
             echo ""
             echo "最近5行日志:"
-            tail -5 "$SCRIPT_DIR/cal_sync.log"
+            tail -5 "$SCRIPT_DIR/logs/cal_sync.log"
         else
             echo "❌ 日志文件不存在"
         fi
@@ -71,8 +71,8 @@ case "${1:-status}" in
     
     logs)
         echo "查看同步日志..."
-        if [ -f "$SCRIPT_DIR/cal_sync.log" ]; then
-            tail -20 "$SCRIPT_DIR/cal_sync.log"
+        if [ -f "$SCRIPT_DIR/logs/cal_sync.log" ]; then
+            tail -20 "$SCRIPT_DIR/logs/cal_sync.log"
         else
             echo "日志文件不存在"
         fi
@@ -120,9 +120,9 @@ plist_content = f'''<?xml version=\"1.0\" encoding=\"UTF-8\"?>
     <key>WorkingDirectory</key>
     <string>{script_dir}</string>
     <key>StandardOutPath</key>
-    <string>{script_dir}/cal_sync.log</string>
+    <string>{script_dir}/logs/cal_sync.log</string>
     <key>StandardErrorPath</key>
-    <string>{script_dir}/cal_sync_error.log</string>
+    <string>{script_dir}/logs/cal_sync_error.log</string>
     <key>RunAtLoad</key>
     <false/>
     <key>KeepAlive</key>
