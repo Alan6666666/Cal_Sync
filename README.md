@@ -16,6 +16,7 @@
 - 基于自主编写的uid键方式，比对两个日历内容，将所有日程事件进行单向同步
 - 使用mac os的launchd系统服务，定时运行事件同步
 - 在https://www.icloud.com.cn/calendar/ 中导出icloud日历的ics url链接，在google日历、cal.com中导入该链接
+- 定时进行日历数据备份，导出ics文件格式到本地
 - 以上使用完全自动的流程，实现了企业微信到会议产品的信息单向导入
 
 存在问题
@@ -36,7 +37,7 @@
 ```bash
 python3 install.py
 ```
-需要在系统盘安装，否则可能出现权限问题
+项目需要放置在系统盘，否则可能出现权限问题
 
 安装脚本会自动：
 - 检查Python版本
@@ -81,6 +82,15 @@ python3 cal_sync.py --once --select-calendars 1,3,5
 python3 cal_sync.py --list-calendars
 ```
 
+#### 手动备份
+```bash
+# 备份所有日历（强制执行，不检查时间间隔）
+python3 cal_sync.py --backup
+
+# 备份特定日历
+python3 cal_sync.py --backup --select-calendars 1,3,5
+```
+
 #### 定时同步
 ```bash
 # 启动定时同步（使用配置文件设置）
@@ -122,6 +132,12 @@ python3 cal_sync.py
         "expand_recurring": true,
         "verify_threshold": 1,
         "override_icloud_deletions": true
+    },
+    "backup": {
+        "enabled": true,
+        "interval_hours": 24,
+        "max_backups": 10,
+        "backup_folder": "backup"
     }
 }
 ```
@@ -150,6 +166,12 @@ python3 cal_sync.py
 - **verify_threshold**: 同步验证阈值，默认为1
 - **override_icloud_deletions**: 是否自动恢复被手动删除的iCloud事件。该参数为true时，若iCloud日历中的日程被认为修改，则认为该修改为误触，会使用企微日历将其覆盖。若为false则不会检测iCloud端的变化。
 
+#### 备份配置
+- **enabled**: 是否启用备份功能（默认：true）
+- **interval_hours**: 备份间隔时间（小时，默认：24小时）
+- **max_backups**: 保留的备份文件数量（默认：10个）
+- **backup_folder**: 备份文件夹名称（默认：backup）
+
 ### 日历选择优先级
 
 1. **命令行参数** (`--select-calendars`) - 最高优先级
@@ -165,6 +187,7 @@ python3 cal_sync.py [选项]
 选项:
   --config CONFIG          配置文件路径（默认: config.json）
   --once                   只执行一次同步
+  --backup                 强制执行一次备份
   --select-calendars CAL   选择要同步的日历索引，用逗号分隔，如：1,3,5
   --list-calendars         列出所有可用日历
   --help                   显示帮助信息
@@ -182,8 +205,15 @@ CalSync/
 ├── background_timer.sh      # 后台定时同步管理脚本
 ├── config.json              # 配置文件
 ├── requirements.txt         # Python依赖
-├── sync_state.json          # 同步状态文件（自动生成）
-├── cal_sync.log            # 运行日志（自动生成）
+├── logs/                    # 日志和状态文件夹（自动生成）
+│   ├── cal_sync.log        # 运行日志
+│   ├── cal_sync_error.log  # 错误日志
+│   ├── sync_state.json     # 同步状态文件
+│   └── backup_state.json   # 备份状态文件
+├── backup/                  # 备份文件夹（自动生成）
+│   ├── backup_20241201_143022.ics
+│   ├── backup_20241202_143045.ics
+│   └── ...
 └── README.md               # 本文件
 ```
 
@@ -196,6 +226,9 @@ CalSync/
 - **detect_changes()**：检测事件变化（新增、修改、删除）
 - **sync_to_icloud()**：同步事件到iCloud
 - **verify_sync()**：验证同步结果
+- **backup_caldav_events()**：备份CalDAV事件到ICS文件
+- **export_events_to_ics()**：将事件导出为ICS格式
+- **cleanup_old_backups()**：清理旧的备份文件
 
 #### icloud_integration.py - iCloud集成模块
 - **ICloudIntegration类**：iCloud日历操作类
@@ -224,19 +257,48 @@ CalSync/
 - **循环事件处理**：支持展开循环事件为具体实例
 - **时区处理**：所有时间统一转换为UTC，避免时区差异
 
+### 备份功能
+
+#### 备份机制
+- **自动备份**：每次同步时自动检查是否需要备份
+- **手动备份**：通过`--backup`参数强制执行备份，不检查时间间隔
+- **ICS格式**：备份文件为标准ICS格式，可导入其他日历应用
+- **智能间隔**：根据配置的间隔时间执行备份，避免频繁备份
+- **自动清理**：自动保留最新的N个备份文件，删除旧文件
+
+#### 备份文件
+- **命名格式**：`backup_YYYYMMDD_HHMMSS.ics`
+- **存储位置**：`backup/` 文件夹（可配置）
+- **内容包含**：完整的CalDAV事件信息，包括循环规则、异常日期等
+
+#### 备份状态
+- **logs/backup_state.json**: 记录上次备份时间
+- **日志记录**: 备份过程详细记录在 `logs/cal_sync.log` 中
+
 ### 日志和状态管理
 
 #### 日志文件
-- **cal_sync.log**: 详细的运行日志
-- **sync_state.json**: 同步状态文件
+- **logs/cal_sync.log**: 详细的运行日志（包括备份日志）
+- **logs/cal_sync_error.log**: 错误日志（ERROR级别以上的日志）
+- **logs/sync_state.json**: 同步状态文件
+- **logs/backup_state.json**: 备份状态文件
 
 #### 查看日志
 ```bash
-# 实时查看日志
-tail -f cal_sync.log
+# 实时查看主日志
+tail -f logs/cal_sync.log
 
 # 查看最近20行
-tail -20 cal_sync.log
+tail -20 logs/cal_sync.log
+
+# 查看备份相关日志
+grep -i backup logs/cal_sync.log
+
+# 查看错误日志
+tail -f logs/cal_sync_error.log
+
+# 查看所有错误
+grep -i error logs/cal_sync_error.log
 ```
 
 ### 故障排除

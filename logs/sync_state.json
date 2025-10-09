@@ -1,83 +1,77 @@
 {
-    "last_sync": "2025-10-08T12:35:28.556062",
+    "last_sync": "2025-10-09T10:56:18.608974",
     "events": {
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-09-26T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "a9a8253159ebe9ab38097c03df8dd17f",
-            "last_sync": "2025-10-08T12:35:28.556019"
+            "last_sync": "2025-10-09T10:44:19.043432"
         },
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-03T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "a6759bfd1fa406d909c39ac77e37ff7d",
-            "last_sync": "2025-10-08T12:35:28.556026"
+            "last_sync": "2025-10-09T10:44:19.384313"
         },
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-10T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "4d459cd63ee4a47b37111c6e1b426000",
-            "last_sync": "2025-10-08T12:35:28.556028"
+            "last_sync": "2025-10-09T10:44:19.733059"
         },
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-17T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "6b28fd71d42fbfd1669c12db1ab84bc4",
-            "last_sync": "2025-10-08T12:35:28.556029"
+            "last_sync": "2025-10-09T10:44:20.076520"
         },
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-24T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "6b6b7b1dd9aab8175b70803838408397",
-            "last_sync": "2025-10-08T12:35:28.556030"
+            "last_sync": "2025-10-09T10:44:20.410627"
         },
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-10-31T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "2ca4483a5329e586e5e6aefa1d3dcb41",
-            "last_sync": "2025-10-08T12:35:28.556037"
+            "last_sync": "2025-10-09T10:44:20.748615"
         },
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-11-07T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "94a95d0756af861fd8eaa6c0038a385a",
-            "last_sync": "2025-10-08T12:35:28.556043"
+            "last_sync": "2025-10-09T10:44:21.091862"
         },
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-11-14T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "aa7cf06f6af1ec0f0bff7532acece401",
-            "last_sync": "2025-10-08T12:35:28.556044"
+            "last_sync": "2025-10-09T10:44:21.423822"
         },
         "b06180847e7e452e1678ecfffe596274ejxtwicx#2025-11-21T10:30:00+08:00": {
             "uid": "b06180847e7e452e1678ecfffe596274ejxtwicx",
             "summary": "创研部例会",
             "hash": "6193419cc04d4b7d5a24a3d470f1c2f5",
-            "last_sync": "2025-10-08T12:35:28.556046"
+            "last_sync": "2025-10-09T10:44:21.756634"
         },
         "1014c507bbe527d78c5c6c32f383fd54exolgltz": {
             "uid": "1014c507bbe527d78c5c6c32f383fd54exolgltz",
             "summary": "NUS OAR陈会长国大接待",
             "hash": "478ccbab3d4d49fc167d2fd55a3f2928",
-            "last_sync": "2025-10-08T12:35:28.556049"
+            "last_sync": "2025-10-09T10:44:22.092467"
         },
         "606e7aa75bb9089252c34932c068ec63xsouungv": {
             "uid": "606e7aa75bb9089252c34932c068ec63xsouungv",
             "summary": "test modify",
             "hash": "a39efd73d3eb5bab8631f3596eba1476",
-            "last_sync": "2025-10-08T12:35:28.556052"
-        },
-        "c5ccfd994c92d89b4217ae35936fe028cfvorjtp": {
-            "uid": "c5ccfd994c92d89b4217ae35936fe028cfvorjtp",
-            "summary": "test add",
-            "hash": "a08d62c1ce14096b384e2cfa7f9fd1e4",
-            "last_sync": "2025-10-08T12:35:28.556057"
+            "last_sync": "2025-10-09T10:44:22.425690"
         },
         "c8f5c115d1d48ca82c1d13ef4b6314d8fsdsnuua": {
             "uid": "c8f5c115d1d48ca82c1d13ef4b6314d8fsdsnuua",
             "summary": "test2",
             "hash": "e9c831ecae031036fd3b3ef2dc6fec6c",
-            "last_sync": "2025-10-08T12:35:28.556060"
+            "last_sync": "2025-10-09T10:44:23.077330"
         }
     }
 }

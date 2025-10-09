@@ -15,6 +15,7 @@ from datetime import datetime, timedelta, timezone, date
 from typing import List, Dict, Optional, Tuple
 import json
 import hashlib
+import glob
 
 try:
     import caldav
@@ -114,11 +115,25 @@ class CalSync:
         """初始化同步器"""
         self.config_file = config_file
         self.config = self.load_config()
+        self.ensure_logs_folder()
         self.setup_logging()
+        self.merge_old_logs()
         self.caldav_client = None
         self.icloud_client = None
-        self.sync_state_file = "sync_state.json"
+        self.sync_state_file = "logs/sync_state.json"
+        self.backup_state_file = "logs/backup_state.json"
         self.sync_state = self.load_sync_state()
+    
+    def ensure_logs_folder(self) -> bool:
+        """确保logs文件夹存在"""
+        try:
+            if not os.path.exists("logs"):
+                os.makedirs("logs")
+                print("创建logs文件夹")
+            return True
+        except Exception as e:
+            print(f"创建logs文件夹失败：{e}")
+            return False
         
     def load_config(self) -> Dict:
         """加载配置文件"""
@@ -146,6 +161,12 @@ class CalSync:
                     "expand_recurring": True,
                     "verify_threshold": 0.9,
                     "override_icloud_deletions": True
+                },
+                "backup": {
+                    "enabled": True,
+                    "interval_hours": 24,
+                    "max_backups": 10,
+                    "backup_folder": "backup"
                 }
             }
             with open(self.config_file, 'w', encoding='utf-8') as f:
@@ -181,15 +202,75 @@ class CalSync:
     
     def setup_logging(self):
         """设置日志"""
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler('cal_sync.log', encoding='utf-8'),
-                logging.StreamHandler()
-            ]
-        )
+        # 创建logger
         self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        
+        # 清除现有的handlers
+        self.logger.handlers.clear()
+        
+        # 创建formatter
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        
+        # 创建文件handler（主日志）
+        file_handler = logging.FileHandler('logs/cal_sync.log', encoding='utf-8')
+        file_handler.setLevel(logging.INFO)
+        file_handler.setFormatter(formatter)
+        
+        # 创建错误日志handler
+        error_handler = logging.FileHandler('logs/cal_sync_error.log', encoding='utf-8')
+        error_handler.setLevel(logging.ERROR)
+        error_handler.setFormatter(formatter)
+        
+        # 创建控制台handler
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
+        console_handler.setFormatter(formatter)
+        
+        # 添加handlers到logger
+        self.logger.addHandler(file_handler)
+        self.logger.addHandler(error_handler)
+        self.logger.addHandler(console_handler)
+    
+    def merge_old_logs(self):
+        """合并旧的日志文件到新的日志文件中"""
+        try:
+            # 合并旧的cal_sync_error.log
+            old_error_log = "cal_sync_error.log"
+            new_error_log = "logs/cal_sync_error.log"
+            
+            if os.path.exists(old_error_log):
+                self.logger.info("正在合并旧的错误日志文件...")
+                with open(old_error_log, 'r', encoding='utf-8') as old_file:
+                    old_content = old_file.read()
+                
+                with open(new_error_log, 'a', encoding='utf-8') as new_file:
+                    new_file.write("\n" + "="*50 + "\n")
+                    new_file.write("以下是旧的错误日志内容：\n")
+                    new_file.write("="*50 + "\n")
+                    new_file.write(old_content)
+                
+                self.logger.info("旧错误日志文件已合并")
+            
+            # 合并旧的cal_sync.log
+            old_log = "logs/cal_sync.log.old"
+            new_log = "logs/cal_sync.log"
+            
+            if os.path.exists(old_log):
+                self.logger.info("正在合并旧的主日志文件...")
+                with open(old_log, 'r', encoding='utf-8') as old_file:
+                    old_content = old_file.read()
+                
+                with open(new_log, 'a', encoding='utf-8') as new_file:
+                    new_file.write("\n" + "="*50 + "\n")
+                    new_file.write("以下是旧的主日志内容：\n")
+                    new_file.write("="*50 + "\n")
+                    new_file.write(old_content)
+                
+                self.logger.info("旧主日志文件已合并")
+                
+        except Exception as e:
+            print(f"合并旧日志文件失败：{e}")
     
     def connect_caldav(self) -> bool:
         """连接CalDAV服务器"""
@@ -841,6 +922,10 @@ class CalSync:
                 self.logger.info("没有找到需要同步的事件")
                 return True
             
+            # 执行备份（如果启用）
+            if self.config.get("backup", {}).get("enabled", False):
+                self.backup_caldav_events(current_events)
+            
             # 检测变化
             added, modified, deleted = self.detect_changes(current_events)
             
@@ -928,6 +1013,535 @@ class CalSync:
             self.logger.info("收到停止信号，正在退出...")
         except Exception as e:
             self.logger.error(f"定时同步发生错误：{e}")
+    
+    def ensure_backup_folder(self) -> bool:
+        """确保备份文件夹存在"""
+        try:
+            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
+            if not os.path.exists(backup_folder):
+                os.makedirs(backup_folder)
+                self.logger.info(f"创建备份文件夹：{backup_folder}")
+            return True
+        except Exception as e:
+            self.logger.error(f"创建备份文件夹失败：{e}")
+            return False
+    
+    def export_events_to_ics(self, events: List[Dict]) -> str:
+        """将事件列表导出为ICS格式字符串"""
+        try:
+            # 创建iCalendar对象
+            cal = ICal()
+            cal.add('prodid', '-//CalSync Backup//CalDAV Events//CN')
+            cal.add('version', '2.0')
+            cal.add('calscale', 'GREGORIAN')
+            cal.add('method', 'PUBLISH')
+            
+            # 按UID分组事件，处理循环事件
+            events_by_uid = {}
+            for event_data in events:
+                uid = event_data.get('uid')
+                if uid not in events_by_uid:
+                    events_by_uid[uid] = []
+                events_by_uid[uid].append(event_data)
+            
+            # 处理每个UID组
+            for uid, event_group in events_by_uid.items():
+                if len(event_group) > 1:
+                    # 这是循环事件组，只导出第一个事件并添加RRULE
+                    main_event = event_group[0]
+                    self._add_recurring_event_to_calendar(cal, main_event, event_group)
+                else:
+                    # 单个事件
+                    self._add_single_event_to_calendar(cal, event_group[0])
+            
+            # 返回ICS字符串
+            return cal.to_ical().decode('utf-8')
+            
+        except Exception as e:
+            self.logger.error(f"导出ICS失败：{e}")
+            return ""
+    
+    def _add_single_event_to_calendar(self, cal: ICal, event_data: Dict):
+        """添加单个事件到日历"""
+        try:
+            event = Event()
+            
+            # 基本字段
+            if event_data.get('uid'):
+                event.add('uid', event_data['uid'])
+            if event_data.get('summary'):
+                event.add('summary', event_data['summary'])
+            if event_data.get('description'):
+                # 移除同步标记，保持原始描述
+                description = event_data['description']
+                # 移除 [SYNC_UID:xxx] 标记
+                import re
+                description = re.sub(r'\s*\[SYNC_UID:[^\]]+\]', '', description)
+                if description.strip():
+                    event.add('description', description.strip())
+            if event_data.get('location'):
+                event.add('location', event_data['location'])
+            
+            # 时间字段
+            if event_data.get('start'):
+                event.add('dtstart', event_data['start'])
+            if event_data.get('end'):
+                event.add('dtend', event_data['end'])
+            
+            # 创建和修改时间
+            if event_data.get('created'):
+                event.add('created', event_data['created'])
+            if event_data.get('last_modified'):
+                event.add('last-modified', event_data['last_modified'])
+            
+            # 来源日历信息
+            if event_data.get('source_calendar'):
+                event.add('x-source-calendar', event_data['source_calendar'])
+            
+            cal.add_component(event)
+            
+        except Exception as e:
+            self.logger.warning(f"添加单个事件失败：{e}")
+    
+    def _add_recurring_event_to_calendar(self, cal: ICal, main_event: Dict, event_group: List[Dict]):
+        """添加循环事件到日历"""
+        try:
+            event = Event()
+            
+            # 基本字段
+            if main_event.get('uid'):
+                event.add('uid', main_event['uid'])
+            if main_event.get('summary'):
+                event.add('summary', main_event['summary'])
+            if main_event.get('description'):
+                # 移除同步标记，保持原始描述
+                description = main_event['description']
+                # 移除 [SYNC_UID:xxx] 标记
+                import re
+                description = re.sub(r'\s*\[SYNC_UID:[^\]]+\]', '', description)
+                if description.strip():
+                    event.add('description', description.strip())
+            if main_event.get('location'):
+                event.add('location', main_event['location'])
+            
+            # 时间字段
+            if main_event.get('start'):
+                event.add('dtstart', main_event['start'])
+            if main_event.get('end'):
+                event.add('dtend', main_event['end'])
+            
+            # 创建和修改时间
+            if main_event.get('created'):
+                event.add('created', main_event['created'])
+            if main_event.get('last_modified'):
+                event.add('last-modified', main_event['last_modified'])
+            
+            # 从描述中提取循环信息并构建RRULE
+            rrule = self._extract_rrule_from_description(main_event.get('description', ''))
+            if rrule:
+                try:
+                    from icalendar import vRecur
+                    event.add('rrule', vRecur(rrule))
+                except Exception as e:
+                    self.logger.warning(f"添加RRULE失败：{e}")
+            
+            # 来源日历信息
+            if main_event.get('source_calendar'):
+                event.add('x-source-calendar', main_event['source_calendar'])
+            
+            cal.add_component(event)
+            
+        except Exception as e:
+            self.logger.warning(f"添加循环事件失败：{e}")
+    
+    def _extract_rrule_from_description(self, description: str) -> Dict:
+        """从描述中提取循环规则"""
+        try:
+            import re
+            
+            # 查找循环周期信息
+            # 例如："重复周期：2025/09/26-2029/07/20 10:30-11:30, 每周 (周五)"
+            pattern = r'重复周期：.*?每周\s*\(([^)]+)\)'
+            match = re.search(pattern, description)
+            
+            if match:
+                weekday = match.group(1)
+                weekday_map = {
+                    '周一': 'MO', '周二': 'TU', '周三': 'WE', '周四': 'TH',
+                    '周五': 'FR', '周六': 'SA', '周日': 'SU'
+                }
+                
+                if weekday in weekday_map:
+                    return {
+                        'FREQ': 'WEEKLY',
+                        'BYDAY': weekday_map[weekday]
+                    }
+            
+            # 如果没有找到具体的循环信息，使用默认的每周循环
+            return {
+                'FREQ': 'WEEKLY'
+            }
+            
+        except Exception as e:
+            self.logger.warning(f"提取循环规则失败：{e}")
+            return {}
+    
+    def _add_event_to_calendar_old(self, cal: ICal, event_data: Dict):
+        """旧的添加事件方法（保留作为备用）"""
+        try:
+            event = Event()
+            
+            # 基本字段
+            if event_data.get('uid'):
+                event.add('uid', event_data['uid'])
+            if event_data.get('summary'):
+                event.add('summary', event_data['summary'])
+            if event_data.get('description'):
+                # 移除同步标记，保持原始描述
+                description = event_data['description']
+                # 移除 [SYNC_UID:xxx] 标记
+                import re
+                description = re.sub(r'\s*\[SYNC_UID:[^\]]+\]', '', description)
+                if description.strip():
+                    event.add('description', description.strip())
+            if event_data.get('location'):
+                event.add('location', event_data['location'])
+            
+            # 时间字段
+            if event_data.get('start'):
+                event.add('dtstart', event_data['start'])
+            if event_data.get('end'):
+                event.add('dtend', event_data['end'])
+            
+            # 创建和修改时间
+            if event_data.get('created'):
+                event.add('created', event_data['created'])
+            if event_data.get('last_modified'):
+                event.add('last-modified', event_data['last_modified'])
+            
+            # 循环规则（只有主事件才有RRULE）
+            if event_data.get('rrule') and not event_data.get('is_recurring_instance'):
+                # 需要重新解析RRULE字符串
+                try:
+                    from icalendar import vRecur
+                    rrule_parts = {}
+                    for part in event_data['rrule'].split(';'):
+                        if '=' in part:
+                            key, value = part.split('=', 1)
+                            rrule_parts[key.strip()] = value.strip()
+                    if rrule_parts:
+                        event.add('rrule', vRecur(rrule_parts))
+                except Exception as e:
+                    self.logger.warning(f"解析RRULE失败：{e}")
+            
+            # 循环实例标识（只有实例事件才有RECURRENCE-ID）
+            if event_data.get('recurrence_id') and event_data.get('is_recurring_instance'):
+                try:
+                    from icalendar import vDDDTypes
+                    # 解析RECURRENCE-ID
+                    rec_id_str = event_data['recurrence_id']
+                    if 'T' in rec_id_str:
+                        rec_id_dt = datetime.fromisoformat(rec_id_str.replace('Z', '+00:00'))
+                    else:
+                        rec_id_dt = datetime.fromisoformat(rec_id_str)
+                    event.add('recurrence-id', rec_id_dt)
+                except Exception as e:
+                    self.logger.warning(f"解析RECURRENCE-ID失败：{e}")
+            
+            # 异常日期（只有主事件才有EXDATE）
+            if event_data.get('exdate') and not event_data.get('is_recurring_instance'):
+                try:
+                    from icalendar import vDDDTypes
+                    exdates = []
+                    for exdate_str in event_data['exdate'].split(','):
+                        if exdate_str.strip():
+                            # 尝试解析ISO格式日期
+                            try:
+                                if 'T' in exdate_str:
+                                    dt = datetime.fromisoformat(exdate_str.replace('Z', '+00:00'))
+                                else:
+                                    dt = datetime.fromisoformat(exdate_str)
+                                exdates.append(dt)
+                            except ValueError:
+                                continue
+                    if exdates:
+                        event.add('exdate', exdates)
+                except Exception as e:
+                    self.logger.warning(f"解析EXDATE失败：{e}")
+            
+            # 来源日历信息
+            if event_data.get('source_calendar'):
+                event.add('x-source-calendar', event_data['source_calendar'])
+            
+            cal.add_component(event)
+            
+        except Exception as e:
+            self.logger.warning(f"添加事件失败：{e}")
+    
+    def export_events_to_ics_old(self, events: List[Dict]) -> str:
+        """旧的导出方法（保留作为备用）"""
+        try:
+            # 创建iCalendar对象
+            cal = ICal()
+            cal.add('prodid', '-//CalSync Backup//CalDAV Events//CN')
+            cal.add('version', '2.0')
+            cal.add('calscale', 'GREGORIAN')
+            cal.add('method', 'PUBLISH')
+            
+            # 添加每个事件
+            for event_data in events:
+                event = Event()
+                
+                # 基本字段
+                if event_data.get('uid'):
+                    event.add('uid', event_data['uid'])
+                if event_data.get('summary'):
+                    event.add('summary', event_data['summary'])
+                if event_data.get('description'):
+                    # 移除同步标记，保持原始描述
+                    description = event_data['description']
+                    # 移除 [SYNC_UID:xxx] 标记
+                    import re
+                    description = re.sub(r'\s*\[SYNC_UID:[^\]]+\]', '', description)
+                    if description.strip():
+                        event.add('description', description.strip())
+                if event_data.get('location'):
+                    event.add('location', event_data['location'])
+                
+                # 时间字段
+                if event_data.get('start'):
+                    event.add('dtstart', event_data['start'])
+                if event_data.get('end'):
+                    event.add('dtend', event_data['end'])
+                
+                # 创建和修改时间
+                if event_data.get('created'):
+                    event.add('created', event_data['created'])
+                if event_data.get('last_modified'):
+                    event.add('last-modified', event_data['last_modified'])
+                
+                # 循环规则（只有主事件才有RRULE）
+                if event_data.get('rrule') and not event_data.get('is_recurring_instance'):
+                    # 需要重新解析RRULE字符串
+                    try:
+                        from icalendar import vRecur
+                        rrule_parts = {}
+                        for part in event_data['rrule'].split(';'):
+                            if '=' in part:
+                                key, value = part.split('=', 1)
+                                rrule_parts[key.strip()] = value.strip()
+                        if rrule_parts:
+                            event.add('rrule', vRecur(rrule_parts))
+                    except Exception as e:
+                        self.logger.warning(f"解析RRULE失败：{e}")
+                
+                # 循环实例标识（只有实例事件才有RECURRENCE-ID）
+                if event_data.get('recurrence_id') and event_data.get('is_recurring_instance'):
+                    try:
+                        from icalendar import vDDDTypes
+                        # 解析RECURRENCE-ID
+                        rec_id_str = event_data['recurrence_id']
+                        if 'T' in rec_id_str:
+                            rec_id_dt = datetime.fromisoformat(rec_id_str.replace('Z', '+00:00'))
+                        else:
+                            rec_id_dt = datetime.fromisoformat(rec_id_str)
+                        event.add('recurrence-id', rec_id_dt)
+                    except Exception as e:
+                        self.logger.warning(f"解析RECURRENCE-ID失败：{e}")
+                
+                # 异常日期（只有主事件才有EXDATE）
+                if event_data.get('exdate') and not event_data.get('is_recurring_instance'):
+                    try:
+                        from icalendar import vDDDTypes
+                        exdates = []
+                        for exdate_str in event_data['exdate'].split(','):
+                            if exdate_str.strip():
+                                # 尝试解析ISO格式日期
+                                try:
+                                    if 'T' in exdate_str:
+                                        dt = datetime.fromisoformat(exdate_str.replace('Z', '+00:00'))
+                                    else:
+                                        dt = datetime.fromisoformat(exdate_str)
+                                    exdates.append(dt)
+                                except ValueError:
+                                    continue
+                        if exdates:
+                            event.add('exdate', exdates)
+                    except Exception as e:
+                        self.logger.warning(f"解析EXDATE失败：{e}")
+                
+                # 来源日历信息
+                if event_data.get('source_calendar'):
+                    event.add('x-source-calendar', event_data['source_calendar'])
+                
+                cal.add_component(event)
+            
+            # 返回ICS字符串
+            return cal.to_ical().decode('utf-8')
+            
+        except Exception as e:
+            self.logger.error(f"导出ICS失败：{e}")
+            return ""
+    
+    def generate_backup_filename(self) -> str:
+        """生成备份文件名（backup+日期格式）"""
+        now = datetime.now()
+        date_str = now.strftime("%Y%m%d_%H%M%S")
+        return f"backup_{date_str}.ics"
+    
+    def cleanup_old_backups(self) -> bool:
+        """清理旧的备份文件，保留最近的备份"""
+        try:
+            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
+            max_backups = self.config.get("backup", {}).get("max_backups", 10)
+            
+            if not os.path.exists(backup_folder):
+                return True
+            
+            # 获取所有备份文件
+            backup_pattern = os.path.join(backup_folder, "backup_*.ics")
+            backup_files = glob.glob(backup_pattern)
+            
+            if len(backup_files) <= max_backups:
+                return True
+            
+            # 按修改时间排序，保留最新的
+            backup_files.sort(key=os.path.getmtime, reverse=True)
+            files_to_delete = backup_files[max_backups:]
+            
+            deleted_count = 0
+            for file_path in files_to_delete:
+                try:
+                    os.remove(file_path)
+                    deleted_count += 1
+                    self.logger.info(f"删除旧备份文件：{os.path.basename(file_path)}")
+                except Exception as e:
+                    self.logger.warning(f"删除备份文件失败 {file_path}：{e}")
+            
+            if deleted_count > 0:
+                self.logger.info(f"清理完成，删除了 {deleted_count} 个旧备份文件")
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"清理旧备份失败：{e}")
+            return False
+    
+    def should_run_backup(self) -> bool:
+        """检查是否应该执行备份"""
+        try:
+            backup_config = self.config.get("backup", {})
+            if not backup_config.get("enabled", False):
+                return False
+            
+            # 检查上次备份时间
+            if os.path.exists(self.backup_state_file):
+                with open(self.backup_state_file, 'r', encoding='utf-8') as f:
+                    backup_state = json.load(f)
+                last_backup = backup_state.get("last_backup")
+                if last_backup:
+                    last_backup_time = datetime.fromisoformat(last_backup)
+                    interval_hours = backup_config.get("interval_hours", 24)
+                    time_diff = datetime.now() - last_backup_time
+                    if time_diff.total_seconds() < interval_hours * 3600:
+                        return False
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"检查备份条件失败：{e}")
+            return True  # 出错时执行备份
+    
+    def save_backup_state(self):
+        """保存备份状态"""
+        try:
+            backup_state = {
+                "last_backup": datetime.now().isoformat()
+            }
+            with open(self.backup_state_file, 'w', encoding='utf-8') as f:
+                json.dump(backup_state, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            self.logger.error(f"保存备份状态失败：{e}")
+    
+    def backup_caldav_events(self, events: List[Dict]) -> bool:
+        """备份CalDAV事件到ICS文件"""
+        try:
+            # 检查是否应该执行备份
+            if not self.should_run_backup():
+                return True
+            
+            self.logger.info("开始备份CalDAV事件...")
+            
+            # 确保备份文件夹存在
+            if not self.ensure_backup_folder():
+                return False
+            
+            # 导出事件为ICS格式
+            ics_content = self.export_events_to_ics(events)
+            if not ics_content:
+                self.logger.error("导出ICS内容失败")
+                return False
+            
+            # 生成备份文件名
+            backup_filename = self.generate_backup_filename()
+            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
+            backup_path = os.path.join(backup_folder, backup_filename)
+            
+            # 写入备份文件
+            with open(backup_path, 'w', encoding='utf-8') as f:
+                f.write(ics_content)
+            
+            self.logger.info(f"备份成功：{backup_filename} ({len(events)} 个事件)")
+            
+            # 清理旧备份
+            self.cleanup_old_backups()
+            
+            # 保存备份状态
+            self.save_backup_state()
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"备份CalDAV事件失败：{e}")
+            return False
+    
+    def force_backup_caldav_events(self, events: List[Dict]) -> bool:
+        """强制执行CalDAV事件备份（手动备份）"""
+        try:
+            self.logger.info("开始手动备份CalDAV事件...")
+            
+            # 确保备份文件夹存在
+            if not self.ensure_backup_folder():
+                return False
+            
+            # 导出事件为ICS格式
+            ics_content = self.export_events_to_ics(events)
+            if not ics_content:
+                self.logger.error("导出ICS内容失败")
+                return False
+            
+            # 生成备份文件名
+            backup_filename = self.generate_backup_filename()
+            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
+            backup_path = os.path.join(backup_folder, backup_filename)
+            
+            # 写入备份文件
+            with open(backup_path, 'w', encoding='utf-8') as f:
+                f.write(ics_content)
+            
+            self.logger.info(f"手动备份成功：{backup_filename} ({len(events)} 个事件)")
+            
+            # 清理旧备份
+            self.cleanup_old_backups()
+            
+            # 保存备份状态
+            self.save_backup_state()
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"手动备份CalDAV事件失败：{e}")
+            return False
 
 
 def main():
@@ -938,6 +1552,7 @@ def main():
     parser.add_argument("--daemon", action="store_true", help="以守护进程模式运行")
     parser.add_argument("--select-calendars", type=str, help="选择要同步的日历索引，用逗号分隔，如：1,3,5")
     parser.add_argument("--list-calendars", action="store_true", help="列出所有可用日历")
+    parser.add_argument("--backup", action="store_true", help="强制执行一次备份")
     
     args = parser.parse_args()
     
@@ -968,6 +1583,31 @@ def main():
                     print(f"     URL: {cal.url}")
             else:
                 print("未找到任何日历")
+        return
+    
+    # 如果是手动备份
+    if args.backup:
+        syncer.logger.info("=" * 50)
+        syncer.logger.info("开始执行手动备份")
+        
+        # 连接CalDAV
+        if not syncer.connect_caldav():
+            syncer.logger.error("CalDAV连接失败，无法执行备份")
+            return
+        
+        # 获取CalDAV事件
+        current_events = syncer.get_caldav_events(selected_calendar_indices)
+        if not current_events:
+            syncer.logger.info("没有找到需要备份的事件")
+            return
+        
+        # 执行手动备份
+        if syncer.force_backup_caldav_events(current_events):
+            syncer.logger.info("手动备份执行成功")
+        else:
+            syncer.logger.error("手动备份执行失败")
+        
+        syncer.logger.info("=" * 50)
         return
     
     if args.once:

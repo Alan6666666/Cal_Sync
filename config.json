@@ -2,8 +2,8 @@
     "caldav": {
         "server": "caldav.wecom.work",
         "base_url": "https://caldav.wecom.work/calendar/",
-        "username": "xxx@jfrjeffery.wecom.work",
-        "password": "",
+        "username": "wangyifan@jfrjeffery.wecom.work",
+        "password": "prWGCa576Q24qavU",
         "calendar_url": "",
         "selected_calendars": []
     },
@@ -20,5 +20,11 @@
         "expand_recurring": true,
         "verify_threshold": 1,
         "override_icloud_deletions": true
+    },
+    "backup": {
+        "enabled": true,
+        "interval_hours": 12,
+        "max_backups": 10,
+        "backup_folder": "backup"
     }
 }

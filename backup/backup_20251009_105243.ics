@@ -1,0 +1,216 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CalSync Backup//CalDAV Events//CN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20250926T103000
+DTEND;TZID=TZ08:20250926T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20250926T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20251003T103000
+DTEND;TZID=TZ08:20251003T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20251003T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20251010T103000
+DTEND;TZID=TZ08:20251010T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20251010T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20251017T103000
+DTEND;TZID=TZ08:20251017T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20251017T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20251024T103000
+DTEND;TZID=TZ08:20251024T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20251024T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20251031T103000
+DTEND;TZID=TZ08:20251031T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20251031T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20251107T103000
+DTEND;TZID=TZ08:20251107T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20251107T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20251114T103000
+DTEND;TZID=TZ08:20251114T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20251114T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:创研部例会
+DTSTART;TZID=TZ08:20251121T103000
+DTEND;TZID=TZ08:20251121T113000
+UID:b06180847e7e452e1678ecfffe596274ejxtwicx
+RECURRENCE-ID;TZID="UTC+08:00":20251121T103000
+CREATED:20250919T153439Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 晏子欣 邀请您参
+ 加企业微信会议 会议主题：创研部例会 会议时间：2025/0
+ 9/26 10:30-11:30 (GMT+08:00) 中国标准时间 - 北京 重复周期：20
+ 25/09/26-2029/07/20 10:30-11:30\, 每周 (周五) 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/e1jw2jjGFv9?
+ fr=b&mc=95116302557 #企业微信会议：951-1630-2557
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/e1jw2jj
+ GFv9?fr=b&mc=95116302557
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:NUS OAR陈会长国大接待
+DTSTART;TZID=TZ08:20251007T090000
+DTEND;TZID=TZ08:20251007T100000
+UID:1014c507bbe527d78c5c6c32f383fd54exolgltz
+CREATED:20250930T093018Z
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:test modify
+DTSTART;TZID=TZ08:20251016T163000
+DTEND;TZID=TZ08:20251016T173000
+UID:606e7aa75bb9089252c34932c068ec63xsouungv
+CREATED:20251002T121240Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 王一藩 邀请您参
+ 加企业微信会议 会议主题：test modify 会议时间：2025/10/16
+  16:30-17:30 (GMT+08:00) 中国标准时间 - 北京 点击链接入会，
+ 或添加至会议列表： https://work.weixin.qq.com/webapp/tm/eJiTMZLF7
+ d9?fr=b&mc=898771562 #企业微信会议：898-771-562
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/eJiTMZL
+ F7d9?fr=b&mc=898771562
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:test add
+DTSTART;TZID=TZ08:20251009T110000
+DTEND;TZID=TZ08:20251009T120000
+UID:c5ccfd994c92d89b4217ae35936fe028cfvorjtp
+CREATED:20251002T132328Z
+DESCRIPTION:\\r ..........................................................
+ ..........................................\\r \\r 王一藩 邀请您参
+ 加企业微信会议 会议主题：test add 会议时间：2025/10/09 11
+ :00-12:00 (GMT+08:00) 中国标准时间 - 北京 点击链接入会，或
+ 添加至会议列表： https://work.weixin.qq.com/webapp/tm/l7CmFWSX5Ic?
+ fr=b&mc=321699144 #企业微信会议：321-699-144
+LOCATION:点击链接入会：https://work.weixin.qq.com/webapp/tm/l7CmFWS
+ X5Ic?fr=b&mc=321699144
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:test2
+DTSTART;VALUE=DATE:20251022
+DTEND;VALUE=DATE:20251023
+UID:c8f5c115d1d48ca82c1d13ef4b6314d8fsdsnuua
+CREATED:20251008T102545Z
+X-SOURCE-CALENDAR:王一藩的日历 
+END:VEVENT
+END:VCALENDAR
