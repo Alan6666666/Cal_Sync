@@ -28,14 +28,14 @@ class ICloudIntegration:
         if not os.path.exists(self.applescript_dir):
             os.makedirs(self.applescript_dir)
     
-    def _run_applescript(self, script: str) -> tuple[bool, str]:
+    def _run_applescript(self, script: str, timeout: int = 60) -> tuple[bool, str]:
         """运行AppleScript"""
         try:
             result = subprocess.run(
                 ["osascript", "-e", script],
                 capture_output=True,
                 text=True,
-                timeout=60
+                timeout=timeout
             )
             
             if result.returncode == 0:
@@ -114,26 +114,8 @@ class ICloudIntegration:
         # 确保有结束日期
         start_date, end_date = self._ensure_end_date(event.get("start"), event.get("end"))
         
-        # 调试信息
-        self.logger.info(f"--- 调试信息 ---")
-        self.logger.info(f"准备创建事件，开始时间: {start_date}")
-        self.logger.info(f"准备创建事件，结束时间: {end_date}")
-        self.logger.info(f"----------------")
-        
         if not start_date or not end_date:
             self.logger.warning(f"事件日期无效：{event.get('summary')}")
-            return False
-        
-        # 格式化日期为AppleScript可以理解的格式
-        start_date_str = self._format_date_for_applescript(start_date)
-        end_date_str = self._format_date_for_applescript(end_date)
-        
-        # 调试信息
-        self.logger.info(f"AppleScript开始时间: {start_date_str}")
-        self.logger.info(f"AppleScript结束时间: {end_date_str}")
-        
-        if not start_date_str or not end_date_str:
-            self.logger.warning(f"事件日期格式无效：{event.get('summary')}")
             return False
         
         # 使用更安全的方式处理字符串
@@ -141,12 +123,83 @@ class ICloudIntegration:
         description = self._escape_string(event.get('description', ''))
         location = self._escape_string(event.get('location', ''))
         
+        # 智能截取策略：根据同步标记位置选择截取方式
+        import re
+        max_desc_length = 200  # 目标长度：200字符
+        
+        if len(description) > max_desc_length:
+            # 查找同步标记
+            sync_marker_pattern = r'\[SYNC_UID:[^\]]+\]'
+            sync_marker_match = re.search(sync_marker_pattern, description)
+            
+            if sync_marker_match:
+                sync_marker = sync_marker_match.group(0)
+                sync_position = sync_marker_match.start()
+                sync_length = len(sync_marker)
+                
+                # 根据同步标记位置选择截取策略
+                if sync_position <= 50:
+                    # 同步标记在开头，从前向后截取
+                    description = description[:max_desc_length]
+                    self.logger.info(f"事件描述从前向后截断到{max_desc_length}字符: {event.get('summary', 'Unknown')}")
+                else:
+                    # 同步标记在末尾，从后向前截取，确保同步标记完整
+                    # 计算可用空间：总长度 - 同步标记长度
+                    available_space = max_desc_length - sync_length
+                    if available_space > 0:
+                        # 从描述开头截取可用空间，然后添加同步标记
+                        description = description[:available_space] + sync_marker
+                        self.logger.info(f"事件描述从后向前截断到{max_desc_length}字符: {event.get('summary', 'Unknown')}")
+                    else:
+                        # 如果同步标记太长，只保留同步标记
+                        description = sync_marker
+                        self.logger.info(f"事件描述只保留同步标记: {event.get('summary', 'Unknown')}")
+            else:
+                # 没有同步标记，直接截断
+                description = description[:max_desc_length]
+                self.logger.info(f"事件描述截断到{max_desc_length}字符: {event.get('summary', 'Unknown')}")
+        
+        # 正确处理时区并标准化时间
+        # 处理开始时间
+        if isinstance(start_date, datetime):
+            if start_date.tzinfo is not None:
+                # 如果有时区信息，转换为本地时间
+                start_date_local = start_date.astimezone().replace(tzinfo=None)
+            else:
+                # 如果没有时区信息，假设是本地时间
+                start_date_local = start_date
+            
+            # 标准化开始时间，确保分钟个位数为0或5，秒数为0
+            start_date_normalized = self._normalize_minutes(start_date_local)
+        else:
+            start_date_normalized = start_date
+            
+        # 处理结束时间
+        if isinstance(end_date, datetime):
+            if end_date.tzinfo is not None:
+                # 如果有时区信息，转换为本地时间
+                end_date_local = end_date.astimezone().replace(tzinfo=None)
+            else:
+                # 如果没有时区信息，假设是本地时间
+                end_date_local = end_date
+            
+            # 标准化结束时间，确保分钟个位数为0或5，秒数为0
+            end_date_normalized = self._normalize_minutes(end_date_local)
+        else:
+            end_date_normalized = end_date
+        
+        # 使用绝对时间而不是相对时间，避免精度问题
+        start_time_str = start_date_normalized.strftime("%Y-%m-%d %H:%M:%S")
+        end_time_str = end_date_normalized.strftime("%Y-%m-%d %H:%M:%S")
+        
+        # 使用properties语法的AppleScript，直接使用绝对时间
         script = f'''
         tell application "Calendar"
             try
-                tell calendar "{self.calendar_name}"
-                    make new event with properties {{summary:"{summary}", description:"{description}", location:"{location}", start date:{start_date_str}, end date:{end_date_str}}}
-                end tell
+                set targetCalendar to calendar "{self.calendar_name}"
+                set startTime to date "{start_time_str}"
+                set endTime to date "{end_time_str}"
+                make new event at end of events of targetCalendar with properties {{summary:"{summary}", description:"{description}", location:"{location}", start date:startTime, end date:endTime}}
                 return "Event created successfully"
             on error errMsg
                 return "Error: " & errMsg
@@ -309,7 +362,7 @@ class ICloudIntegration:
         end tell
         '''
         
-        success, result = self._run_applescript(script)
+        success, result = self._run_applescript(script, timeout=300)  # 5分钟超时
         if success and "Error:" not in result:
             try:
                 events = []
@@ -404,7 +457,7 @@ class ICloudIntegration:
         return None
     
     def _format_date_for_applescript(self, date_obj) -> str:
-        """为AppleScript格式化日期，使用简单的日期字符串格式"""
+        """为AppleScript格式化日期，使用AppleScript能正确识别的格式"""
         if not date_obj:
             return None
         
@@ -428,10 +481,14 @@ class ICloudIntegration:
         if isinstance(date_obj, datetime):
             # 转换为本地时间（去掉时区信息）
             if date_obj.tzinfo is not None:
-                date_obj = date_obj.replace(tzinfo=None)
+                date_obj = date_obj.astimezone().replace(tzinfo=None)
             
-            # 使用简单的日期字符串格式
-            formatted_date = date_obj.strftime("%Y-%m-%d %H:%M:%S")
+            # 标准化时间，确保分钟个位数为0或5，秒数为0
+            date_obj = self._normalize_minutes(date_obj)
+            
+            # 使用AppleScript能正确识别的日期格式
+            # 尝试使用更简单的格式
+            formatted_date = date_obj.strftime("%m/%d/%Y %I:%M:%S %p")
             return f'date "{formatted_date}"'
         
         return None
@@ -457,26 +514,58 @@ class ICloudIntegration:
             if start_dt.hour == 0 and start_dt.minute == 0 and start_dt.second == 0:
                 end_dt = start_dt.replace(hour=23, minute=59, second=59)
             else:
-                # 否则结束时间比开始时间晚1小时
+                # 否则结束时间比开始时间晚1小时，并标准化时间
                 end_dt = start_dt + timedelta(hours=1)
+                end_dt = self._normalize_minutes(end_dt)
+            
+            # 标准化开始时间
+            if isinstance(start_date, datetime):
+                start_dt_normalized = self._normalize_minutes(start_dt)
+                return start_dt_normalized, end_dt
             
             return start_date, end_dt
         
         return start_date, end_date
     
+    def _normalize_minutes(self, dt: datetime) -> datetime:
+        """标准化时间，将分钟数强制调整为个位数为0或5，秒数为0"""
+        if dt is None:
+            return dt
+        
+        # 获取当前分钟数
+        current_minute = dt.minute
+        
+        # 将分钟数标准化为个位数为0或5
+        # 例如：09:29 -> 09:30, 09:44 -> 09:45, 09:59 -> 10:00
+        minute_ones_digit = current_minute % 10
+        
+        if minute_ones_digit <= 2:
+            # 0,1,2 -> 0 (向前调整)
+            normalized_minute = (current_minute // 10) * 10
+        elif minute_ones_digit <= 7:
+            # 3,4,5,6,7 -> 5 (调整到5)
+            normalized_minute = (current_minute // 10) * 10 + 5
+        else:
+            # 8,9 -> 下一个0 (进位到下一个整点)
+            normalized_minute = ((current_minute // 10) + 1) * 10
+            # 如果分钟数超过59，需要进位到下一小时
+            if normalized_minute >= 60:
+                # 使用timedelta进行安全的进位，避免小时数超过23
+                dt = dt.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+                return dt
+        
+        # 返回标准化后的时间
+        return dt.replace(minute=normalized_minute, second=0, microsecond=0)
+    
     def _escape_string(self, text: str) -> str:
-        """转义字符串中的特殊字符"""
+        """转义字符串中的特殊字符，使其在AppleScript中安全使用"""
         if not text:
             return ""
         
-        # 转义AppleScript中的特殊字符
-        text = text.replace('\\', '\\\\')
-        text = text.replace('"', '\\"')
-        text = text.replace('\n', '\\n')
-        text = text.replace('\r', '\\r')
-        text = text.replace('\t', '\\t')
-        # 处理中文字符和其他特殊字符
-        text = text.replace("'", "\\'")
+        # 对于AppleScript，我们使用更简单的方法：只转义最关键的字符
+        # 其他字符让AppleScript自己处理
+        text = text.replace('\\', '\\\\')  # 反斜杠
+        text = text.replace('"', '\\"')    # 双引号
         
         return text
     

@@ -46,12 +46,127 @@ except ImportError:
     print("警告：无法导入iCloud集成模块，将使用模拟实现")
     ICloudIntegration = None
 
+try:
+    from mac_eventkit_bridge import read_events_from_eventkit, read_events_from_eventkit_by_indices
+except ImportError:
+    print("警告：无法导入EventKit桥接模块，EventKit功能将不可用")
+    read_events_from_eventkit = None
+    read_events_from_eventkit_by_indices = None
+
 
 def _norm_text(s: Optional[str]) -> str:
     """标准化文本字段：去除多余空白、换行等"""
     s = (s or '').strip()
     # 折叠所有空白为单空格
     return ' '.join(s.split())
+
+
+def _normalize_minutes_global(dt: datetime) -> datetime:
+    """全局时间标准化函数，将分钟数强制调整为个位数为0或5，秒数为0"""
+    if dt is None:
+        return dt
+    
+    # 获取当前分钟数
+    current_minute = dt.minute
+    
+    # 将分钟数标准化为个位数为0或5
+    # 例如：09:29 -> 09:30, 09:44 -> 09:45, 09:59 -> 10:00
+    minute_ones_digit = current_minute % 10
+    
+    if minute_ones_digit <= 2:
+        # 0,1,2 -> 0 (向前调整)
+        normalized_minute = (current_minute // 10) * 10
+    elif minute_ones_digit <= 7:
+        # 3,4,5,6,7 -> 5 (调整到5)
+        normalized_minute = (current_minute // 10) * 10 + 5
+    else:
+        # 8,9 -> 下一个0 (进位到下一个整点)
+        normalized_minute = ((current_minute // 10) + 1) * 10
+        # 如果分钟数超过59，需要进位到下一小时
+        if normalized_minute >= 60:
+            # 使用timedelta进行安全的进位，避免小时数超过23
+            dt = dt.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+            return dt
+    
+    # 返回标准化后的时间
+    return dt.replace(minute=normalized_minute, second=0, microsecond=0)
+
+
+def _is_allday_event(event: Dict) -> bool:
+    """判断是否为全天事件"""
+    start = event.get("start")
+    end = event.get("end")
+    
+    # 如果开始时间是date类型（只有日期没有时间），则为全天事件
+    if isinstance(start, date) and not isinstance(start, datetime):
+        return True
+    
+    # 如果开始和结束时间都是datetime类型，检查是否跨整天
+    if isinstance(start, datetime) and isinstance(end, datetime):
+        # 转换为本地时间进行比较
+        if start.tzinfo is not None:
+            start = start.astimezone().replace(tzinfo=None)
+        if end.tzinfo is not None:
+            end = end.astimezone().replace(tzinfo=None)
+        
+        # 检查是否开始于00:00:00，结束于23:59:59或次日00:00:00
+        if (start.hour == 0 and start.minute == 0 and start.second == 0 and
+            ((end.hour == 23 and end.minute == 59 and end.second >= 59) or
+             (end.hour == 0 and end.minute == 0 and end.second == 0 and end.date() > start.date()))):
+            return True
+    
+    return False
+
+
+def _get_event_duration_hours(event: Dict) -> float:
+    """获取事件持续时间（小时）"""
+    start = event.get("start")
+    end = event.get("end")
+    
+    if not start or not end:
+        return 0.0
+    
+    # 处理全天事件
+    if isinstance(start, date) and not isinstance(start, datetime):
+        if isinstance(end, date) and not isinstance(end, datetime):
+            # 两个都是date类型
+            duration_days = (end - start).days + 1  # +1因为包含结束日期
+            return duration_days * 24.0
+        elif isinstance(end, datetime):
+            # 开始是date，结束是datetime
+            end_date = end.date() if end.tzinfo is None else end.astimezone().date()
+            duration_days = (end_date - start).days + 1
+            return duration_days * 24.0
+    elif isinstance(start, datetime):
+        # 开始是datetime类型
+        if isinstance(end, datetime):
+            # 两个都是datetime类型
+            if start.tzinfo is not None:
+                start = start.astimezone().replace(tzinfo=None)
+            if end.tzinfo is not None:
+                end = end.astimezone().replace(tzinfo=None)
+            
+            duration = end - start
+            return duration.total_seconds() / 3600.0  # 转换为小时
+        elif isinstance(end, date):
+            # 开始是datetime，结束是date
+            start_date = start.date() if start.tzinfo is None else start.astimezone().date()
+            duration_days = (end - start_date).days + 1
+            return duration_days * 24.0
+    
+    return 0.0
+
+
+def _should_ignore_allday_event(event: Dict, max_hours: int) -> bool:
+    """判断是否应该忽略全天事件"""
+    if not _is_allday_event(event):
+        return False
+    
+    duration_hours = _get_event_duration_hours(event)
+    
+    # 如果持续时间严格大于指定小时数，则忽略
+    # 例如：阈值24小时，只有超过24小时的事件才被忽略
+    return duration_hours > max_hours
 
 
 def _to_utc_iso(dt) -> str:
@@ -111,7 +226,7 @@ def _norm_exdate(exdate) -> str:
 class CalSync:
     """CalDAV到iCloud日历同步器"""
     
-    def __init__(self, config_file: str = "config.json"):
+    def __init__(self, config_file: str = "config.json", caldav_indices: List[int] = None, eventkit_calendars: List[str] = None, eventkit_indices: List[int] = None):
         """初始化同步器"""
         self.config_file = config_file
         self.config = self.load_config()
@@ -123,6 +238,27 @@ class CalSync:
         self.sync_state_file = "logs/sync_state.json"
         self.backup_state_file = "logs/backup_state.json"
         self.sync_state = self.load_sync_state()
+        
+        # 处理源路由配置
+        self.source_routing = self.config.get("source_routing", {})
+        
+        # 如果提供了命令行参数，覆盖配置文件设置
+        if caldav_indices is not None:
+            self.source_routing["caldav_indices"] = caldav_indices
+        if eventkit_calendars is not None:
+            self.source_routing["eventkit_calendars"] = eventkit_calendars
+        if eventkit_indices is not None:
+            self.source_routing["eventkit_indices"] = eventkit_indices
+        
+        # 确保默认值
+        if "caldav_indices" not in self.source_routing:
+            self.source_routing["caldav_indices"] = []
+        if "eventkit_calendars" not in self.source_routing:
+            self.source_routing["eventkit_calendars"] = []
+        if "eventkit_indices" not in self.source_routing:
+            self.source_routing["eventkit_indices"] = []
+        if "fallback_on_404" not in self.source_routing:
+            self.source_routing["fallback_on_404"] = True
     
     def ensure_logs_folder(self) -> bool:
         """确保logs文件夹存在"""
@@ -451,6 +587,221 @@ class CalSync:
             self.logger.error(f"获取CalDAV事件失败：{e}")
             return []
     
+    def get_events_via_eventkit(self, calendar_names: List[str]) -> List[Dict]:
+        """通过EventKit获取事件"""
+        try:
+            if not read_events_from_eventkit:
+                self.logger.error("EventKit桥接模块不可用")
+                return []
+            
+            self.logger.info(f"正在从EventKit获取事件，日历：{calendar_names}")
+            
+            # 使用配置的时间窗
+            days_past = self.config["sync"]["sync_past_days"]
+            days_future = self.config["sync"]["sync_future_days"]
+            
+            # 调用EventKit桥接函数
+            events = read_events_from_eventkit(calendar_names, days_past, days_future)
+            
+            # 为每个事件添加来源信息
+            for event in events:
+                event["source_calendar"] = f"EventKit:{calendar_names[0]}" if calendar_names else "EventKit:Unknown"
+                event["source_calendar_url"] = "EventKit://local"
+            
+            self.logger.info(f"从EventKit获取到 {len(events)} 个事件")
+            
+            # 调试：显示所有事件的详细信息
+            for i, event in enumerate(events):
+                self.logger.debug(f"EventKit事件 {i+1}: {event.get('summary', 'Unknown')} (来源: {event.get('source_calendar', 'Unknown')}, UID: {event.get('uid', 'No UID')}, Key: {event.get('stable_key', 'No Key')}, 循环实例: {event.get('is_recurring_instance', False)})")
+            
+            return events
+            
+        except Exception as e:
+            self.logger.error(f"通过EventKit获取事件失败：{e}")
+            return []
+    
+    def get_events_via_eventkit_by_indices(self, caldav_calendar_indices: List[int]) -> List[Dict]:
+        """通过 CalDAV 日历索引获取对应的 EventKit 事件"""
+        try:
+            if not read_events_from_eventkit_by_indices:
+                self.logger.error("EventKit桥接模块不可用")
+                return []
+            
+            # 获取 CalDAV 日历名称
+            if not self.caldav_client:
+                self.logger.error("CalDAV客户端未初始化")
+                return []
+            
+            principal = self.caldav_client.principal()
+            calendars = principal.calendars()
+            
+            caldav_calendar_names = []
+            for idx in caldav_calendar_indices:
+                if 1 <= idx <= len(calendars):
+                    calendar_name = calendars[idx-1].name
+                    caldav_calendar_names.append(calendar_name)
+                    self.logger.info(f"CalDAV 索引 {idx} 对应日历：{calendar_name}")
+                else:
+                    self.logger.warning(f"无效的 CalDAV 日历索引：{idx}")
+            
+            if not caldav_calendar_names:
+                self.logger.error("没有找到有效的 CalDAV 日历")
+                return []
+            
+            self.logger.info(f"正在从EventKit获取事件，CalDAV索引：{caldav_calendar_indices}，对应日历：{caldav_calendar_names}")
+            
+            # 使用配置的时间窗
+            days_past = self.config["sync"]["sync_past_days"]
+            days_future = self.config["sync"]["sync_future_days"]
+            
+            # 调用EventKit桥接函数
+            events = read_events_from_eventkit_by_indices(caldav_calendar_indices, caldav_calendar_names, days_past, days_future)
+            
+            # 为每个事件添加来源信息
+            for event in events:
+                event["source_calendar"] = f"EventKit:{caldav_calendar_names[0]}" if caldav_calendar_names else "EventKit:Unknown"
+                event["source_calendar_url"] = "EventKit://local"
+            
+            self.logger.info(f"从EventKit获取到 {len(events)} 个事件")
+            
+            # 调试：显示所有事件的详细信息
+            for i, event in enumerate(events):
+                self.logger.debug(f"EventKit事件 {i+1}: {event.get('summary', 'Unknown')} (来源: {event.get('source_calendar', 'Unknown')}, UID: {event.get('uid', 'No UID')}, Key: {event.get('stable_key', 'No Key')}, 循环实例: {event.get('is_recurring_instance', False)})")
+            
+            return events
+            
+        except Exception as e:
+            self.logger.error(f"通过EventKit索引获取事件失败：{e}")
+            return []
+    
+    def filter_allday_events(self, events: List[Dict]) -> List[Dict]:
+        """过滤掉持续时间过长的全天事件"""
+        try:
+            # 获取配置参数
+            max_hours = self.config["sync"].get("ignore_allday_events_longer_than_hours", None)
+            
+            # 如果没有设置过滤参数，返回所有事件
+            if max_hours is None:
+                return events
+            
+            filtered_events = []
+            ignored_count = 0
+            
+            for event in events:
+                if _should_ignore_allday_event(event, max_hours):
+                    ignored_count += 1
+                    duration_hours = _get_event_duration_hours(event)
+                    self.logger.info(f"忽略全天事件：{event.get('summary', 'Unknown')} (持续时间: {duration_hours:.1f}小时, 阈值: {max_hours}小时)")
+                else:
+                    filtered_events.append(event)
+            
+            if ignored_count > 0:
+                self.logger.info(f"过滤结果：忽略 {ignored_count} 个全天事件，保留 {len(filtered_events)} 个事件")
+            
+            return filtered_events
+            
+        except Exception as e:
+            self.logger.error(f"过滤全天事件时发生错误：{e}")
+            return events
+
+    def get_source_events(self, selected_calendar_indices: List[int] = None) -> List[Dict]:
+        """统一入口：根据配置获取源事件（CalDAV + EventKit）"""
+        try:
+            all_events = []
+            caldav_events = []
+            eventkit_events = []
+            
+            # 获取CalDAV事件
+            caldav_indices = self.source_routing.get("caldav_indices", [])
+            if caldav_indices:
+                self.logger.info(f"使用CalDAV获取日历索引：{caldav_indices}")
+                caldav_events = self.get_caldav_events(caldav_indices)
+                all_events.extend(caldav_events)
+                
+                # 检查是否需要回退到EventKit
+                if self.source_routing.get("fallback_on_404", False):
+                    caldav_events = self._check_and_fallback_to_eventkit(caldav_events, caldav_indices)
+                    # 重新获取CalDAV事件（可能已经回退）
+                    all_events = caldav_events.copy()
+            
+            # 获取EventKit事件
+            eventkit_calendars = self.source_routing.get("eventkit_calendars", [])
+            eventkit_indices = self.source_routing.get("eventkit_indices", [])
+            
+            if eventkit_calendars:
+                self.logger.info(f"使用EventKit获取日历：{eventkit_calendars}")
+                eventkit_events = self.get_events_via_eventkit(eventkit_calendars)
+                all_events.extend(eventkit_events)
+            elif eventkit_indices:
+                self.logger.info(f"使用EventKit获取日历索引：{eventkit_indices}")
+                eventkit_events = self.get_events_via_eventkit_by_indices(eventkit_indices)
+                all_events.extend(eventkit_events)
+            
+            # 去重：以stable_key为准，后加入的忽略
+            unique_events = {}
+            for event in all_events:
+                stable_key = event.get("stable_key")
+                if stable_key and stable_key not in unique_events:
+                    unique_events[stable_key] = event
+            
+            final_events = list(unique_events.values())
+            
+            self.logger.info(f"合并后总事件数：{len(final_events)} (CalDAV: {len(caldav_events)}, EventKit: {len(eventkit_events)})")
+            
+            # 应用全天事件过滤
+            filtered_events = self.filter_allday_events(final_events)
+            
+            return filtered_events
+            
+        except Exception as e:
+            self.logger.error(f"获取源事件失败：{e}")
+            return []
+    
+    def _check_and_fallback_to_eventkit(self, caldav_events: List[Dict], caldav_indices: List[int]) -> List[Dict]:
+        """检查CalDAV事件获取情况，必要时回退到EventKit"""
+        try:
+            # 获取CalDAV日历名称映射
+            if not self.caldav_client:
+                return caldav_events
+            
+            principal = self.caldav_client.principal()
+            calendars = principal.calendars()
+            
+            fallback_needed = False
+            fallback_calendars = []
+            
+            for idx in caldav_indices:
+                if 1 <= idx <= len(calendars):
+                    calendar = calendars[idx-1]
+                    calendar_name = calendar.name
+                    
+                    # 检查该日历的事件数量是否异常少
+                    calendar_events = [e for e in caldav_events if e.get("source_calendar") == calendar_name]
+                    
+                    # 如果事件数量少于预期阈值（比如少于5个），可能需要回退
+                    if len(calendar_events) < 5:
+                        self.logger.warning(f"日历 '{calendar_name}' 事件数量异常少（{len(calendar_events)}个），可能需要回退到EventKit")
+                        fallback_needed = True
+                        fallback_calendars.append(calendar_name)
+            
+            if fallback_needed and fallback_calendars:
+                self.logger.info(f"尝试回退到EventKit获取日历：{fallback_calendars}")
+                eventkit_events = self.get_events_via_eventkit(fallback_calendars)
+                
+                if eventkit_events:
+                    self.logger.info(f"EventKit回退成功，获取到 {len(eventkit_events)} 个事件")
+                    # 替换CalDAV事件
+                    filtered_caldav_events = [e for e in caldav_events if e.get("source_calendar") not in fallback_calendars]
+                    return filtered_caldav_events + eventkit_events
+                else:
+                    self.logger.warning("EventKit回退失败，继续使用CalDAV事件")
+            
+            return caldav_events
+            
+        except Exception as e:
+            self.logger.error(f"检查CalDAV回退条件失败：{e}")
+            return caldav_events
+    
     def parse_ical_event(self, event) -> Optional[Dict]:
         """解析iCal事件"""
         try:
@@ -500,14 +851,31 @@ class CalSync:
             else:
                 description = f"[SYNC_UID:{stable_key}]"
             
+            # 获取并标准化时间字段
+            start_dt = event.get("DTSTART").dt if event.get("DTSTART") else None
+            end_dt = event.get("DTEND").dt if event.get("DTEND") else None
+            
+            # 对开始和结束时间进行标准化
+            if isinstance(start_dt, datetime):
+                # 转换为本地时间（去掉时区信息）
+                if start_dt.tzinfo is not None:
+                    start_dt = start_dt.astimezone().replace(tzinfo=None)
+                start_dt = _normalize_minutes_global(start_dt)
+            
+            if isinstance(end_dt, datetime):
+                # 转换为本地时间（去掉时区信息）
+                if end_dt.tzinfo is not None:
+                    end_dt = end_dt.astimezone().replace(tzinfo=None)
+                end_dt = _normalize_minutes_global(end_dt)
+            
             event_dict = {
                 "uid": uid,
                 "stable_key": stable_key,  # 稳定主键
                 "summary": _norm_text(event.get("SUMMARY", "")),
                 "description": description,  # 包含同步标记
                 "location": _norm_text(event.get("LOCATION", "")),
-                "start": event.get("DTSTART").dt if event.get("DTSTART") else None,
-                "end": event.get("DTEND").dt if event.get("DTEND") else None,
+                "start": start_dt,
+                "end": end_dt,
                 "created": event.get("CREATED").dt if event.get("CREATED") else None,
                 "last_modified": event.get("LAST-MODIFIED").dt if event.get("LAST-MODIFIED") else None,
                 "recurrence_id": rec_id_str if recurrence_id else None,
@@ -556,9 +924,11 @@ class CalSync:
         for event in icloud_events:
             description = event.get('description', '')
             if description:
+                # 只比较描述的前200字符，与创建时的截断逻辑保持一致
+                description_to_check = description[:200]
                 # 查找同步标记 [SYNC_UID:key]
                 import re
-                matches = re.findall(r'\[SYNC_UID:([^\]]+)\]', description)
+                matches = re.findall(r'\[SYNC_UID:([^\]]+)\]', description_to_check)
                 for match in matches:
                     sync_keys.add(match)
         
@@ -612,9 +982,17 @@ class CalSync:
                 # 安全检查：如果缺失事件数量超过总事件的一半，可能是检测错误
                 total_caldav_events = len(caldav_events)
                 if len(missing_in_icloud) > total_caldav_events * 0.5:
-                    self.logger.error(f"检测到过多缺失事件（{len(missing_in_icloud)}/{total_caldav_events}），可能是AppleScript检测错误")
-                    self.logger.error("为避免重复创建事件，本次同步将被跳过")
-                    return "TOO_MANY_MISSING"
+                    # 检查是否启用了跳过同步的安全功能
+                    skip_sync_on_too_many_missing = self.config["sync"].get("skip_sync_on_too_many_missing", True)
+                    
+                    if skip_sync_on_too_many_missing:
+                        self.logger.error(f"检测到过多缺失事件（{len(missing_in_icloud)}/{total_caldav_events}），可能是AppleScript检测错误")
+                        self.logger.error("为避免重复创建事件，本次同步将被跳过")
+                        self.logger.info("如需禁用此安全功能，请在配置文件中设置 'skip_sync_on_too_many_missing': false")
+                        return "TOO_MANY_MISSING"
+                    else:
+                        self.logger.warning(f"检测到过多缺失事件（{len(missing_in_icloud)}/{total_caldav_events}），但安全功能已禁用，将继续同步")
+                        self.logger.warning("请注意：这可能会导致重复创建事件，请确保iCloud日历状态正常")
             else:
                 self.logger.info("未发现iCloud中被手动删除的事件")
             
@@ -628,6 +1006,10 @@ class CalSync:
         """同步事件到iCloud"""
         try:
             self.logger.info("开始同步到iCloud...")
+            
+            # 写入约束检查：只能写入目标iCloud日历
+            assert self.icloud_client is not None, "No iCloud client"
+            # 严格禁止其它写入：不允许出现 'save', 'commit', 'remove' 等对非 iCloud 目标日历的调用
             
             if not self.icloud_client:
                 self.logger.error("iCloud客户端未初始化")
@@ -947,8 +1329,8 @@ class CalSync:
             if not self.connect_icloud():
                 return False
             
-            # 获取CalDAV事件（支持多日历选择）
-            current_events = self.get_caldav_events(selected_calendar_indices)
+            # 获取源事件（CalDAV + EventKit）
+            current_events = self.get_source_events(selected_calendar_indices)
             if not current_events:
                 self.logger.info("没有找到需要同步的事件")
                 return True
@@ -1594,13 +1976,42 @@ def main():
     parser.add_argument("--select-calendars", type=str, help="选择要同步的日历索引，用逗号分隔，如：1,3,5")
     parser.add_argument("--list-calendars", action="store_true", help="列出所有可用日历")
     parser.add_argument("--backup", action="store_true", help="强制执行一次备份")
+    parser.add_argument("--force-resync", action="store_true", help="强制重新同步：清空iCloud日历并重新创建所有事件")
+    parser.add_argument("--caldav-indices", type=str, help="指定使用CalDAV的日历索引，用逗号分隔，如：1,3")
+    parser.add_argument("--eventkit-calendars", type=str, help="指定使用EventKit的日历名称，用逗号分隔，如：同事共享B,第三方服务")
+    parser.add_argument("--eventkit-indices", type=str, help="指定使用EventKit的日历索引（对应CalDAV索引），用逗号分隔，如：5")
     
     args = parser.parse_args()
     
-    # 创建同步器
-    syncer = CalSync(args.config)
+    # 解析命令行参数
+    caldav_indices = None
+    eventkit_calendars = None
+    eventkit_indices = None
     
-    # 解析日历选择参数
+    if args.caldav_indices:
+        try:
+            caldav_indices = [int(x.strip()) for x in args.caldav_indices.split(',')]
+            print(f"CalDAV日历索引: {caldav_indices}")
+        except ValueError as e:
+            print(f"错误：无效的CalDAV日历索引格式。请使用逗号分隔的数字，如：1,3")
+            return
+    
+    if args.eventkit_calendars:
+        eventkit_calendars = [x.strip() for x in args.eventkit_calendars.split(',')]
+        print(f"EventKit日历名称: {eventkit_calendars}")
+    
+    if args.eventkit_indices:
+        try:
+            eventkit_indices = [int(x.strip()) for x in args.eventkit_indices.split(',')]
+            print(f"EventKit日历索引: {eventkit_indices}")
+        except ValueError as e:
+            print(f"错误：无效的EventKit日历索引格式。请使用逗号分隔的数字，如：5")
+            return
+    
+    # 创建同步器
+    syncer = CalSync(args.config, caldav_indices, eventkit_calendars, eventkit_indices)
+    
+    # 解析日历选择参数（向后兼容）
     selected_calendar_indices = None
     if args.select_calendars:
         try:
@@ -1636,8 +2047,8 @@ def main():
             syncer.logger.error("CalDAV连接失败，无法执行备份")
             return
         
-        # 获取CalDAV事件
-        current_events = syncer.get_caldav_events(selected_calendar_indices)
+        # 获取源事件（CalDAV + EventKit）
+        current_events = syncer.get_source_events(selected_calendar_indices)
         if not current_events:
             syncer.logger.info("没有找到需要备份的事件")
             return
@@ -1647,6 +2058,37 @@ def main():
             syncer.logger.info("手动备份执行成功")
         else:
             syncer.logger.error("手动备份执行失败")
+        
+        syncer.logger.info("=" * 50)
+        return
+    
+    # 如果是强制重新同步
+    if args.force_resync:
+        syncer.logger.info("=" * 50)
+        syncer.logger.info("开始执行强制重新同步")
+        syncer.logger.warning("⚠️  警告：此操作将清空目标iCloud日历中的所有事件并重新创建")
+        
+        # 连接CalDAV
+        if not syncer.connect_caldav():
+            syncer.logger.error("CalDAV连接失败，无法执行强制重新同步")
+            return
+        
+        # 连接iCloud
+        if not syncer.connect_icloud():
+            syncer.logger.error("iCloud连接失败，无法执行强制重新同步")
+            return
+        
+        # 获取源事件（CalDAV + EventKit）
+        current_events = syncer.get_source_events(selected_calendar_indices)
+        if not current_events:
+            syncer.logger.info("没有找到需要同步的事件")
+            return
+        
+        # 执行强制重新同步
+        if syncer.force_resync(current_events):
+            syncer.logger.info("强制重新同步执行成功")
+        else:
+            syncer.logger.error("强制重新同步执行失败")
         
         syncer.logger.info("=" * 50)
         return

@@ -1,18 +1,18 @@
 # 企微CalDAV到iCloud日历同步工具
 基本情况介绍：
 
-注意：本工具需要借助icloud和AppleScript，只能在mac os环境下运行
+注意：本工具需要借助mac日历、icloud及AppleScript，只能在mac os环境下运行
 
 任务背景
-- 企业微信的日历导出使用Caldev或exchange用户，大部分日程会议安排整合产品均不支持
-- 经过调查发现，icloud日历可以借助苹果账户，导出ics的url链接，且可以通过编写applescript自动修改icloud日历中的日程内容；Mac本地日历支持Caldev账户，说明Mac os可以很方便地导入该账户类型
+- 企业微信的日历导出使用的Caldev或exchange用户，但许多支持这些协议的日程工具无法导入该账户，可能和企业微信的开放权限和兼容性有关
+- 经过调查发现，icloud日历可以借助苹果账户，导出ics的url链接，且可以通过编写applescript自动修改icloud日历中的日程内容；同时，Mac本地日历支持Caldev账户
 - 脚本仅导入CalDAV账户并读取内容，不会向企微进行任何数据输入
 - 主流工具大多支持导入ics协议
 
 功能流程
 - 在企微中，导出账户名和密码
-- 本地直接链接CalDAV服务器（不用经过mac日历），获取其中的日程事件；
-- 通过账户和密码链接icloud日历（必须手动创建）
+- 链接CalDAV服务器/读取mac日历导入的账户，获取其中的日程事件
+- 通过账户和密码链接icloud日历（必须手动创建）；若选择eventkit方式，需要在mac日历中导入对应账户
 - 基于自主编写的uid键方式，比对两个日历内容，将所有日程事件进行单向同步
 - 使用mac os的launchd系统服务，定时运行事件同步
 - 在https://www.icloud.com.cn/calendar/ 中导出icloud日历的ics url链接，在google日历、cal.com中导入该链接
@@ -20,6 +20,9 @@
 - 以上使用完全自动的流程，实现了企业微信到会议产品的信息单向导入
 
 存在问题
+- 使用eventkit读取方式时,launch定时功能还存在问题，无法使用
+- 备份导出的ics存在日程循环的问题
+- 事件删除时的同步操作存在不足，会导致全部事件重新创建
 - 由于icloud在创建日历的操作上出现权限问题，必须手动创建好icloud日历。且目前仅支持将企微中的多个日历合并，将所有日程信息一起同步到一个icloud日历中，无法相应分别同步。
 - 考虑到可能有未考虑周全的逻辑漏洞，最好不要在mac本地日历上对企微日历进行修改，以避免混乱。
 
@@ -131,7 +134,8 @@ python3 cal_sync.py
         "sync_future_days": 365,
         "expand_recurring": true,
         "verify_threshold": 1,
-        "override_icloud_deletions": true
+        "override_icloud_deletions": true,
+        "skip_sync_on_too_many_missing": true
     },
     "backup": {
         "enabled": true,
@@ -165,6 +169,7 @@ python3 cal_sync.py
 - **expand_recurring**: 是否展开循环事件为具体实例
 - **verify_threshold**: 同步验证阈值，默认为1
 - **override_icloud_deletions**: 是否自动恢复被手动删除的iCloud事件。该参数为true时，若iCloud日历中的日程被认为修改，则认为该修改为误触，会使用企微日历将其覆盖。若为false则不会检测iCloud端的变化。
+- **skip_sync_on_too_many_missing**: 当检测到过多缺失事件时是否跳过同步。当缺失事件数量超过总事件的50%时，可能是AppleScript检测错误，为避免重复创建事件，系统会跳过本次同步。设置为false可禁用此安全功能，但可能导致重复创建事件。
 
 #### 备份配置
 - **enabled**: 是否启用备份功能（默认：true）
@@ -307,6 +312,10 @@ grep -i error logs/cal_sync_error.log
 1. **权限问题**：确保终端和IDE有日历访问权限
 2. **连接问题**：检查网络连接和认证信息
 3. **同步问题**：查看日志文件了解详细错误
+4. **缺失事件过多**：如果系统检测到过多缺失事件并跳过同步，可能是AppleScript检测错误。可以：
+   - 检查iCloud日历状态是否正常
+   - 临时禁用安全功能：设置 `"skip_sync_on_too_many_missing": false`
+   - 查看详细日志了解具体情况
 
 #### 调试命令
 ```bash

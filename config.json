@@ -2,29 +2,36 @@
     "caldav": {
         "server": "caldav.wecom.work",
         "base_url": "https://caldav.wecom.work/calendar/",
-        "username": "wuqiong@jfrjeffery.wecom.work",
-        "password": "RsTwG4s4A8XEq2et",
+        "username": "hanqian@jfrjeffery.wecom.work",
+        "password": "XUKgw9EqeaGXqXcT",
         "calendar_url": "",
-        "selected_calendars": [1]
+        "selected_calendars": [6]
     },
     "icloud": {
         "username": "laiyuqin1@icloud.com",
         "password": "QBS4lsg31",
-        "calendar_name": "测试",
+        "calendar_name": "运总日历",
         "app_private_password": "ggcl-sles-nwzj-lfiq"
     },
     "sync": {
         "interval_minutes": 5,
-        "sync_past_days": 30,
-        "sync_future_days": 60,
+        "sync_past_days": 1,
+        "sync_future_days": 25,
         "expand_recurring": true,
         "verify_threshold": 1,
-        "override_icloud_deletions": true
+        "override_icloud_deletions": true,
+        "skip_sync_on_too_many_missing": true,
+        "ignore_allday_events_longer_than_hours": 24
     },
     "backup": {
         "enabled": true,
         "interval_hours": 12,
         "max_backups": 10,
         "backup_folder": "backup"
+    },
+    "source_routing": {
+        "caldav_indices": [],
+        "eventkit_indices": [6],
+        "fallback_on_404": true
     }
 }

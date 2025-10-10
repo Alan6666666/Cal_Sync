@@ -97,14 +97,32 @@ case "${1:-status}" in
         username=$(whoami)
         plist_path="/Users/$username/Library/LaunchAgents/com.calsync.timer.plist"
         
-        # 生成plist内容
+        # 生成plist内容（从配置文件读取间隔时间）
         python3 -c "
 import os
 import sys
+import json
 
 username = os.getenv('USER')
 script_dir = '$SCRIPT_DIR'
 script_path = os.path.join(script_dir, 'background_timer.sh')
+config_path = os.path.join(script_dir, 'config.json')
+
+# 读取配置文件获取间隔时间
+try:
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = json.load(f)
+    interval_minutes = config.get('sync', {}).get('interval_minutes', 5)
+    print(f'📋 从配置文件读取到同步间隔：{interval_minutes}分钟')
+except Exception as e:
+    interval_minutes = 5
+    print(f'⚠️  无法读取配置文件，使用默认间隔：{interval_minutes}分钟')
+
+# 根据间隔时间生成分钟数组
+minutes_array = []
+for i in range(0, 60, interval_minutes):
+    minutes_array.append(f'            <integer>{i}</integer>')
+minutes_xml = '\\n'.join(minutes_array)
 
 plist_content = f'''<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
@@ -127,24 +145,8 @@ plist_content = f'''<?xml version=\"1.0\" encoding=\"UTF-8\"?>
     <false/>
     <key>KeepAlive</key>
     <false/>
-    <key>StartCalendarInterval</key>
-    <dict>
-        <key>Minute</key>
-        <array>
-            <integer>0</integer>
-            <integer>5</integer>
-            <integer>10</integer>
-            <integer>15</integer>
-            <integer>20</integer>
-            <integer>25</integer>
-            <integer>30</integer>
-            <integer>35</integer>
-            <integer>40</integer>
-            <integer>45</integer>
-            <integer>50</integer>
-            <integer>55</integer>
-        </array>
-    </dict>
+    <key>StartInterval</key>
+    <integer>{interval_minutes * 60}</integer>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
@@ -164,6 +166,7 @@ with open(plist_path, 'w') as f:
 print(f'✅ plist文件已创建：{plist_path}')
 print(f'   脚本路径：{script_path}')
 print(f'   工作目录：{script_dir}')
+print(f'   同步间隔：{interval_minutes}分钟')
 "
         
         if [ $? -eq 0 ]; then

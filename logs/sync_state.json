@@ -1,389 +1,323 @@
 {
-    "last_sync": "2025-10-09T18:44:30.950142",
+    "last_sync": "2025-10-10T19:41:28.170080",
     "events": {
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-10T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "b2276b738d713bc4d541e2501eff377c",
-            "last_sync": "2025-10-09T18:41:29.512837"
+        "FAD9C093-9C9A-40DA-9AC5-FBAA06740C97": {
+            "uid": "FAD9C093-9C9A-40DA-9AC5-FBAA06740C97",
+            "summary": "接赛赛钰汶",
+            "hash": "70a2ad4abfed92557251c9d96ec99f26",
+            "last_sync": "2025-10-10T19:41:28.169895"
         },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-10T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "f52b19c6de18a324cf1053db7473d9fe",
-            "last_sync": "2025-10-09T18:41:29.512847"
+        "17DD0E2F-A625-4523-8D6B-0EED77A2CF4B": {
+            "uid": "17DD0E2F-A625-4523-8D6B-0EED77A2CF4B",
+            "summary": "基地见冯总",
+            "hash": "d725d1d2a54aad5d9696119a9b846d1f",
+            "last_sync": "2025-10-10T19:41:28.169905"
         },
-        "29c99715240831715afbfc1bba68a9fedbatndce": {
-            "uid": "29c99715240831715afbfc1bba68a9fedbatndce",
-            "summary": "周琬淯-品宣销售",
-            "hash": "f09563d5fce65ca42590c9da96235808",
-            "last_sync": "2025-10-09T18:41:29.512851"
+        "447CF7F2-F375-4A43-BEE7-A318693F1D61#2025-10-10T10:30:00": {
+            "uid": "447CF7F2-F375-4A43-BEE7-A318693F1D61",
+            "summary": "创研部例会",
+            "hash": "389ea07adb635a4fe98a621fdc289082",
+            "last_sync": "2025-10-10T19:41:28.169908"
         },
-        "97ef812e6415a6fce49dc48f9d454fa4ackkfdob": {
-            "uid": "97ef812e6415a6fce49dc48f9d454fa4ackkfdob",
-            "summary": "陈奕纶-客户经理",
-            "hash": "cd01a408901c85040b62bda3d10811bb",
-            "last_sync": "2025-10-09T18:41:29.512854"
+        "12FC17E7-2CD1-4A13-94B9-2ED788FFB12B": {
+            "uid": "12FC17E7-2CD1-4A13-94B9-2ED788FFB12B",
+            "summary": "BOC午饭",
+            "hash": "74287187d275b1ffba4424a158e6a96d",
+            "last_sync": "2025-10-10T19:41:28.169912"
         },
-        "d89487c6c2e97e0fdffa7b7ea3abbe2fdxayevea": {
-            "uid": "d89487c6c2e97e0fdffa7b7ea3abbe2fdxayevea",
-            "summary": "杨燃-市场营销策划",
-            "hash": "4d08b396aab14adcc550bfacf6ccc965",
-            "last_sync": "2025-10-09T18:41:29.512858"
+        "8F6D695E-3E42-43FB-A66B-0395A8C2CD8E": {
+            "uid": "8F6D695E-3E42-43FB-A66B-0395A8C2CD8E",
+            "summary": "Review Chinese Social Media Report",
+            "hash": "0b4ebe0440dc17da794dcd000bfe6c5a",
+            "last_sync": "2025-10-10T19:41:28.169916"
         },
-        "814b4df4900bbea07e14107c1fb9f8bcnzfgjhnq": {
-            "uid": "814b4df4900bbea07e14107c1fb9f8bcnzfgjhnq",
-            "summary": "齐晗之-AM客户经理",
-            "hash": "4c642de2069a45885ddf2b417d12c09a",
-            "last_sync": "2025-10-09T18:41:29.512861"
+        "E3DAAE52-6715-4242-825D-1A44CB0DEF78": {
+            "uid": "E3DAAE52-6715-4242-825D-1A44CB0DEF78",
+            "summary": "【内部】执行运营问候排期推动",
+            "hash": "1b64ad4d3951b4b2cf6ae6519cc93664",
+            "last_sync": "2025-10-10T19:41:28.169919"
         },
-        "19b15f17a57c34aa81f71085a8a6eaf5kgkmryjw": {
-            "uid": "19b15f17a57c34aa81f71085a8a6eaf5kgkmryjw",
+        "97B335D9-C886-4F56-B823-06B54947D84B": {
+            "uid": "97B335D9-C886-4F56-B823-06B54947D84B",
+            "summary": "吴银芳",
+            "hash": "753e6f75bd297abbddc3a68e1222768d",
+            "last_sync": "2025-10-10T19:41:28.169926"
+        },
+        "A027CE71-C6FE-418F-A331-88BFE9D1F95D": {
+            "uid": "A027CE71-C6FE-418F-A331-88BFE9D1F95D",
+            "summary": "绍欢运佳两家聚会",
+            "hash": "4af1f3ae55f739446ac1cad1514902e4",
+            "last_sync": "2025-10-10T19:41:28.169929"
+        },
+        "22411EE6-6372-4403-B9E6-327FA4F31C27#2025-10-13T09:30:00": {
+            "uid": "22411EE6-6372-4403-B9E6-327FA4F31C27",
             "summary": "客户经理例会",
-            "hash": "4df86410a34bb172a2a331d19c3e1b5f",
-            "last_sync": "2025-10-09T18:41:29.512867"
+            "hash": "d459a8607c724fbb6e055c3d9fd61260",
+            "last_sync": "2025-10-10T19:41:28.169932"
         },
-        "1089b0e009b9f33e71be3f3d6a573c81gkbgiifs": {
-            "uid": "1089b0e009b9f33e71be3f3d6a573c81gkbgiifs",
-            "summary": "刘梦霖-高级设计",
-            "hash": "33a5773ac15b8c564d0dd0d2603faf8b",
-            "last_sync": "2025-10-09T18:41:29.512870"
+        "AE915F40-8C79-4D11-9549-43CD66DB6A96": {
+            "uid": "AE915F40-8C79-4D11-9549-43CD66DB6A96",
+            "summary": "[正装] 总会40周年晚宴",
+            "hash": "ce54f8743ddd0cbea156f86722ce7f0f",
+            "last_sync": "2025-10-10T19:41:28.169936"
         },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-09-15T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+        "5CA848FF-5895-4F33-90C5-3A0FAE323BA5#2025-10-14T09:30:00": {
+            "uid": "5CA848FF-5895-4F33-90C5-3A0FAE323BA5",
+            "summary": "SMU中文EMBA - JA/LKCSB R&A",
+            "hash": "d87034ab531e50f0189f4f438089eb40",
+            "last_sync": "2025-10-10T19:41:28.169939"
+        },
+        "7BD6DB62-FABE-49F2-BA18-1099E0BC466F#2025-10-14T11:00:00": {
+            "uid": "7BD6DB62-FABE-49F2-BA18-1099E0BC466F",
+            "summary": "【内部】图南咨询推动例会",
+            "hash": "a3e762ea1795025097723cb51d05557e",
+            "last_sync": "2025-10-10T19:41:28.169943"
+        },
+        "FE4019C4-E1D2-4ECE-8009-B395CF0B28AF": {
+            "uid": "FE4019C4-E1D2-4ECE-8009-B395CF0B28AF",
+            "summary": "【内部】SEO/LinkedIn/销售/金字招牌每周例会",
+            "hash": "7c19ab23b89dca5d3a5b8c797537387a",
+            "last_sync": "2025-10-10T19:41:28.169949"
+        },
+        "1E647594-E697-4045-ABA4-F4B1C7A4DA64": {
+            "uid": "1E647594-E697-4045-ABA4-F4B1C7A4DA64",
+            "summary": "去LKYSPP三季度汇报",
+            "hash": "91cef9c654eb79f14f33f9a08233e894",
+            "last_sync": "2025-10-10T19:41:28.169952"
+        },
+        "76691E8E-7A09-48CD-9E29-7F28FB6BDC7D": {
+            "uid": "76691E8E-7A09-48CD-9E29-7F28FB6BDC7D",
+            "summary": "接晓红瑜泽",
+            "hash": "390547aa87b620452a31e127e3905e6b",
+            "last_sync": "2025-10-10T19:41:28.169955"
+        },
+        "D3E41B1B-1418-4F35-8E42-B695AE2CE791": {
+            "uid": "D3E41B1B-1418-4F35-8E42-B695AE2CE791",
+            "summary": "[线下] 和 CCEB 老师见面",
+            "hash": "b7ce866e30be81a0015d0d317545f06b",
+            "last_sync": "2025-10-10T19:41:28.169959"
+        },
+        "9FAAACEC-2B25-4637-BF7A-2C47ABBCEAC6#2025-10-15T14:00:00": {
+            "uid": "9FAAACEC-2B25-4637-BF7A-2C47ABBCEAC6",
+            "summary": "【SMU X Jeffery】WIP Meeting",
+            "hash": "6f622026b768900764e8ba1481612066",
+            "last_sync": "2025-10-10T19:41:28.169962"
+        },
+        "2CEC3FB1-5A48-4C86-AFB8-470D1479449C": {
+            "uid": "2CEC3FB1-5A48-4C86-AFB8-470D1479449C",
+            "summary": "[SUSS 商学院] 线下会面（学校星巴克）",
+            "hash": "f0a22bbb96fb3e0524f9423c195dab12",
+            "last_sync": "2025-10-10T19:41:28.169966"
+        },
+        "C7A74BF3-F188-4FBB-B12C-A6F4AAFC7AD5": {
+            "uid": "C7A74BF3-F188-4FBB-B12C-A6F4AAFC7AD5",
+            "summary": "[SUSS 商学院] 和老师一起吃饭（花店）",
+            "hash": "d041f62fc4c88bb8ada2965aa913f992",
+            "last_sync": "2025-10-10T19:41:28.169969"
+        },
+        "A13827B8-A066-4ED0-BA91-374026827856": {
+            "uid": "A13827B8-A066-4ED0-BA91-374026827856",
+            "summary": "姵萱Selena晓红",
+            "hash": "687bb8dcc979736b0c47604804e0ee01",
+            "last_sync": "2025-10-10T19:41:28.169972"
+        },
+        "298E8371-23F9-42C6-8CB9-9AE8043B0CB3": {
+            "uid": "298E8371-23F9-42C6-8CB9-9AE8043B0CB3",
+            "summary": "[线下] 和日本研究系老师见面",
+            "hash": "56bf1bb7a4cf47de95df24df655fb6a6",
+            "last_sync": "2025-10-10T19:41:28.169975"
+        },
+        "447CF7F2-F375-4A43-BEE7-A318693F1D61#2025-10-17T10:30:00": {
+            "uid": "447CF7F2-F375-4A43-BEE7-A318693F1D61",
+            "summary": "创研部例会",
+            "hash": "8a17af47030298772fa95c12fb83e46f",
+            "last_sync": "2025-10-10T19:41:28.169978"
+        },
+        "E1F2E7B5-4455-44EC-800E-DE4F3947CD86": {
+            "uid": "E1F2E7B5-4455-44EC-800E-DE4F3947CD86",
+            "summary": "[线下] 和东南亚研究系主任见面 (Coffee Roaster cafe)",
+            "hash": "327ae40e2a7cd5eb065ade269b43e980",
+            "last_sync": "2025-10-10T19:41:28.169983"
+        },
+        "4712F1B2-0F55-4772-864E-5C364160435B": {
+            "uid": "4712F1B2-0F55-4772-864E-5C364160435B",
+            "summary": "Dinner @ 1-Alfaro",
+            "hash": "7dca2a6bdd08fb14c090c7a60b29a6cb",
+            "last_sync": "2025-10-10T19:41:28.169986"
+        },
+        "940392A3-1B22-469C-9231-8A4ABAD29704": {
+            "uid": "940392A3-1B22-469C-9231-8A4ABAD29704",
+            "summary": "给爸妈订送机",
+            "hash": "1aa0fc14e80ddef711cec654fa01a7a9",
+            "last_sync": "2025-10-10T19:41:28.169989"
+        },
+        "4A84E614-31CF-42F2-B478-8E70ED2BA420#2025-10-19T10:30:00": {
+            "uid": "4A84E614-31CF-42F2-B478-8E70ED2BA420",
+            "summary": "给北京爸妈买水果",
+            "hash": "95eec7c456e5a0bc62e32b1911c0523d",
+            "last_sync": "2025-10-10T19:41:28.169992"
+        },
+        "E6974AE8-4C65-4530-99C9-07354330AF4D": {
+            "uid": "E6974AE8-4C65-4530-99C9-07354330AF4D",
+            "summary": "段宁吴伟聚会",
+            "hash": "ec998245505c2b09c5f65ed4eb34946d",
+            "last_sync": "2025-10-10T19:41:28.169996"
+        },
+        "22411EE6-6372-4403-B9E6-327FA4F31C27#2025-10-20T09:30:00": {
+            "uid": "22411EE6-6372-4403-B9E6-327FA4F31C27",
             "summary": "客户经理例会",
-            "hash": "96d2238acda260ba8cf94b68a609f5d7",
-            "last_sync": "2025-10-09T18:43:45.536217"
+            "hash": "5d8d71e82a1e321af53e6c72d4b5c5f4",
+            "last_sync": "2025-10-10T19:41:28.169999"
         },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-09-22T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+        "5AB76E1C-B554-4E44-A88B-C68F42EA5E14": {
+            "uid": "5AB76E1C-B554-4E44-A88B-C68F42EA5E14",
+            "summary": "向老师",
+            "hash": "90fd1ab70b4a88bd3233fead331dddc7",
+            "last_sync": "2025-10-10T19:41:28.170002"
+        },
+        "5CA848FF-5895-4F33-90C5-3A0FAE323BA5#2025-10-21T09:30:00": {
+            "uid": "5CA848FF-5895-4F33-90C5-3A0FAE323BA5",
+            "summary": "SMU中文EMBA - JA/LKCSB R&A",
+            "hash": "b3f29ad462d27a7a1c78067444ddda2b",
+            "last_sync": "2025-10-10T19:41:28.170005"
+        },
+        "7BD6DB62-FABE-49F2-BA18-1099E0BC466F#2025-10-21T11:00:00": {
+            "uid": "7BD6DB62-FABE-49F2-BA18-1099E0BC466F",
+            "summary": "【内部】图南咨询推动例会",
+            "hash": "303327e1187219a4bd96ab50f4bd4b0e",
+            "last_sync": "2025-10-10T19:41:28.170008"
+        },
+        "5AC9AF32-18E8-411E-80E3-D6B12082A176#2025-10-21T14:00:00": {
+            "uid": "5AC9AF32-18E8-411E-80E3-D6B12082A176",
+            "summary": "【内部】SEO/LinkedIn/销售/金字招牌每周例会",
+            "hash": "c4aaf3685740045e2d3f262d35999aa5",
+            "last_sync": "2025-10-10T19:41:28.170011"
+        },
+        "47FADC9C-1F7B-494C-9A0E-9332AD809143": {
+            "uid": "47FADC9C-1F7B-494C-9A0E-9332AD809143",
+            "summary": "给爸妈订接机",
+            "hash": "34b800270b8aae9a2cacfbf170ff454a",
+            "last_sync": "2025-10-10T19:41:28.170014"
+        },
+        "61F6874A-594D-4D38-8C32-9294ABCBEFA6#2025-10-23T09:45:00": {
+            "uid": "61F6874A-594D-4D38-8C32-9294ABCBEFA6",
+            "summary": "【内部】SMU 例会",
+            "hash": "22e2e8b08cf073adacfdc7237c5d9b7b",
+            "last_sync": "2025-10-10T19:41:28.170017"
+        },
+        "26DFD513-2519-47DD-B1F7-44DF66181501#2025-10-23T10:30:00": {
+            "uid": "26DFD513-2519-47DD-B1F7-44DF66181501",
+            "summary": "【内部】和瑜泽定期会议",
+            "hash": "71ebac0e222e804852149e8e4ae78711",
+            "last_sync": "2025-10-10T19:41:28.170020"
+        },
+        "8E184169-F3C7-4179-A1CC-7E0198C03D37": {
+            "uid": "8E184169-F3C7-4179-A1CC-7E0198C03D37",
+            "summary": "喝酒🍺🍺🍺🍺！",
+            "hash": "d4e85f8a1d77005f22897e8eb269a285",
+            "last_sync": "2025-10-10T19:41:28.170023"
+        },
+        "447CF7F2-F375-4A43-BEE7-A318693F1D61#2025-10-24T10:30:00": {
+            "uid": "447CF7F2-F375-4A43-BEE7-A318693F1D61",
+            "summary": "创研部例会",
+            "hash": "ab9aef0eb503006145bf72166e0663b0",
+            "last_sync": "2025-10-10T19:41:28.170026"
+        },
+        "22411EE6-6372-4403-B9E6-327FA4F31C27#2025-10-27T09:30:00": {
+            "uid": "22411EE6-6372-4403-B9E6-327FA4F31C27",
             "summary": "客户经理例会",
-            "hash": "2429fdf157bd10124bdb8a1a1f9e394b",
-            "last_sync": "2025-10-09T18:43:45.900707"
+            "hash": "f7f1db264dc13bf394374bbee7ee89bb",
+            "last_sync": "2025-10-10T19:41:28.170029"
         },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-09-29T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
+        "619E403A-293D-44A6-9871-96E7BCB047B8#2025-10-27T14:00:00": {
+            "uid": "619E403A-293D-44A6-9871-96E7BCB047B8",
+            "summary": "Monthly Meeting with Jeffery - Content Marketing & planning",
+            "hash": "3342a187302b40feab24aefa00ecd40c",
+            "last_sync": "2025-10-10T19:41:28.170032"
+        },
+        "5CA848FF-5895-4F33-90C5-3A0FAE323BA5#2025-10-28T09:30:00": {
+            "uid": "5CA848FF-5895-4F33-90C5-3A0FAE323BA5",
+            "summary": "SMU中文EMBA - JA/LKCSB R&A",
+            "hash": "2dd651b7e8b0da34c30cb071ae29398f",
+            "last_sync": "2025-10-10T19:41:28.170035"
+        },
+        "7BD6DB62-FABE-49F2-BA18-1099E0BC466F#2025-10-28T11:00:00": {
+            "uid": "7BD6DB62-FABE-49F2-BA18-1099E0BC466F",
+            "summary": "【内部】图南咨询推动例会",
+            "hash": "0e6f6c79a1ccf14f8769734c0b76a7b9",
+            "last_sync": "2025-10-10T19:41:28.170038"
+        },
+        "5AC9AF32-18E8-411E-80E3-D6B12082A176#2025-10-28T14:00:00": {
+            "uid": "5AC9AF32-18E8-411E-80E3-D6B12082A176",
+            "summary": "【内部】SEO/LinkedIn/销售/金字招牌每周例会",
+            "hash": "5e3a38444524aad2e0b85194ddc0b43c",
+            "last_sync": "2025-10-10T19:41:28.170041"
+        },
+        "9FAAACEC-2B25-4637-BF7A-2C47ABBCEAC6#2025-10-29T14:00:00": {
+            "uid": "9FAAACEC-2B25-4637-BF7A-2C47ABBCEAC6",
+            "summary": "【SMU X Jeffery】WIP Meeting",
+            "hash": "3fba5eb10291af91d0176530dc323dfe",
+            "last_sync": "2025-10-10T19:41:28.170044"
+        },
+        "790D7E3A-63E0-4E57-83E6-E3D6B1FE2E11": {
+            "uid": "790D7E3A-63E0-4E57-83E6-E3D6B1FE2E11",
+            "summary": "长江CEO班新山学段",
+            "hash": "a7b76047f7998a6a8d968a8061e4279c",
+            "last_sync": "2025-10-10T19:41:28.170047"
+        },
+        "447CF7F2-F375-4A43-BEE7-A318693F1D61#2025-10-31T10:30:00": {
+            "uid": "447CF7F2-F375-4A43-BEE7-A318693F1D61",
+            "summary": "创研部例会",
+            "hash": "de0177b95bea0db8d2f33cc5f7fa7557",
+            "last_sync": "2025-10-10T19:41:28.170050"
+        },
+        "B7D4C521-67F6-4047-A55B-6C530B6406C3#2025-11-01T10:00:00": {
+            "uid": "B7D4C521-67F6-4047-A55B-6C530B6406C3",
+            "summary": "领支付宝会员卡",
+            "hash": "1a7ac309252b00215a827f8ed971d319",
+            "last_sync": "2025-10-10T19:41:28.170054"
+        },
+        "48ECB1A7-EE1D-44C4-9A32-525DB238E44C#2025-11-01T12:00:00": {
+            "uid": "48ECB1A7-EE1D-44C4-9A32-525DB238E44C",
+            "summary": "CCSG报账",
+            "hash": "ff840ca7d25edf05fda70347ddad64c9",
+            "last_sync": "2025-10-10T19:41:28.170057"
+        },
+        "1366CDB0-7F77-48ED-9F64-C8EAB702626D": {
+            "uid": "1366CDB0-7F77-48ED-9F64-C8EAB702626D",
+            "summary": "Shawn Huang 活动",
+            "hash": "952d4a6c93bab63bd4760fa2db4e357b",
+            "last_sync": "2025-10-10T19:41:28.170062"
+        },
+        "4A84E614-31CF-42F2-B478-8E70ED2BA420#2025-11-02T10:30:00": {
+            "uid": "4A84E614-31CF-42F2-B478-8E70ED2BA420",
+            "summary": "给北京爸妈买水果",
+            "hash": "e3bd1edb0049e888f142249f6d110960",
+            "last_sync": "2025-10-10T19:41:28.170065"
+        },
+        "22411EE6-6372-4403-B9E6-327FA4F31C27#2025-11-03T09:30:00": {
+            "uid": "22411EE6-6372-4403-B9E6-327FA4F31C27",
             "summary": "客户经理例会",
-            "hash": "e0815d2feec744697156b89d391fe44e",
-            "last_sync": "2025-10-09T18:43:46.280750"
+            "hash": "ed224c296c5743c02c2abdaf4f6abd83",
+            "last_sync": "2025-10-10T19:41:28.170068"
         },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-10-13T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "a8cbbbea9225e7edee7d582cd7e03981",
-            "last_sync": "2025-10-09T18:43:46.615341"
+        "5CA848FF-5895-4F33-90C5-3A0FAE323BA5#2025-11-04T09:30:00": {
+            "uid": "5CA848FF-5895-4F33-90C5-3A0FAE323BA5",
+            "summary": "SMU中文EMBA - JA/LKCSB R&A",
+            "hash": "0626fd843285c643ebc1f3d2a95adf8f",
+            "last_sync": "2025-10-10T19:41:28.170071"
         },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-10-20T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "0f6c045071e5b0f2a28bd80f04e56d3a",
-            "last_sync": "2025-10-09T18:43:46.999597"
+        "7BD6DB62-FABE-49F2-BA18-1099E0BC466F#2025-11-04T11:00:00": {
+            "uid": "7BD6DB62-FABE-49F2-BA18-1099E0BC466F",
+            "summary": "【内部】图南咨询推动例会",
+            "hash": "555e7eaa04aa09da21e69ae72add172b",
+            "last_sync": "2025-10-10T19:41:28.170074"
         },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-10-27T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "740ea3496c084cdabd860b633c637455",
-            "last_sync": "2025-10-09T18:43:47.315474"
-        },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-11-03T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "5ce7beb910fcdfb3230ef6df680fb8f2",
-            "last_sync": "2025-10-09T18:43:47.745384"
-        },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-11-10T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "70af5e12a6ad3b2a9e94ac5166d40f23",
-            "last_sync": "2025-10-09T18:43:48.366274"
-        },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-11-17T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "51b63da533c173ea9a93e823deeafa8c",
-            "last_sync": "2025-10-09T18:43:49.011309"
-        },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-11-24T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "08fc8b8fdc01b58e6c6576a3db426069",
-            "last_sync": "2025-10-09T18:43:49.638951"
-        },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-12-01T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "d0cb3dca0b4ecad69dd930f050c6b469",
-            "last_sync": "2025-10-09T18:43:50.276494"
-        },
-        "20f6cabc620ff2b19bde04706583d60eetwafcgo#2025-12-08T09:30:00+08:00": {
-            "uid": "20f6cabc620ff2b19bde04706583d60eetwafcgo",
-            "summary": "客户经理例会",
-            "hash": "3d74eedad600aa0e85473bfbb4eb4792",
-            "last_sync": "2025-10-09T18:43:50.935828"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-09-12T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "4eb85473b8ad94fcc75689a96f148ae2",
-            "last_sync": "2025-10-09T18:43:51.548445"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-09-19T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "93dd9c8aeecf66eb09e0e75a3e00f508",
-            "last_sync": "2025-10-09T18:43:52.157143"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-09-26T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "82c4313fd58e7948de39c6e279534355",
-            "last_sync": "2025-10-09T18:43:53.083023"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-03T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "e57fa6a0571df1b7376cb1aa8aa50f71",
-            "last_sync": "2025-10-09T18:43:54.068640"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-17T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "bf12b22dbf1310b7bc5802e6159aaa2a",
-            "last_sync": "2025-10-09T18:43:55.030543"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-24T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "a51398bf74445896f8c937c47564cb99",
-            "last_sync": "2025-10-09T18:43:55.964912"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-10-31T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "9517cfee15843e5dc37cd37c3065d753",
-            "last_sync": "2025-10-09T18:43:57.105282"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-11-07T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "252dca591d456b634b1c0551ae3c86d0",
-            "last_sync": "2025-10-09T18:43:58.044090"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-11-14T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "af31052587d3b082dfe90a929d49b874",
-            "last_sync": "2025-10-09T18:43:59.012341"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-11-21T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "329237f3d669095ed1ebe843c48f2084",
-            "last_sync": "2025-10-09T18:43:59.975258"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-11-28T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "4fc5871b1cfae496c64913e62070193a",
-            "last_sync": "2025-10-09T18:44:00.942595"
-        },
-        "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv#2025-12-05T17:00:00+08:00": {
-            "uid": "b00ae6833387f2baf4637c0ee86b2dcbmwzltyiv",
-            "summary": "例会表填写",
-            "hash": "81b679a75e459b99ae4d980b637edb86",
-            "last_sync": "2025-10-09T18:44:01.932952"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-09-12T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "5e58922c527b7708dd2cb33bfb7f61ba",
-            "last_sync": "2025-10-09T18:44:02.903849"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-09-19T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "02b8e69833f9ac3ba51534c5d4676b1d",
-            "last_sync": "2025-10-09T18:44:03.862862"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-09-26T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "f689c1f4aaa812496901631bbe648e8f",
-            "last_sync": "2025-10-09T18:44:04.867713"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-03T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "0bb063db9b4293188336a622a7e8a2d1",
-            "last_sync": "2025-10-09T18:44:05.946310"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-17T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "d48359eb97ca5a4ad6c2a4f45e6aca83",
-            "last_sync": "2025-10-09T18:44:06.966354"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-24T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "174772b5800285d09d46a675592ce588",
-            "last_sync": "2025-10-09T18:44:07.947185"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-10-31T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "54d398279b8ebc8b7616dbd9d346fc31",
-            "last_sync": "2025-10-09T18:44:08.920679"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-11-07T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "68a0e3d077c53ffdf1816c99127bde34",
-            "last_sync": "2025-10-09T18:44:09.942430"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-11-14T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "d05c07bae2893c343e53fae5a6ac2b24",
-            "last_sync": "2025-10-09T18:44:10.896381"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-11-21T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "7234c6865814403bc7bd4404d7ad01de",
-            "last_sync": "2025-10-09T18:44:11.867798"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-11-28T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "27b7f2f53c45de402f86a6cbbc79ee30",
-            "last_sync": "2025-10-09T18:44:12.817807"
-        },
-        "2489823721cd52ca5e41c4f3371cc743cpjouwkv#2025-12-05T14:00:00+08:00": {
-            "uid": "2489823721cd52ca5e41c4f3371cc743cpjouwkv",
-            "summary": "周会汇报表填写",
-            "hash": "b77ee321cf4b9ad3bb78f235177b3838",
-            "last_sync": "2025-10-09T18:44:13.982824"
-        },
-        "5bb069677c92502b7f1e1863c22ef5ddnomahfgb#2025-09-24T14:30:00+08:00": {
-            "uid": "5bb069677c92502b7f1e1863c22ef5ddnomahfgb",
-            "summary": "社保医保公积金汇缴",
-            "hash": "148fa0f7a1597072d7bb22d375e15b3b",
-            "last_sync": "2025-10-09T18:44:14.982307"
-        },
-        "5bb069677c92502b7f1e1863c22ef5ddnomahfgb#2025-10-24T14:30:00+08:00": {
-            "uid": "5bb069677c92502b7f1e1863c22ef5ddnomahfgb",
-            "summary": "社保医保公积金汇缴",
-            "hash": "3a9d53f734a9fbe8e85fdda609ea9d7b",
-            "last_sync": "2025-10-09T18:44:15.966131"
-        },
-        "5bb069677c92502b7f1e1863c22ef5ddnomahfgb#2025-11-24T14:30:00+08:00": {
-            "uid": "5bb069677c92502b7f1e1863c22ef5ddnomahfgb",
-            "summary": "社保医保公积金汇缴",
-            "hash": "db2eedf65be382088e0dc67a2d0c930f",
-            "last_sync": "2025-10-09T18:44:16.919271"
-        },
-        "bd7806c97854ef2be5263b0f281f7409pdaqnjyt": {
-            "uid": "bd7806c97854ef2be5263b0f281f7409pdaqnjyt",
-            "summary": "林香丽-资深小红书运营",
-            "hash": "69db62ce0ce312c490e957e8a4d658b6",
-            "last_sync": "2025-10-09T18:44:17.948816"
-        },
-        "bd91b877fa17fd5bed34a771e49cc97fxguusdht": {
-            "uid": "bd91b877fa17fd5bed34a771e49cc97fxguusdht",
-            "summary": "王洪铃-高级设计",
-            "hash": "8bd57ad0f7a594b383cf1bc8af573132",
-            "last_sync": "2025-10-09T18:44:18.899641"
-        },
-        "a91d28c01f0819ebb4be8aa69166c3bcyvuezbyt": {
-            "uid": "a91d28c01f0819ebb4be8aa69166c3bcyvuezbyt",
-            "summary": "收拾杂物间",
-            "hash": "c097b3956c179ad4768a36c11e4b1258",
-            "last_sync": "2025-10-09T18:44:19.225833"
-        },
-        "318221fcc0ee98e0d14cd7184ec63651zzbnbzte": {
-            "uid": "318221fcc0ee98e0d14cd7184ec63651zzbnbzte",
-            "summary": "刘瑾瑜-广告优化师",
-            "hash": "8f32fd29a9cf066a27f06e3696606030",
-            "last_sync": "2025-10-09T18:44:19.517521"
-        },
-        "d2e2e7ae2122f8e4e7268a121dd027dctmpfcfvi": {
-            "uid": "d2e2e7ae2122f8e4e7268a121dd027dctmpfcfvi",
-            "summary": "彭小烜-国际销售总监/客户执行",
-            "hash": "4890ba1815a421ec1907a2a5e83fa895",
-            "last_sync": "2025-10-09T18:44:19.833866"
-        },
-        "0510883e1c859d9f046d578155aacc9fhssqmcfd": {
-            "uid": "0510883e1c859d9f046d578155aacc9fhssqmcfd",
-            "summary": "李咏馨-品宣策划岗",
-            "hash": "174d262a755100933d2d6a083a3aff8f",
-            "last_sync": "2025-10-09T18:44:20.142296"
-        },
-        "ff94c2de27ee7743ea4649796c4e2b62thrilggr": {
-            "uid": "ff94c2de27ee7743ea4649796c4e2b62thrilggr",
-            "summary": "代宇-高级设计",
-            "hash": "353439c939cb815cea53e957c850c34b",
-            "last_sync": "2025-10-09T18:44:20.755062"
-        },
-        "1fb3b03c8840bb40cfa9e8231ef1dac2udcbfubn": {
-            "uid": "1fb3b03c8840bb40cfa9e8231ef1dac2udcbfubn",
-            "summary": "Info Call with Sara",
-            "hash": "26b8f27c3ddf6400b1efbed74afe25da",
-            "last_sync": "2025-10-09T18:44:21.748278"
-        },
-        "b68750fe7c2d4ffdd5c91f71bfaf3456tokwobzu": {
-            "uid": "b68750fe7c2d4ffdd5c91f71bfaf3456tokwobzu",
-            "summary": "徐伟-AI视频研究员",
-            "hash": "e185a2d09e0daae0f10342e55fb26151",
-            "last_sync": "2025-10-09T18:44:22.763916"
-        },
-        "3c7faaae79f8d18b89e4364e2c14e602foufrkhv": {
-            "uid": "3c7faaae79f8d18b89e4364e2c14e602foufrkhv",
-            "summary": "魏林-高级设计",
-            "hash": "b76d31db5918034d5be69bcf3c8b755d",
-            "last_sync": "2025-10-09T18:44:23.744659"
-        },
-        "446eca8bb0d80efdbd1375b116bc003exuswfntq": {
-            "uid": "446eca8bb0d80efdbd1375b116bc003exuswfntq",
-            "summary": "夏丝雨-AI视频",
-            "hash": "313a43a738a9e7eaa953cbc5ffa94f18",
-            "last_sync": "2025-10-09T18:44:24.904252"
-        },
-        "3380be2c14f32847901d5a456ad5cfe0iobdmkid": {
-            "uid": "3380be2c14f32847901d5a456ad5cfe0iobdmkid",
-            "summary": "陈雅楠-高级设计",
-            "hash": "a222f7b1ca7181abd96f05f6d77ecdec",
-            "last_sync": "2025-10-09T18:44:25.893055"
-        },
-        "e0c720e25f93e76bedb64fe6db9ab7a0uoevjocd": {
-            "uid": "e0c720e25f93e76bedb64fe6db9ab7a0uoevjocd",
-            "summary": "牟韵伊-客户执行",
-            "hash": "0344fda96611f2cc85e559c610ebd5a7",
-            "last_sync": "2025-10-09T18:44:26.895326"
-        },
-        "2146f211a71389b2255629c965f7064dxlvhaqxp": {
-            "uid": "2146f211a71389b2255629c965f7064dxlvhaqxp",
-            "summary": "樊译蔚-品宣销售",
-            "hash": "ba0f4c8cfd9502a4db7fda8cd0fbabb3",
-            "last_sync": "2025-10-09T18:44:28.009285"
-        },
-        "0c10793aeff98ccedc9b31e380bfb3f3gfchvedn": {
-            "uid": "0c10793aeff98ccedc9b31e380bfb3f3gfchvedn",
-            "summary": "王紫菱-高级设计",
-            "hash": "ee4640b967d5d25dfaa3395a5e056bf2",
-            "last_sync": "2025-10-09T18:44:28.987607"
-        },
-        "2e29580b15b663975461388fb7842f26ztztjprb": {
-            "uid": "2e29580b15b663975461388fb7842f26ztztjprb",
-            "summary": "李渊-高级设计",
-            "hash": "7e370e6124611e80b8a70266a4c69941",
-            "last_sync": "2025-10-09T18:44:29.967276"
-        },
-        "be5792a83a15dfb9266ab5ce5827ca5dwdflkcil": {
-            "uid": "be5792a83a15dfb9266ab5ce5827ca5dwdflkcil",
-            "summary": "张梓萌-AE客户执行",
-            "hash": "ceab22a23dc62390f75dcbd467a9cd52",
-            "last_sync": "2025-10-09T18:44:30.949501"
+        "5AC9AF32-18E8-411E-80E3-D6B12082A176#2025-11-04T14:00:00": {
+            "uid": "5AC9AF32-18E8-411E-80E3-D6B12082A176",
+            "summary": "【内部】SEO/LinkedIn/销售/金字招牌每周例会",
+            "hash": "ab6714ed8872d297140a0950188b5901",
+            "last_sync": "2025-10-10T19:41:28.170077"
         }
     }
 }
