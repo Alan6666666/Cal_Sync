@@ -16,10 +16,10 @@
     "sync": {
         "interval_minutes": 5,
         "sync_past_days": 1,
-        "sync_future_days": 25,
+        "sync_future_days": 20,
         "expand_recurring": true,
         "verify_threshold": 1,
-        "override_icloud_deletions": true,
+        "override_icloud_deletions": false,
         "skip_sync_on_too_many_missing": true,
         "ignore_allday_events_longer_than_hours": 24
     },

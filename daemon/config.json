@@ -1,0 +1,27 @@
+{
+    "caldav": {
+        "server": "",
+        "username": "",
+        "password": "",
+        "calendar_url": ""
+    },
+    "icloud": {
+        "username": "",
+        "password": "",
+        "calendar_name": "CalDAV同步"
+    },
+    "sync": {
+        "interval_minutes": 30,
+        "sync_past_days": 30,
+        "sync_future_days": 365,
+        "expand_recurring": true,
+        "verify_threshold": 0.9,
+        "override_icloud_deletions": true
+    },
+    "backup": {
+        "enabled": true,
+        "interval_hours": 24,
+        "max_backups": 10,
+        "backup_folder": "backup"
+    }
+}

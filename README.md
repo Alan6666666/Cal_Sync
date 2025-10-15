@@ -26,6 +26,20 @@
 - 由于icloud在创建日历的操作上出现权限问题，必须手动创建好icloud日历。且目前仅支持将企微中的多个日历合并，将所有日程信息一起同步到一个icloud日历中，无法相应分别同步。
 - 考虑到可能有未考虑周全的逻辑漏洞，最好不要在mac本地日历上对企微日历进行修改，以避免混乱。
 
+## 最近修复的问题
+
+### 守护进程停止功能修复（2025-10-15）
+- **问题描述**：之前守护进程的停止命令无法正确终止后台运行的进程，导致多个守护进程同时运行，造成资源浪费和同步冲突。
+- **修复内容**：
+  - 重写了守护进程停止逻辑，现在可以正确终止所有后台运行的守护进程
+  - 添加了进程检测和清理功能，避免多个守护进程同时运行
+  - 改进了重启功能，确保旧进程完全终止后再启动新进程
+  - 增强了进程管理的稳定性，防止进程泄漏
+- **使用方法**：
+  - `./daemon_control.sh stop` - 停止所有守护进程
+  - `./daemon_control.sh restart` - 重启守护进程（先停止再启动）
+  - `./daemon_control.sh status` - 查看守护进程状态
+
 ## 一、部署流程
 
 ### 1. 环境要求
@@ -95,18 +109,38 @@ python3 cal_sync.py --backup --select-calendars 1,3,5
 ```
 
 #### 定时同步
+
+**推荐方案：Python守护进程（新）**
 ```bash
-# 启动定时同步（使用配置文件设置）
-python3 cal_sync.py
+# 安装守护进程
+python3 daemon/setup_daemon.py
+
+# 启动守护进程
+./daemon/daemon_control.sh start
+
+# 查看状态
+./daemon/daemon_control.sh status
+
+# 安装开机自启
+./daemon/daemon_control.sh install
 ```
-该方法需要在终端一直运行，不推荐
+该方法基于Python定时器，完全后台运行，无权限问题，支持详细状态监控
+
+**传统方案：launchd定时任务**
 ```bash
 # 后台定时同步管理
 ./background_timer.sh setup    # 首次设置
 ./background_timer.sh start    # 启用定时任务
 ./background_timer.sh status   # 查看状态
 ```
-该方法可以自动在后台定时执行，开机后也可以自动运行（首次运行需要允许权限）
+该方法使用macOS launchd服务，但可能存在EventKit权限问题
+
+**不推荐：终端运行**
+```bash
+# 启动定时同步（使用配置文件设置）
+python3 cal_sync.py
+```
+该方法需要在终端一直运行，不推荐
 
 ## 二、参数设置
 
@@ -198,7 +232,54 @@ python3 cal_sync.py [选项]
   --help                   显示帮助信息
 ```
 
-## 三、代码内容介绍
+## 三、守护进程功能
+
+### 守护进程特性
+
+- ✅ **后台运行**: 基于Python定时器，无需保持终端运行
+- ✅ **开机自启**: 支持macOS launchd服务，开机自动启动
+- ✅ **状态监控**: 实时查看守护进程状态和同步统计
+- ✅ **日志管理**: 详细的运行日志和错误日志
+- ✅ **自动重启**: 进程异常退出时自动重启
+- ✅ **配置继承**: 使用项目根目录的config.json配置
+
+### 守护进程使用
+
+```bash
+# 安装守护进程
+python3 daemon/setup_daemon.py
+
+# 基本控制
+./daemon/daemon_control.sh start      # 启动守护进程
+./daemon/daemon_control.sh stop       # 停止守护进程
+./daemon/daemon_control.sh restart    # 重启守护进程
+./daemon/daemon_control.sh status     # 查看状态
+./daemon/daemon_control.sh logs       # 查看日志
+
+# 开机自启
+./daemon/daemon_control.sh install            # 安装开机自启
+./daemon/daemon_control.sh uninstall          # 卸载开机自启
+./daemon/daemon_control.sh autostart-status   # 检查开机自启状态
+
+# 其他功能
+./daemon/daemon_control.sh test       # 测试单次同步
+./daemon/daemon_control.sh help       # 显示帮助
+```
+
+### 状态监控
+
+守护进程提供详细的状态信息：
+
+- **运行状态**: 是否正在运行
+- **进程ID**: 守护进程的进程ID
+- **启动时间**: 守护进程启动时间
+- **上次同步**: 最后一次同步时间
+- **下次同步**: 预计下次同步时间
+- **同步次数**: 成功同步的次数
+- **错误次数**: 同步失败的次数
+- **上次耗时**: 最后一次同步的耗时
+
+## 四、代码内容介绍
 
 ### 项目结构
 
@@ -207,12 +288,21 @@ CalSync/
 ├── cal_sync.py              # 主同步脚本
 ├── icloud_integration.py    # iCloud集成模块
 ├── install.py               # 一键安装配置脚本
-├── background_timer.sh      # 后台定时同步管理脚本
+├── background_timer.sh      # 后台定时同步管理脚本（传统方案）
+├── daemon/                  # 守护进程文件夹（新方案）
+│   ├── daemon_manager.py          # 守护进程管理器
+│   ├── launchd_plist_generator.py # launchd plist文件生成器
+│   ├── daemon_control.sh         # 控制脚本
+│   ├── setup_daemon.py           # 安装配置脚本
+│   └── README.md                 # 守护进程说明文档
 ├── config.json              # 配置文件
 ├── requirements.txt         # Python依赖
 ├── logs/                    # 日志和状态文件夹（自动生成）
 │   ├── cal_sync.log        # 运行日志
 │   ├── cal_sync_error.log  # 错误日志
+│   ├── daemon.log          # 守护进程日志
+│   ├── daemon_error.log    # 守护进程错误日志
+│   ├── daemon_status.json  # 守护进程状态文件
 │   ├── sync_state.json     # 同步状态文件
 │   └── backup_state.json   # 备份状态文件
 ├── backup/                  # 备份文件夹（自动生成）
