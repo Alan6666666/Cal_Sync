@@ -2,16 +2,16 @@
     "caldav": {
         "server": "caldav.wecom.work",
         "base_url": "https://caldav.wecom.work/calendar/",
-        "username": "hanqian@jfrjeffery.wecom.work",
-        "password": "XUKgw9EqeaGXqXcT",
+        "username": "x@jfrjeffery.wecom.work",
+        "password": "x",
         "calendar_url": "",
         "selected_calendars": [6]
     },
     "icloud": {
-        "username": "laiyuqin1@icloud.com",
-        "password": "QBS4lsg31",
-        "calendar_name": "运总日历",
-        "app_private_password": "ggcl-sles-nwzj-lfiq"
+        "username": "x",
+        "password": "x",
+        "calendar_name": "x",
+        "app_private_password": "x"
     },
     "sync": {
         "interval_minutes": 5,
