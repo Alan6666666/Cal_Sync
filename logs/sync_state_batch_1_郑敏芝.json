@@ -1,0 +1,95 @@
+{
+    "last_sync": "2025-10-16T11:55:18.426409",
+    "events": {
+        "9700B653-593A-4062-80A5-631153D8ED55#2025-10-15T14:00:00": {
+            "uid": "9700B653-593A-4062-80A5-631153D8ED55",
+            "summary": "【SMU X Jeffery】WIP Meeting",
+            "hash": "68937d53795d1b00fd84fdc6b209605f",
+            "last_sync": "2025-10-16T11:55:18.426346"
+        },
+        "42E87D7D-BE8C-4EE4-A66F-AB9B88F093AA": {
+            "uid": "42E87D7D-BE8C-4EE4-A66F-AB9B88F093AA",
+            "summary": "Jeffery Adventure x YouBiz",
+            "hash": "06b693cd96df8277e6d45870c2301b4e",
+            "last_sync": "2025-10-16T11:55:18.426357"
+        },
+        "D1D24293-D9B1-4DB5-B837-AD7359AAA8D2": {
+            "uid": "D1D24293-D9B1-4DB5-B837-AD7359AAA8D2",
+            "summary": "内部沟通",
+            "hash": "8f63ea59e8e228ce46971fa98a44a1a2",
+            "last_sync": "2025-10-16T11:55:18.426361"
+        },
+        "2E1E5D7F-E310-42BC-ABF1-7E1B191AB4FA": {
+            "uid": "2E1E5D7F-E310-42BC-ABF1-7E1B191AB4FA",
+            "summary": "【内部】NUS EMBA的财务沟通方法论",
+            "hash": "c8e9ec423c1cc8a7429389d82438427d",
+            "last_sync": "2025-10-16T11:55:18.426364"
+        },
+        "31BD79FC-C696-4CE7-BEE5-474BCC0DB857": {
+            "uid": "31BD79FC-C696-4CE7-BEE5-474BCC0DB857",
+            "summary": "用友财务系统DEMO演示",
+            "hash": "6c4f48b57a17bbfd737aa275e3132e9f",
+            "last_sync": "2025-10-16T11:55:18.426368"
+        },
+        "24C604DF-D717-4FE4-8074-E535349157C0": {
+            "uid": "24C604DF-D717-4FE4-8074-E535349157C0",
+            "summary": "创研部例会",
+            "hash": "db0586dcc4889f939a00b73e312bd1ef",
+            "last_sync": "2025-10-16T11:55:18.426372"
+        },
+        "D047AEA8-98E1-45DF-8C9F-42E6DF344D64#2025-10-23T09:45:00": {
+            "uid": "D047AEA8-98E1-45DF-8C9F-42E6DF344D64",
+            "summary": "【内部】SMU 例会",
+            "hash": "937d323fe296e039263f368d0ec3fc0e",
+            "last_sync": "2025-10-16T11:55:18.426378"
+        },
+        "AEA9AA5D-DF64-4FB5-8CBD-9522530B3DF8#2025-10-24T10:30:00": {
+            "uid": "AEA9AA5D-DF64-4FB5-8CBD-9522530B3DF8",
+            "summary": "创研部例会",
+            "hash": "72d2d80cedfa8ae34d1bfab7198f9332",
+            "last_sync": "2025-10-16T11:55:18.426381"
+        },
+        "083CBE95-2375-4208-8683-0F5F4B373EDC": {
+            "uid": "083CBE95-2375-4208-8683-0F5F4B373EDC",
+            "summary": "AI视频制作全流程实战入门",
+            "hash": "17f233ec783e4e0fa13b8f5cb6890ddd",
+            "last_sync": "2025-10-16T11:55:18.426385"
+        },
+        "9700B653-593A-4062-80A5-631153D8ED55#2025-10-29T14:00:00": {
+            "uid": "9700B653-593A-4062-80A5-631153D8ED55",
+            "summary": "【SMU X Jeffery】WIP Meeting",
+            "hash": "b98c94a3151cf9090e3f6ee80c3d481a",
+            "last_sync": "2025-10-16T11:55:18.426388"
+        },
+        "AEA9AA5D-DF64-4FB5-8CBD-9522530B3DF8#2025-10-31T10:30:00": {
+            "uid": "AEA9AA5D-DF64-4FB5-8CBD-9522530B3DF8",
+            "summary": "创研部例会",
+            "hash": "f26da60df98fd8919f15dbe03d712cd6",
+            "last_sync": "2025-10-16T11:55:18.426392"
+        },
+        "D047AEA8-98E1-45DF-8C9F-42E6DF344D64#2025-11-06T09:45:00": {
+            "uid": "D047AEA8-98E1-45DF-8C9F-42E6DF344D64",
+            "summary": "【内部】SMU 例会",
+            "hash": "2502ddc3381295aaa6e3546d3af7c02f",
+            "last_sync": "2025-10-16T11:55:18.426396"
+        },
+        "AEA9AA5D-DF64-4FB5-8CBD-9522530B3DF8#2025-11-07T10:30:00": {
+            "uid": "AEA9AA5D-DF64-4FB5-8CBD-9522530B3DF8",
+            "summary": "创研部例会",
+            "hash": "5400ec028ad8d9e3dc1e4c38a3140d5b",
+            "last_sync": "2025-10-16T11:55:18.426400"
+        },
+        "9700B653-593A-4062-80A5-631153D8ED55#2025-11-12T14:00:00": {
+            "uid": "9700B653-593A-4062-80A5-631153D8ED55",
+            "summary": "【SMU X Jeffery】WIP Meeting",
+            "hash": "ab2802385742336cc1873fd07821fc0c",
+            "last_sync": "2025-10-16T11:55:18.426403"
+        },
+        "AEA9AA5D-DF64-4FB5-8CBD-9522530B3DF8#2025-11-14T10:30:00": {
+            "uid": "AEA9AA5D-DF64-4FB5-8CBD-9522530B3DF8",
+            "summary": "创研部例会",
+            "hash": "c01aec1023b5a938d4993b829d200955",
+            "last_sync": "2025-10-16T11:55:18.426406"
+        }
+    }
+}

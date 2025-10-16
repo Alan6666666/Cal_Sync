@@ -2,15 +2,15 @@
     "caldav": {
         "server": "caldav.wecom.work",
         "base_url": "https://caldav.wecom.work/calendar/",
-        "username": "zhengminzhi@jfrjeffery.wecom.workx",
-        "password": "PtyNsrvmoikzcE5ex",
+        "username": "zhengminzhi@jeffery.wecom.work",
+        "password": "xtPtyNsrvmoikzcE5e",
         "calendar_url": "",
-        "selected_calendars": [4]
+        "selected_calendars": [ ]
     },
     "icloud": {
         "username": "x",
         "password": "x",
-        "calendar_name": "运佳",
+        "calendar_name": " ",
         "app_private_password": "x"
     },
     "sync": {
@@ -23,15 +23,21 @@
         "skip_sync_on_too_many_missing": true,
         "ignore_allday_events_longer_than_hours": 24
     },
+    "eventkit_batch_map": [ 
+        { "source_index": 1, "target_icloud_calendar_name": "郑敏芝" }, 
+        { "source_index": 4, "target_icloud_calendar_name": "运佳" }, 
+        { "source_index": 5, "target_icloud_calendar_name": "杨赛" },
+        { "source_index": 6, "target_icloud_calendar_name": "柏慧" } 
+    ],
     "backup": {
-        "enabled": true,
+        "enabled": false,
         "interval_hours": 12,
         "max_backups": 10,
         "backup_folder": "backup"
     },
     "source_routing": {
         "caldav_indices": [],
-        "eventkit_indices": [4],
+        "eventkit_indices": [],
         "fallback_on_404": true
     }
 }

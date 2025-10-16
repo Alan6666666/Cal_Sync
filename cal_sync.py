@@ -1461,10 +1461,10 @@ class CalSync:
         self.logger.info(f"启动定时同步，间隔：{interval} 分钟")
         
         # 立即执行一次同步
-        self.run_sync()
+        self._run_sync_with_batch_check()
         
         # 设置定时任务
-        schedule.every(interval).minutes.do(self.run_sync)
+        schedule.every(interval).minutes.do(self._run_sync_with_batch_check)
         
         try:
             while True:
@@ -1474,6 +1474,24 @@ class CalSync:
             self.logger.info("收到停止信号，正在退出...")
         except Exception as e:
             self.logger.error(f"定时同步发生错误：{e}")
+    
+    def _run_sync_with_batch_check(self):
+        """运行同步，支持批量编排模式检查"""
+        # 检查是否需要启用批量编排模式
+        try:
+            from batch_orchestrator import run_eventkit_batch
+            # 在配置中添加配置文件路径信息
+            batch_config = self.config.copy()
+            batch_config["_config_file"] = self.config_file
+            if run_eventkit_batch(batch_config):
+                return  # 批量模式已完成本次周期
+        except ImportError as e:
+            self.logger.warning(f"无法导入批量编排器：{e}，使用原有逻辑")
+        except Exception as e:
+            self.logger.error(f"批量编排器执行异常：{e}，回退到原有逻辑")
+        
+        # 原有逻辑：单次同步
+        self.run_sync()
     
     def ensure_backup_folder(self) -> bool:
         """确保备份文件夹存在"""
@@ -2106,6 +2124,21 @@ def main():
         syncer.logger.info("开始执行强制重新同步")
         syncer.logger.warning("⚠️  警告：此操作将清空目标iCloud日历中的所有事件并重新创建")
         
+        # 检查是否需要启用批量编排模式（强制同步）
+        try:
+            from batch_orchestrator import run_eventkit_batch
+            # 在配置中添加配置文件路径信息
+            batch_config = syncer.config.copy()
+            batch_config["_config_file"] = syncer.config_file
+            if run_eventkit_batch(batch_config, force_resync=True):
+                syncer.logger.info("=" * 50)
+                return  # 批量模式已完成本次强制同步周期
+        except ImportError as e:
+            syncer.logger.warning(f"无法导入批量编排器：{e}，使用原有逻辑")
+        except Exception as e:
+            syncer.logger.error(f"批量编排器执行异常：{e}，回退到原有逻辑")
+        
+        # 原有逻辑：单次强制重新同步
         # 连接CalDAV
         if not syncer.connect_caldav():
             syncer.logger.error("CalDAV连接失败，无法执行强制重新同步")
@@ -2133,6 +2166,20 @@ def main():
     
     if args.once:
         # 只执行一次同步
+        # 检查是否需要启用批量编排模式
+        try:
+            from batch_orchestrator import run_eventkit_batch
+            # 在配置中添加配置文件路径信息
+            batch_config = syncer.config.copy()
+            batch_config["_config_file"] = syncer.config_file
+            if run_eventkit_batch(batch_config):
+                return  # 批量模式已完成本次周期
+        except ImportError as e:
+            syncer.logger.warning(f"无法导入批量编排器：{e}，使用原有逻辑")
+        except Exception as e:
+            syncer.logger.error(f"批量编排器执行异常：{e}，回退到原有逻辑")
+        
+        # 原有逻辑：单次同步
         syncer.run_sync(selected_calendar_indices)
     else:
         # 启动定时同步

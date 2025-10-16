@@ -1,61 +1,67 @@
-# 企微CalDAV到iCloud日历同步工具
-基本情况介绍：
+# CalSync - 企业微信日历同步工具
 
-注意：本工具需要借助mac日历、icloud及AppleScript，只能在mac os环境下运行
+## 项目概述
 
-任务背景
-- 企业微信的日历导出使用的Caldev或exchange用户，但许多支持这些协议的日程工具无法导入该账户，可能和企业微信的开放权限和兼容性有关
-- 经过调查发现，icloud日历可以借助苹果账户，导出ics的url链接，且可以通过编写applescript自动修改icloud日历中的日程内容；同时，Mac本地日历支持Caldev账户
-- 脚本仅导入CalDAV账户并读取内容，不会向企微进行任何数据输入
-- 主流工具大多支持导入ics协议
+为企业微信日历同步设计的自动化工具，支持将企业微信日历同步到iCloud日历，实现跨平台日历数据统一管理。
 
-功能流程
-- 在企微中，导出账户名和密码
-- 链接CalDAV服务器/读取mac日历导入的账户，获取其中的日程事件
-- 通过账户和密码链接icloud日历（必须手动创建）；若选择eventkit方式，需要在mac日历中导入对应账户
-- 基于自主编写的uid键方式，比对两个日历内容，将所有日程事件进行单向同步
-- 使用mac os的launchd系统服务，定时运行事件同步
-- 在https://www.icloud.com.cn/calendar/ 中导出icloud日历的ics url链接，在google日历、cal.com中导入该链接
-- 定时进行日历数据备份，导出ics文件格式到本地
-- 以上使用完全自动的流程，实现了企业微信到会议产品的信息单向导入
+**注意：本工具基于macOS系统，需要macOS日历、iCloud及AppleScript支持，只能在macOS环境下运行。**
 
-存在问题
-- 使用eventkit读取方式时,launch定时功能还存在问题，无法使用
-- 备份导出的ics存在日程循环的问题
-- 事件删除时的同步操作存在不足，会导致全部事件重新创建
-- 由于icloud在创建日历的操作上出现权限问题，必须手动创建好icloud日历。且目前仅支持将企微中的多个日历合并，将所有日程信息一起同步到一个icloud日历中，无法相应分别同步。
-- 考虑到可能有未考虑周全的逻辑漏洞，最好不要在mac本地日历上对企微日历进行修改，以避免混乱。
+## 🎯 当前推荐方案
 
-## 最近修复的问题
+经过项目迭代优化，当前采用以下技术方案：
 
-### 守护进程停止功能修复（2025-10-15）
-- **问题描述**：之前守护进程的停止命令无法正确终止后台运行的进程，导致多个守护进程同时运行，造成资源浪费和同步冲突。
-- **修复内容**：
-  - 重写了守护进程停止逻辑，现在可以正确终止所有后台运行的守护进程
-  - 添加了进程检测和清理功能，避免多个守护进程同时运行
-  - 改进了重启功能，确保旧进程完全终止后再启动新进程
-  - 增强了进程管理的稳定性，防止进程泄漏
-  - 添加了 `psutil>=5.9.0` 依赖到 requirements.txt，用于进程管理
-- **使用方法**：
-  - `./daemon_control.sh stop` - 停止所有守护进程
-  - `./daemon_control.sh restart` - 重启守护进程（先停止再启动）
-  - `./daemon_control.sh status` - 查看守护进程状态
+### 1. **EventKit事件获取** ⭐ 推荐
+- **优势**：直接读取macOS日历应用中的事件，无需网络连接，稳定可靠
+- **配置**：需要在macOS日历应用中导入企业微信CalDAV账户
+- **支持**：完全支持所有EventKit功能，包括循环事件、全天事件等
 
-## 一、部署流程
+### 2. **Python守护进程定时运行** ⭐ 推荐
+- **优势**：基于Python定时器，完全后台运行，无权限问题
+- **功能**：支持开机自启、状态监控、自动重启、详细日志
+- **管理**：提供完整的控制脚本，支持启动、停止、重启、状态查看
 
-### 1. 环境要求
+### 3. **批量编排模式** ⭐ 推荐
+- **多对多同步**：支持将多个源日历分别同步到不同的目标日历
+- **一对一同步**：只设置一个map对象，则可以实现传统的单源单目标同步模式
+- **配置灵活**：通过`eventkit_batch_map`配置实现灵活的映射关系
+
+## 📋 任务背景
+
+- 企业微信的日历导出使用CalDAV协议，但许多日程工具无法直接导入该账户
+- 经过调研发现，iCloud日历可以通过AppleScript自动修改日程内容
+- 脚本仅读取日历内容，不会向企业微信进行任何数据写入
+- 主流工具大多支持导入ICS协议，便于后续使用
+
+## 🚀 功能流程
+
+1. **配置企业微信账户**：在macOS日历应用中导入企业微信CalDAV账户
+2. **获取日历事件**：通过EventKit读取macOS日历中的企业微信事件
+3. **连接iCloud日历**：通过AppleScript连接iCloud日历（需要手动创建目标日历）
+4. **智能同步**：基于自主编写的UID键方式，比对两个日历内容，进行单向同步
+5. **定时运行**：使用Python守护进程定时执行事件同步
+6. **数据备份**：定时进行日历数据备份，导出ICS文件格式到本地
+7. **导出使用**：在iCloud日历中导出ICS URL链接，在Google日历、Cal.com等工具中导入使用
+
+## ⚠️ 已知问题
+
+- **iCloud日历创建**：由于iCloud权限限制，必须手动创建目标日历
+- **循环事件备份**：备份导出的ICS文件可能存在日程循环问题
+- **安全建议**：建议不要在mac本地日历上对企业微信日历进行修改，以避免数据混乱
+
+## 🔧 环境要求
+
 - macOS 10.14+
 - Python 3.7+
 - 网络连接
 - macOS日历访问权限
 
-### 2. 快速安装
+## 📦 快速安装
 
 运行一键安装脚本：
 ```bash
 python3 install.py
 ```
-项目需要放置在系统盘，否则可能出现权限问题
+**注意：项目需要放置在系统盘，否则可能出现权限问题**
 
 安装脚本会自动：
 - 检查Python版本
@@ -64,34 +70,36 @@ python3 install.py
 - 设置macOS权限说明
 - 测试连接
 
-### 3. 权限设置
+## 🔐 权限设置
 
-#### macOS日历访问权限
+### macOS日历访问权限
 1. 打开 **系统偏好设置** > **安全性与隐私** > **隐私**
 2. 在左侧列表中选择 **日历**
 3. 点击左下角的锁图标并输入密码
 4. 勾选 **终端** 和 **您使用的IDE**
 5. 重启终端/IDE后重试
 
-注意：通常情况下，终端由于没有发起过对日历的请求，设置里会找不到选项。可以通过在终端中运行任意请求，如
+**注意：** 如果设置中找不到终端选项，可以通过以下命令触发权限请求：
 ```bash
 osascript -e 'tell application "Calendar" to get title of calendars'
 ```
-随后即可在设置中找到终端。
 
-#### iCloud专用密码
+### iCloud专用密码
 1. 访问 [Apple ID 管理页面](https://appleid.apple.com/)
 2. 登录您的Apple ID
 3. 在 **安全** 部分找到 **应用专用密码**
 4. 点击 **生成密码**
 5. 将生成的密码填入配置文件
 
-### 4. 运行方式
+## 🎮 使用方法
 
-#### 单次同步
+### 单次同步
 ```bash
 # 同步所有日历（默认行为）
 python3 cal_sync.py --once
+
+# 强制重新同步（清空目标日历后重新创建所有事件）
+python3 cal_sync.py --once --force-resync
 
 # 选择特定日历同步
 python3 cal_sync.py --once --select-calendars 1,3,5
@@ -100,7 +108,7 @@ python3 cal_sync.py --once --select-calendars 1,3,5
 python3 cal_sync.py --list-calendars
 ```
 
-#### 手动备份
+### 手动备份
 ```bash
 # 备份所有日历（强制执行，不检查时间间隔）
 python3 cal_sync.py --backup
@@ -109,9 +117,9 @@ python3 cal_sync.py --backup
 python3 cal_sync.py --backup --select-calendars 1,3,5
 ```
 
-#### 定时同步
+### 定时同步（推荐）
 
-**推荐方案：Python守护进程（新）**
+**Python守护进程（推荐方案）**
 ```bash
 # 安装守护进程
 python3 daemon/setup_daemon.py
@@ -124,43 +132,36 @@ python3 daemon/setup_daemon.py
 
 # 安装开机自启
 ./daemon/daemon_control.sh install
-```
-该方法基于Python定时器，完全后台运行，无权限问题，支持详细状态监控
 
-**传统方案：launchd定时任务**
-```bash
-# 后台定时同步管理
-./background_timer.sh setup    # 首次设置
-./background_timer.sh start    # 启用定时任务
-./background_timer.sh status   # 查看状态
-```
-该方法使用macOS launchd服务，但可能存在EventKit权限问题
+# 停止守护进程
+./daemon/daemon_control.sh stop
 
-**不推荐：终端运行**
-```bash
-# 启动定时同步（使用配置文件设置）
-python3 cal_sync.py
+# 重启守护进程
+./daemon/daemon_control.sh restart
 ```
-该方法需要在终端一直运行，不推荐
 
-## 二、参数设置
+## ⚙️ 配置说明
 
 ### 配置文件 (config.json)
 
+#### 批量编排模式配置（推荐）
 ```json
 {
-    "caldav": {
-        "server": "caldav.wecom.work",
-        "base_url": "https://caldav.wecom.work/calendar/",
-        "username": "your_username@company.wecom.work",
-        "password": "your_password",
-        "calendar_url": "",
-        "selected_calendars": []
+    "eventkit_batch_map": [
+        { "source_index": 1, "target_icloud_calendar_name": "郑敏芝" },
+        { "source_index": 4, "target_icloud_calendar_name": "运佳" },
+        { "source_index": 5, "target_icloud_calendar_name": "杨赛" },
+        { "source_index": 6, "target_icloud_calendar_name": "柏慧" }
+    ],
+    "source_routing": {
+        "eventkit_indices": [],
+        "caldav_indices": [],
+        "fallback_on_404": false
     },
     "icloud": {
         "username": "your_email@icloud.com",
         "password": "your_icloud_password",
-        "calendar_name": "日历名字（必须手动创建好）",
+        "calendar_name": "默认日历名称",
         "app_private_password": "your_app_specific_password"
     },
     "sync": {
@@ -181,20 +182,36 @@ python3 cal_sync.py
 }
 ```
 
+#### 传统单对单模式配置（已弃用）
+```json
+{
+    "source_routing": {
+        "eventkit_indices": [1,4,5,6],
+        "caldav_indices": [],
+        "fallback_on_404": true
+    },
+    "icloud": {
+        "calendar_name": "合并后的日历名称"
+    }
+}
+```
+
 ### 配置参数说明
 
-#### CalDAV配置
-- **server**: 企业微信CalDAV服务器地址
-- **base_url**: 完整的CalDAV URL
-- **username**: 企业微信用户名
-- **password**: 企业微信密码
-- **calendar_url**: 特定日历URL（留空自动发现）
-- **selected_calendars**: 要同步的日历索引数组（空数组表示同步所有日历）
+#### 批量编排配置
+- **eventkit_batch_map**: 批量映射配置，定义多个源日历到目标日历的映射关系
+- **source_index**: EventKit源日历索引（在macOS日历应用中的索引）
+- **target_icloud_calendar_name**: 对应的iCloud目标日历名称
+
+#### 源路由配置
+- **eventkit_indices**: EventKit日历索引数组（批量模式下应设为空）
+- **caldav_indices**: CalDAV日历索引数组（批量模式下应设为空）
+- **fallback_on_404**: 是否在404错误时回退到CalDAV（批量模式下应设为false）
 
 #### iCloud配置
 - **username**: iCloud邮箱地址
 - **password**: iCloud密码
-- **calendar_name**: 目标日历名称（必须手动创建）
+- **calendar_name**: 默认日历名称（批量模式下会被映射配置覆盖）
 - **app_private_password**: iCloud专用密码（推荐使用）
 
 #### 同步配置
@@ -207,49 +224,98 @@ python3 cal_sync.py
 - **skip_sync_on_too_many_missing**: 当检测到过多缺失事件时是否跳过同步。当缺失事件数量超过总事件的50%时，可能是AppleScript检测错误，为避免重复创建事件，系统会跳过本次同步。设置为false可禁用此安全功能，但可能导致重复创建事件。
 
 #### 备份配置
-- **enabled**: 是否启用备份功能（默认：true）
-- **interval_hours**: 备份间隔时间（小时，默认：24小时）
-- **max_backups**: 保留的备份文件数量（默认：10个）
-- **backup_folder**: 备份文件夹名称（默认：backup）
+- **enabled**: 是否启用备份功能
+- **interval_hours**: 备份间隔时间（小时）
+- **max_backups**: 保留的备份文件数量
+- **backup_folder**: 备份文件夹名称
 
-### 日历选择优先级
+## 🏗️ 项目结构
 
-1. **命令行参数** (`--select-calendars`) - 最高优先级
-2. **配置文件** (`selected_calendars`) - 中等优先级  
-3. **特定URL** (`calendar_url`) - 低优先级
-4. **所有日历** - 默认行为
+```
+CalSync/
+├── cal_sync.py              # 主同步脚本
+├── batch_orchestrator.py    # 批量编排器（核心模块）
+├── mac_eventkit_bridge.py   # EventKit集成模块
+├── icloud_integration.py    # iCloud集成模块
+├── install.py               # 一键安装配置脚本
+├── daemon/                  # Python守护进程（推荐方案）
+│   ├── daemon_manager.py          # 守护进程管理器
+│   ├── launchd_plist_generator.py # launchd plist文件生成器
+│   ├── daemon_control.sh         # 控制脚本
+│   ├── setup_daemon.py           # 安装配置脚本
+│   └── README.md                 # 守护进程说明文档
+├── config.json              # 配置文件
+├── requirements.txt         # Python依赖
+├── logs/                    # 日志和状态文件夹（自动生成）
+│   ├── cal_sync.log        # 运行日志
+│   ├── cal_sync_error.log  # 错误日志
+│   ├── daemon.log          # 守护进程日志
+│   ├── daemon_status.json  # 守护进程状态文件
+│   ├── sync_state.json     # 同步状态文件（单对单模式）
+│   ├── sync_state_batch_*.json # 批量模式同步状态文件
+│   └── backup_state.json   # 备份状态文件
+├── backup/                  # 备份文件夹（自动生成）
+└── README.md               # 本文件
 
-### 命令行参数
-
-```bash
-python3 cal_sync.py [选项]
-
-选项:
-  --config CONFIG          配置文件路径（默认: config.json）
-  --once                   只执行一次同步
-  --backup                 强制执行一次备份
-  --select-calendars CAL   选择要同步的日历索引，用逗号分隔，如：1,3,5
-  --list-calendars         列出所有可用日历
-  --help                   显示帮助信息
+# 已弃用的文件和方案
+├── background_timer.sh      # ❌ launchd定时任务（已弃用）
+└── applescripts/           # ❌ 旧版AppleScript方案（已弃用）
 ```
 
-## 三、守护进程功能
+## 🔧 核心模块
+
+### batch_orchestrator.py - 批量编排器（核心）
+- **run_eventkit_batch()**: 批量编排模式主函数
+- **get_batch_summary()**: 获取批量配置摘要信息
+- **支持强制同步**: 完全支持`--force-resync`参数
+- **独立状态管理**: 每个映射使用独立的同步状态文件
+
+### cal_sync.py - 主同步脚本
+- **CalSync类**: 主要的同步逻辑类
+- **支持批量模式**: 自动检测并调用批量编排器
+- **向后兼容**: 支持传统单对单同步模式
+
+### mac_eventkit_bridge.py - EventKit集成
+- **get_events_from_eventkit()**: 从EventKit获取事件
+- **get_calendar_indices()**: 获取日历索引映射
+- **支持多日历**: 支持同时读取多个EventKit日历
+
+### icloud_integration.py - iCloud集成
+- **ICloudIntegration类**: iCloud日历操作类
+- **create_event()**: 创建日历事件
+- **delete_event_by_sync_uid()**: 根据同步UID精确删除事件
+- **get_existing_events()**: 获取现有事件列表
+
+## 🚫 已弃用的方案
+
+### ~~CalDAV直接连接（已弃用）~~
+- **原因**: 企业微信CalDAV服务器兼容性问题，连接不稳定
+- **替代方案**: 使用EventKit读取macOS日历应用中的企业微信账户
+- **状态**: 代码保留但默认禁用，仅在特殊情况下作为回退方案
+
+### ~~launchd定时任务（已弃用）~~
+- **原因**: EventKit权限问题，后台运行时无法访问macOS日历应用
+- **替代方案**: Python守护进程，基于Python定时器，无权限问题
+- **文件**: `background_timer.sh` 保留但不再推荐使用
+
+### ~~单对单同步模式（已弃用）~~
+- **原因**: 无法满足多日历分别同步的需求
+- **替代方案**: 批量编排模式，支持多对多同步
+- **状态**: 代码保留，通过`eventkit_batch_map`配置自动切换
+
+## 📊 守护进程功能
 
 ### 守护进程特性
-
 - ✅ **后台运行**: 基于Python定时器，无需保持终端运行
 - ✅ **开机自启**: 支持macOS launchd服务，开机自动启动
 - ✅ **状态监控**: 实时查看守护进程状态和同步统计
 - ✅ **日志管理**: 详细的运行日志和错误日志
 - ✅ **自动重启**: 进程异常退出时自动重启
 - ✅ **配置继承**: 使用项目根目录的config.json配置
+- ✅ **批量编排支持**: 完全支持批量编排模式
 
 ### 守护进程使用
-
 ```bash
-# 安装守护进程
-python3 daemon/setup_daemon.py
-
 # 基本控制
 ./daemon/daemon_control.sh start      # 启动守护进程
 ./daemon/daemon_control.sh stop       # 停止守护进程
@@ -268,9 +334,7 @@ python3 daemon/setup_daemon.py
 ```
 
 ### 状态监控
-
 守护进程提供详细的状态信息：
-
 - **运行状态**: 是否正在运行
 - **进程ID**: 守护进程的进程ID
 - **启动时间**: 守护进程启动时间
@@ -280,107 +344,17 @@ python3 daemon/setup_daemon.py
 - **错误次数**: 同步失败的次数
 - **上次耗时**: 最后一次同步的耗时
 
-## 四、代码内容介绍
+## 📝 日志和状态管理
 
-### 项目结构
-
-```
-CalSync/
-├── cal_sync.py              # 主同步脚本
-├── icloud_integration.py    # iCloud集成模块
-├── install.py               # 一键安装配置脚本
-├── background_timer.sh      # 后台定时同步管理脚本（传统方案）
-├── daemon/                  # 守护进程文件夹（新方案）
-│   ├── daemon_manager.py          # 守护进程管理器
-│   ├── launchd_plist_generator.py # launchd plist文件生成器
-│   ├── daemon_control.sh         # 控制脚本
-│   ├── setup_daemon.py           # 安装配置脚本
-│   └── README.md                 # 守护进程说明文档
-├── config.json              # 配置文件
-├── requirements.txt         # Python依赖
-├── logs/                    # 日志和状态文件夹（自动生成）
-│   ├── cal_sync.log        # 运行日志
-│   ├── cal_sync_error.log  # 错误日志
-│   ├── daemon.log          # 守护进程日志
-│   ├── daemon_error.log    # 守护进程错误日志
-│   ├── daemon_status.json  # 守护进程状态文件
-│   ├── sync_state.json     # 同步状态文件
-│   └── backup_state.json   # 备份状态文件
-├── backup/                  # 备份文件夹（自动生成）
-│   ├── backup_20241201_143022.ics
-│   ├── backup_20241202_143045.ics
-│   └── ...
-└── README.md               # 本文件
-```
-
-### 核心模块
-
-#### cal_sync.py - 主同步脚本
-- **CalSync类**：主要的同步逻辑类
-- **get_caldav_events()**：获取CalDAV日历事件，支持多日历选择
-- **sync_calendars()**：执行日历同步流程
-- **detect_changes()**：检测事件变化（新增、修改、删除）
-- **sync_to_icloud()**：同步事件到iCloud
-- **verify_sync()**：验证同步结果
-- **backup_caldav_events()**：备份CalDAV事件到ICS文件
-- **export_events_to_ics()**：将事件导出为ICS格式
-- **cleanup_old_backups()**：清理旧的备份文件
-
-#### icloud_integration.py - iCloud集成模块
-- **ICloudIntegration类**：iCloud日历操作类
-- **create_calendar()**：创建iCloud日历
-- **create_event()**：创建日历事件
-- **delete_event_by_summary()**：根据标题删除事件（会删除所有匹配标题的事件）
-- **delete_event_by_sync_uid()**：根据同步UID精确删除特定事件（推荐用于循环事件）
-- **get_existing_events()**：获取现有事件列表
-- **clear_all_events()**：清空所有事件
-
-### 技术实现
-
-#### 多日历处理
-- 使用CalDAV协议获取所有可用日历
-- 支持按索引选择特定日历
-- 将多个日历的事件合并到一个列表中
-- 每个事件标记来源日历信息
-
-#### 智能同步机制
-- **稳定主键**：使用 `UID + RECURRENCE-ID` 创建稳定的事件标识符
-- **精确哈希**：基于完整事件信息生成哈希，避免误报修改
-- **同步标记**：在事件描述中添加 `[SYNC_UID:key]` 标记用于精确匹配
-- **自动恢复**：检测iCloud中被手动删除的事件并自动重新创建
-
-#### 事件处理
-- **全天事件支持**：正确处理只有日期没有时间的事件
-- **循环事件处理**：支持展开循环事件为具体实例
-- **时区处理**：所有时间统一转换为UTC，避免时区差异
-
-### 备份功能
-
-#### 备份机制
-- **自动备份**：每次同步时自动检查是否需要备份
-- **手动备份**：通过`--backup`参数强制执行备份，不检查时间间隔
-- **ICS格式**：备份文件为标准ICS格式，可导入其他日历应用
-- **智能间隔**：根据配置的间隔时间执行备份，避免频繁备份
-- **自动清理**：自动保留最新的N个备份文件，删除旧文件
-
-#### 备份文件
-- **命名格式**：`backup_YYYYMMDD_HHMMSS.ics`
-- **存储位置**：`backup/` 文件夹（可配置）
-- **内容包含**：完整的CalDAV事件信息，包括循环规则、异常日期等
-
-#### 备份状态
-- **logs/backup_state.json**: 记录上次备份时间
-- **日志记录**: 备份过程详细记录在 `logs/cal_sync.log` 中
-
-### 日志和状态管理
-
-#### 日志文件
-- **logs/cal_sync.log**: 详细的运行日志（包括备份日志）
+### 日志文件
+- **logs/cal_sync.log**: 详细的运行日志
 - **logs/cal_sync_error.log**: 错误日志（ERROR级别以上的日志）
-- **logs/sync_state.json**: 同步状态文件
+- **logs/daemon.log**: 守护进程日志
+- **logs/sync_state.json**: 同步状态文件（单对单模式）
+- **logs/sync_state_batch_*.json**: 批量模式同步状态文件（每个映射独立）
 - **logs/backup_state.json**: 备份状态文件
 
-#### 查看日志
+### 查看日志
 ```bash
 # 实时查看主日志
 tail -f logs/cal_sync.log
@@ -388,39 +362,44 @@ tail -f logs/cal_sync.log
 # 查看最近20行
 tail -20 logs/cal_sync.log
 
-# 查看备份相关日志
-grep -i backup logs/cal_sync.log
+# 查看批量编排相关日志
+grep -E "(批量编排|映射|EventKit索引)" logs/cal_sync.log
 
 # 查看错误日志
 tail -f logs/cal_sync_error.log
 
-# 查看所有错误
-grep -i error logs/cal_sync_error.log
+# 查看守护进程日志
+tail -f logs/daemon.log
 ```
 
-### 故障排除
+## 🛠️ 故障排除
 
-#### 常见问题
-1. **权限问题**：确保终端和IDE有日历访问权限
-2. **连接问题**：检查网络连接和认证信息
-3. **同步问题**：查看日志文件了解详细错误
-4. **缺失事件过多**：如果系统检测到过多缺失事件并跳过同步，可能是AppleScript检测错误。可以：
-   - 检查iCloud日历状态是否正常
-   - 临时禁用安全功能：设置 `"skip_sync_on_too_many_missing": false`
-   - 查看详细日志了解具体情况
-5. **EventKit读取失败**：如果出现"cannot unpack non-iterable NoneType object"错误，这通常是由于长时间运行后EventKit状态异常导致的。已通过以下方式修复：
-   - **每次调用都新建`EKEventStore`实例**，避免长期复用导致的状态异常
-   - **使用`objc.autorelease_pool()`包装EventKit操作**，避免内存累积导致的返回值异常
-   - **添加详细的诊断信息和重试机制**，便于问题定位和自动恢复
-   - **使用`caffeinate -i`防止系统休眠影响EventKit访问**，确保后台任务稳定运行
-   - **确保函数永远返回列表而不是None**，避免上层代码解包失败
-6. **循环事件删除问题**：修复了删除循环事件时会误删所有同名事件的问题：
-   - **新增`delete_event_by_sync_uid()`方法**，根据同步UID精确删除特定事件
-   - **修改删除逻辑**，优先使用精确删除，避免误删循环事件的其他实例
-   - **保留回退机制**，如果精确删除失败，会回退到按标题删除并记录警告
-   - **确保匹配检验成功**，避免因误删导致的同步验证失败
+### 常见问题
 
-#### 调试命令
+1. **权限问题**
+   - 确保终端和IDE有日历访问权限
+   - 重新运行权限设置步骤
+
+2. **iCloud日历不可访问**
+   - 确保目标iCloud日历已手动创建
+   - 检查iCloud账户和专用密码是否正确
+   - 确保macOS日历应用已启动并勾选目标日历
+
+3. **批量编排模式问题**
+   - 检查`eventkit_batch_map`配置是否正确
+   - 确保`source_routing.eventkit_indices`设为空数组
+   - 验证EventKit源日历索引是否正确
+
+4. **同步状态冲突**
+   - 批量模式下每个映射使用独立的同步状态文件
+   - 如果出现问题，可以删除对应的`sync_state_batch_*.json`文件重新同步
+
+5. **EventKit读取失败**
+   - 如果出现"cannot unpack non-iterable NoneType object"错误
+   - 这是EventKit长时间运行后的状态异常，程序已内置重试机制
+   - 重启守护进程通常可以解决问题
+
+### 调试命令
 ```bash
 # 列出所有可用日历
 python3 cal_sync.py --list-calendars
@@ -428,6 +407,42 @@ python3 cal_sync.py --list-calendars
 # 测试单次同步
 python3 cal_sync.py --once
 
+# 强制重新同步测试
+python3 cal_sync.py --once --force-resync
+
+# 查看守护进程状态
+./daemon/daemon_control.sh status
+
 # 查看详细日志
-tail -f cal_sync.log
+tail -f logs/cal_sync.log
 ```
+
+## 📈 版本历史
+
+### v2.0 - 批量编排模式（当前版本）
+- ✅ 支持多对多日历同步
+- ✅ Python守护进程替代launchd定时任务
+- ✅ EventKit作为主要数据源
+- ✅ 独立的同步状态管理
+- ✅ 强制同步支持
+
+### v1.x - 传统单对单模式（已弃用）
+- ~~CalDAV直接连接~~
+- ~~launchd定时任务~~
+- ~~单日历合并同步~~
+
+## 🤝 贡献指南
+
+如果您在使用过程中遇到问题或有改进建议，欢迎：
+1. 查看日志文件了解详细错误信息
+2. 检查配置文件是否正确
+3. 尝试重启守护进程或重新同步
+4. 提交Issue描述具体问题
+
+## 📄 许可证
+
+本项目采用MIT许可证，详见LICENSE文件。
+
+---
+
+**注意：本项目专门为企业微信日历同步设计，在其他场景下使用可能需要相应调整。**

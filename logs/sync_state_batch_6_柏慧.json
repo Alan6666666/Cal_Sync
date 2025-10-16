@@ -1,0 +1,125 @@
+{
+    "last_sync": "2025-10-16T11:57:53.791265",
+    "events": {
+        "3F596CBA-451D-47D5-9721-62E1450B91A6#2025-10-15T14:00:00": {
+            "uid": "3F596CBA-451D-47D5-9721-62E1450B91A6",
+            "summary": "【SMU X Jeffery】WIP Meeting",
+            "hash": "1f144c7e8796762d3bfd579d89c4ce55",
+            "last_sync": "2025-10-16T11:57:53.791236"
+        },
+        "F1B48F0D-CD1B-44D9-A935-07334519EA3A": {
+            "uid": "F1B48F0D-CD1B-44D9-A935-07334519EA3A",
+            "summary": "Jeffery Adventure x YouBiz",
+            "hash": "bacd1c9bb756adae15e8b6f6c5b515e0",
+            "last_sync": "2025-10-16T11:57:53.791240"
+        },
+        "306B9F23-878F-4418-817E-E263C5CDDF6B": {
+            "uid": "306B9F23-878F-4418-817E-E263C5CDDF6B",
+            "summary": "NUS EMBA伯克利直播【彩排】暂定",
+            "hash": "ca0f1a00ebb37f736825885a82a7b8d0",
+            "last_sync": "2025-10-16T11:57:53.791241"
+        },
+        "D137FBF5-3885-4024-A81C-E0F729769F02#2025-10-16T11:00:00": {
+            "uid": "D137FBF5-3885-4024-A81C-E0F729769F02",
+            "summary": "[Chinese social media] JA content bi-weekly calls",
+            "hash": "524449cd3a42870e1b60b88fe9dfdc6e",
+            "last_sync": "2025-10-16T11:57:53.791243"
+        },
+        "854A6974-68F3-4771-BF5E-2513FA6C699B#2025-10-20T09:30:00": {
+            "uid": "854A6974-68F3-4771-BF5E-2513FA6C699B",
+            "summary": "客户经理例会",
+            "hash": "56fb8d38aea5db9c9f3115df9b292327",
+            "last_sync": "2025-10-16T11:57:53.791244"
+        },
+        "6FA9706C-C5E0-4C6D-81B4-082EE8AECE07#2025-10-21T14:00:00": {
+            "uid": "6FA9706C-C5E0-4C6D-81B4-082EE8AECE07",
+            "summary": "【内部】SEO/LinkedIn/销售/金字招牌每周例会",
+            "hash": "c27b93af3fe293494d30aeb5c851c42b",
+            "last_sync": "2025-10-16T11:57:53.791245"
+        },
+        "BF6EB151-3E3A-4412-BFE8-81412BC3C422": {
+            "uid": "BF6EB151-3E3A-4412-BFE8-81412BC3C422",
+            "summary": "NUS EMBA伯克利游学直播",
+            "hash": "2e3f9a8512f33192e6cd928513ee618d",
+            "last_sync": "2025-10-16T11:57:53.791248"
+        },
+        "83DA94D3-876C-4207-A1B4-D0A7CF4B149C#2025-10-23T09:45:00": {
+            "uid": "83DA94D3-876C-4207-A1B4-D0A7CF4B149C",
+            "summary": "【内部】SMU 例会",
+            "hash": "6110b0bbb6f2f6f824ce690f608d8078",
+            "last_sync": "2025-10-16T11:57:53.791249"
+        },
+        "EEFE286B-9D80-4775-8607-E7983669620B": {
+            "uid": "EEFE286B-9D80-4775-8607-E7983669620B",
+            "summary": "[Confirmed] Discussion with JA",
+            "hash": "95e8bd682002a3ee126dfafe5eda9dbd",
+            "last_sync": "2025-10-16T11:57:53.791251"
+        },
+        "854A6974-68F3-4771-BF5E-2513FA6C699B#2025-10-27T09:30:00": {
+            "uid": "854A6974-68F3-4771-BF5E-2513FA6C699B",
+            "summary": "客户经理例会",
+            "hash": "720db2d4a5ce472518b38a81266e8036",
+            "last_sync": "2025-10-16T11:57:53.791252"
+        },
+        "6FA9706C-C5E0-4C6D-81B4-082EE8AECE07#2025-10-28T14:00:00": {
+            "uid": "6FA9706C-C5E0-4C6D-81B4-082EE8AECE07",
+            "summary": "【内部】SEO/LinkedIn/销售/金字招牌每周例会",
+            "hash": "1593718bb6f2746f4659cdccfb01fd10",
+            "last_sync": "2025-10-16T11:57:53.791253"
+        },
+        "3F596CBA-451D-47D5-9721-62E1450B91A6#2025-10-29T14:00:00": {
+            "uid": "3F596CBA-451D-47D5-9721-62E1450B91A6",
+            "summary": "【SMU X Jeffery】WIP Meeting",
+            "hash": "db4648e522406dcdb1d64f8aec537153",
+            "last_sync": "2025-10-16T11:57:53.791255"
+        },
+        "D137FBF5-3885-4024-A81C-E0F729769F02#2025-10-30T11:00:00": {
+            "uid": "D137FBF5-3885-4024-A81C-E0F729769F02",
+            "summary": "[Chinese social media] JA content bi-weekly calls",
+            "hash": "5270f6cb1d0d2d5ab5453657f9ddede5",
+            "last_sync": "2025-10-16T11:57:53.791256"
+        },
+        "854A6974-68F3-4771-BF5E-2513FA6C699B#2025-11-03T09:30:00": {
+            "uid": "854A6974-68F3-4771-BF5E-2513FA6C699B",
+            "summary": "客户经理例会",
+            "hash": "900db786f485707ac2c8eee120d36607",
+            "last_sync": "2025-10-16T11:57:53.791257"
+        },
+        "6FA9706C-C5E0-4C6D-81B4-082EE8AECE07#2025-11-04T14:00:00": {
+            "uid": "6FA9706C-C5E0-4C6D-81B4-082EE8AECE07",
+            "summary": "【内部】SEO/LinkedIn/销售/金字招牌每周例会",
+            "hash": "73f89d535b7afca7530045461d4fa522",
+            "last_sync": "2025-10-16T11:57:53.791258"
+        },
+        "83DA94D3-876C-4207-A1B4-D0A7CF4B149C#2025-11-06T09:45:00": {
+            "uid": "83DA94D3-876C-4207-A1B4-D0A7CF4B149C",
+            "summary": "【内部】SMU 例会",
+            "hash": "8dfd8d6ed87f0b3e7267374879256765",
+            "last_sync": "2025-10-16T11:57:53.791259"
+        },
+        "854A6974-68F3-4771-BF5E-2513FA6C699B#2025-11-10T09:30:00": {
+            "uid": "854A6974-68F3-4771-BF5E-2513FA6C699B",
+            "summary": "客户经理例会",
+            "hash": "f32dd1d57361bfcd4d51a2aebdd0f78e",
+            "last_sync": "2025-10-16T11:57:53.791260"
+        },
+        "6FA9706C-C5E0-4C6D-81B4-082EE8AECE07#2025-11-11T14:00:00": {
+            "uid": "6FA9706C-C5E0-4C6D-81B4-082EE8AECE07",
+            "summary": "【内部】SEO/LinkedIn/销售/金字招牌每周例会",
+            "hash": "e98e458fc8249a55f1173f36e74edb65",
+            "last_sync": "2025-10-16T11:57:53.791262"
+        },
+        "3F596CBA-451D-47D5-9721-62E1450B91A6#2025-11-12T14:00:00": {
+            "uid": "3F596CBA-451D-47D5-9721-62E1450B91A6",
+            "summary": "【SMU X Jeffery】WIP Meeting",
+            "hash": "48cacda46610252cc67d095fc09a9956",
+            "last_sync": "2025-10-16T11:57:53.791263"
+        },
+        "D137FBF5-3885-4024-A81C-E0F729769F02#2025-11-13T11:00:00": {
+            "uid": "D137FBF5-3885-4024-A81C-E0F729769F02",
+            "summary": "[Chinese social media] JA content bi-weekly calls",
+            "hash": "7ce2725085b249e0cd3258ab0c59303a",
+            "last_sync": "2025-10-16T11:57:53.791264"
+        }
+    }
+}

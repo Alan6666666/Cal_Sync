@@ -259,6 +259,24 @@ class CalSyncDaemon:
         except Exception as e:
             self.logger.error(f"更新状态文件失败：{e}")
     
+    def _run_sync_with_batch_check(self):
+        """运行同步，支持批量编排模式检查"""
+        # 检查是否需要启用批量编排模式
+        try:
+            from batch_orchestrator import run_eventkit_batch
+            # 在配置中添加配置文件路径信息
+            batch_config = self.config.copy()
+            batch_config["_config_file"] = self.config_file
+            if run_eventkit_batch(batch_config):
+                return True  # 批量模式已完成本次周期
+        except ImportError as e:
+            self.logger.warning(f"无法导入批量编排器：{e}，使用原有逻辑")
+        except Exception as e:
+            self.logger.error(f"批量编排器执行异常：{e}，回退到原有逻辑")
+        
+        # 原有逻辑：单次同步
+        return self.syncer.sync_calendars()
+    
     def sync_worker(self):
         """同步工作线程"""
         self.logger.info("同步工作线程启动")
@@ -291,8 +309,8 @@ class CalSyncDaemon:
                 self.logger.info(f"开始第 {sync_count + 1} 次同步...")
                 start_time = time.time()
                 
-                # 执行同步
-                success = self.syncer.sync_calendars()
+                # 执行同步 - 支持批量编排模式
+                success = self._run_sync_with_batch_check()
                 
                 end_time = time.time()
                 duration = end_time - start_time
