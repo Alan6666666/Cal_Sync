@@ -194,91 +194,120 @@ def read_events_from_eventkit_by_indices(
         days_future: 读取未来多少天的事件
     
     Returns:
-        事件字典列表
+        事件字典列表，永远不会返回None
     """
     logger = logging.getLogger(__name__)
     events = []
+    debug_info = []
     
     try:
-        # 创建 EventStore
-        event_store = EKEventStore.alloc().init()
-        
-        # 请求日历访问权限
-        auth_granted = event_store.accessGrantedForEntityType_(0)  # EKEntityTypeEvent
-        
-        if not auth_granted:
-            logger.info("请求日历访问权限...")
-            # 这里会触发系统权限弹窗
-            granted, error = event_store.requestAccessToEntityType_completion_(0, None)
-            if not granted:
-                logger.error("日历访问权限被拒绝")
-                return []
-            logger.info("日历访问权限已获得")
-        else:
-            logger.info("日历访问权限已获得")
-        
-        # 获取所有 EventKit 日历
-        all_calendars = event_store.calendarsForEntityType_(0)  # EKEntityTypeEvent
-        logger.info(f"找到 {len(all_calendars)} 个 EventKit 日历")
-        
-        # 创建 CalDAV 索引到名称的映射
-        caldav_index_to_name = dict(zip(caldav_calendar_indices, caldav_calendar_names))
-        logger.info(f"CalDAV 索引映射: {caldav_index_to_name}")
-        
-        # 筛选目标日历
-        target_calendars = []
-        for calendar in all_calendars:
-            calendar_name = calendar.title().strip()
+        # 使用 autorelease_pool 包装整个操作，避免内存累积
+        with objc.autorelease_pool():
+            # 每次调用都新建 EKEventStore，避免长期复用
+            event_store = EKEventStore.alloc().init()
             
-            # 查找匹配的 CalDAV 日历名称
-            for caldav_index, caldav_name in caldav_index_to_name.items():
-                caldav_name_trimmed = caldav_name.strip()
-                if calendar_name == caldav_name_trimmed:
-                    target_calendars.append(calendar)
-                    logger.info(f"选择 EventKit 日历：{calendar_name} (对应 CalDAV 索引 {caldav_index})")
-                    break
-        
-        if not target_calendars:
-            logger.warning(f"未找到匹配的 EventKit 日历，CalDAV 日历名称：{caldav_calendar_names}")
-            logger.info("可用的 EventKit 日历：")
-            for cal in all_calendars:
-                logger.info(f"  - {cal.title()}")
-            return []
-        
-        # 设置时间范围
-        now = datetime.now(timezone.utc)
-        start_date = now - timedelta(days=days_past)
-        end_date = now + timedelta(days=days_future)
-        
-        # 转换为 NSDate
-        start_nsdate = NSDate.dateWithTimeIntervalSince1970_(start_date.timestamp())
-        end_nsdate = NSDate.dateWithTimeIntervalSince1970_(end_date.timestamp())
-        
-        # 创建谓词
-        predicate = event_store.predicateForEventsWithStartDate_endDate_calendars_(
-            start_nsdate, end_nsdate, target_calendars
-        )
-        
-        # 获取事件
-        ek_events = event_store.eventsMatchingPredicate_(predicate)
-        logger.info(f"从 EventKit 获取到 {len(ek_events)} 个事件")
-        
-        # 转换事件
-        for ek_event in ek_events:
-            try:
-                event_dict = _convert_eventkit_event_to_dict(ek_event)
-                if event_dict:
-                    events.append(event_dict)
-            except Exception as e:
-                logger.warning(f"转换事件失败：{e}")
-                continue
-        
-        logger.info(f"成功转换 {len(events)} 个 EventKit 事件")
-        return events
-        
+            # 请求日历访问权限
+            auth_granted = event_store.accessGrantedForEntityType_(0)  # EKEntityTypeEvent
+            
+            if not auth_granted:
+                logger.info("请求日历访问权限...")
+                # 这里会触发系统权限弹窗
+                granted, error = event_store.requestAccessToEntityType_completion_(0, None)
+                if not granted:
+                    logger.error("日历访问权限被拒绝")
+                    debug_info.append("[EK] 日历访问权限被拒绝")
+                    return [], "\n".join(debug_info)
+                logger.info("日历访问权限已获得")
+            else:
+                logger.info("日历访问权限已获得")
+            
+            # 获取所有 EventKit 日历
+            all_calendars = event_store.calendarsForEntityType_(0)  # EKEntityTypeEvent
+            if all_calendars is None:
+                logger.error("获取日历列表失败，返回None")
+                debug_info.append("[EK] calendarsForEntityType_ 返回 None")
+                return [], "\n".join(debug_info)
+            
+            logger.info(f"找到 {len(all_calendars)} 个 EventKit 日历")
+            debug_info.append(f"[EK] 找到 {len(all_calendars)} 个日历")
+            
+            # 创建 CalDAV 索引到名称的映射
+            caldav_index_to_name = dict(zip(caldav_calendar_indices, caldav_calendar_names))
+            logger.info(f"CalDAV 索引映射: {caldav_index_to_name}")
+            
+            # 筛选目标日历
+            target_calendars = []
+            for calendar in all_calendars:
+                calendar_name = calendar.title().strip()
+                
+                # 查找匹配的 CalDAV 日历名称
+                for caldav_index, caldav_name in caldav_index_to_name.items():
+                    caldav_name_trimmed = caldav_name.strip()
+                    if calendar_name == caldav_name_trimmed:
+                        target_calendars.append(calendar)
+                        logger.info(f"选择 EventKit 日历：{calendar_name} (对应 CalDAV 索引 {caldav_index})")
+                        debug_info.append(f"[EK] 选择日历：{calendar_name}")
+                        break
+            
+            if not target_calendars:
+                logger.warning(f"未找到匹配的 EventKit 日历，CalDAV 日历名称：{caldav_calendar_names}")
+                logger.info("可用的 EventKit 日历：")
+                for cal in all_calendars:
+                    logger.info(f"  - {cal.title()}")
+                debug_info.append(f"[EK] 未找到匹配日历：{caldav_calendar_names}")
+                return [], "\n".join(debug_info)
+            
+            # 设置时间范围
+            now = datetime.now(timezone.utc)
+            start_date = now - timedelta(days=days_past)
+            end_date = now + timedelta(days=days_future)
+            
+            # 转换为 NSDate
+            start_nsdate = NSDate.dateWithTimeIntervalSince1970_(start_date.timestamp())
+            end_nsdate = NSDate.dateWithTimeIntervalSince1970_(end_date.timestamp())
+            
+            # 创建谓词
+            predicate = event_store.predicateForEventsWithStartDate_endDate_calendars_(
+                start_nsdate, end_nsdate, target_calendars
+            )
+            
+            if predicate is None:
+                logger.error("创建谓词失败，返回None")
+                debug_info.append("[EK] predicateForEventsWithStartDate_endDate_calendars_ 返回 None")
+                return [], "\n".join(debug_info)
+            
+            # 获取事件
+            ek_events = event_store.eventsMatchingPredicate_(predicate)
+            if ek_events is None:
+                logger.error("获取事件失败，返回None")
+                debug_info.append("[EK] eventsMatchingPredicate_ 返回 None")
+                return [], "\n".join(debug_info)
+            
+            logger.info(f"从 EventKit 获取到 {len(ek_events)} 个事件")
+            debug_info.append(f"[EK] 获取到 {len(ek_events)} 个原始事件")
+            
+            # 转换事件
+            for ek_event in ek_events:
+                try:
+                    event_dict = _convert_eventkit_event_to_dict(ek_event)
+                    if event_dict:
+                        events.append(event_dict)
+                except Exception as e:
+                    logger.warning(f"转换事件失败：{e}")
+                    debug_info.append(f"[EK] 转换事件失败：{e}")
+                    continue
+            
+            logger.info(f"成功转换 {len(events)} 个 EventKit 事件")
+            debug_info.append(f"[EK] 成功转换 {len(events)} 个事件")
+            
     except Exception as e:
         logger.error(f"从 EventKit 读取事件失败：{e}")
-        return []
+        debug_info.append(f"[EK] 异常：{e}")
+        import traceback
+        debug_info.append(f"[EK] 异常堆栈：\n{traceback.format_exc()}")
+    
+    # 确保永远返回列表和诊断信息，而不是None
+    return events, "\n".join(debug_info)
 
 
 def read_events_from_eventkit(
@@ -299,83 +328,113 @@ def read_events_from_eventkit(
         uid, stable_key, summary, description(需附加 [SYNC_UID:stable_key]),
         location, start, end, created, last_modified, recurrence_id,
         rrule, exdate, is_recurring_instance, raw_data, hash
+        永远不会返回None
     """
     logger = logging.getLogger(__name__)
     events = []
+    debug_info = []
     
     try:
-        # 创建 EventStore
-        event_store = EKEventStore.alloc().init()
-        
-        # 请求日历访问权限
-        auth_granted = event_store.accessGrantedForEntityType_(0)  # EKEntityTypeEvent
-        
-        if not auth_granted:
-            logger.info("请求日历访问权限...")
-            # 这里会触发系统权限弹窗
-            granted, error = event_store.requestAccessToEntityType_completion_(0, None)
-            if not granted:
-                logger.error("日历访问权限被拒绝")
-                return []
-            logger.info("日历访问权限已获得")
-        else:
-            logger.info("日历访问权限已获得")
-        
-        # 获取所有日历
-        all_calendars = event_store.calendarsForEntityType_(0)  # EKEntityTypeEvent
-        logger.info(f"找到 {len(all_calendars)} 个日历")
-        
-        # 筛选目标日历
-        target_calendars = []
-        for calendar in all_calendars:
-            calendar_name = calendar.title()
-            # 使用更宽松的匹配：去除首尾空格
-            calendar_name_trimmed = calendar_name.strip()
-            for target_name in calendar_names:
-                target_name_trimmed = target_name.strip()
-                if calendar_name_trimmed == target_name_trimmed:
-                    target_calendars.append(calendar)
-                    logger.info(f"选择日历：{calendar_name}")
-                    break
-        
-        if not target_calendars:
-            logger.warning(f"未找到指定的日历：{calendar_names}")
-            return []
-        
-        # 设置时间范围
-        now = datetime.now(timezone.utc)
-        start_date = now - timedelta(days=days_past)
-        end_date = now + timedelta(days=days_future)
-        
-        # 转换为 NSDate
-        start_nsdate = NSDate.dateWithTimeIntervalSince1970_(start_date.timestamp())
-        end_nsdate = NSDate.dateWithTimeIntervalSince1970_(end_date.timestamp())
-        
-        # 创建谓词
-        predicate = event_store.predicateForEventsWithStartDate_endDate_calendars_(
-            start_nsdate, end_nsdate, target_calendars
-        )
-        
-        # 获取事件
-        ek_events = event_store.eventsMatchingPredicate_(predicate)
-        logger.info(f"从 EventKit 获取到 {len(ek_events)} 个事件")
-        
-        # 转换事件
-        for ek_event in ek_events:
-            try:
-                event_dict = _convert_eventkit_event_to_dict(ek_event)
-                if event_dict:
-                    events.append(event_dict)
-            except Exception as e:
-                logger.warning(f"转换事件失败：{e}")
-                continue
-        
-        logger.info(f"成功转换 {len(events)} 个 EventKit 事件")
-        return events
-        
+        # 使用 autorelease_pool 包装整个操作，避免内存累积
+        with objc.autorelease_pool():
+            # 每次调用都新建 EKEventStore，避免长期复用
+            event_store = EKEventStore.alloc().init()
+            
+            # 请求日历访问权限
+            auth_granted = event_store.accessGrantedForEntityType_(0)  # EKEntityTypeEvent
+            
+            if not auth_granted:
+                logger.info("请求日历访问权限...")
+                # 这里会触发系统权限弹窗
+                granted, error = event_store.requestAccessToEntityType_completion_(0, None)
+                if not granted:
+                    logger.error("日历访问权限被拒绝")
+                    debug_info.append("[EK] 日历访问权限被拒绝")
+                    return [], "\n".join(debug_info)
+                logger.info("日历访问权限已获得")
+            else:
+                logger.info("日历访问权限已获得")
+            
+            # 获取所有日历
+            all_calendars = event_store.calendarsForEntityType_(0)  # EKEntityTypeEvent
+            if all_calendars is None:
+                logger.error("获取日历列表失败，返回None")
+                debug_info.append("[EK] calendarsForEntityType_ 返回 None")
+                return [], "\n".join(debug_info)
+            
+            logger.info(f"找到 {len(all_calendars)} 个日历")
+            debug_info.append(f"[EK] 找到 {len(all_calendars)} 个日历")
+            
+            # 筛选目标日历
+            target_calendars = []
+            for calendar in all_calendars:
+                calendar_name = calendar.title()
+                # 使用更宽松的匹配：去除首尾空格
+                calendar_name_trimmed = calendar_name.strip()
+                for target_name in calendar_names:
+                    target_name_trimmed = target_name.strip()
+                    if calendar_name_trimmed == target_name_trimmed:
+                        target_calendars.append(calendar)
+                        logger.info(f"选择日历：{calendar_name}")
+                        debug_info.append(f"[EK] 选择日历：{calendar_name}")
+                        break
+            
+            if not target_calendars:
+                logger.warning(f"未找到指定的日历：{calendar_names}")
+                debug_info.append(f"[EK] 未找到指定日历：{calendar_names}")
+                return [], "\n".join(debug_info)
+            
+            # 设置时间范围
+            now = datetime.now(timezone.utc)
+            start_date = now - timedelta(days=days_past)
+            end_date = now + timedelta(days=days_future)
+            
+            # 转换为 NSDate
+            start_nsdate = NSDate.dateWithTimeIntervalSince1970_(start_date.timestamp())
+            end_nsdate = NSDate.dateWithTimeIntervalSince1970_(end_date.timestamp())
+            
+            # 创建谓词
+            predicate = event_store.predicateForEventsWithStartDate_endDate_calendars_(
+                start_nsdate, end_nsdate, target_calendars
+            )
+            
+            if predicate is None:
+                logger.error("创建谓词失败，返回None")
+                debug_info.append("[EK] predicateForEventsWithStartDate_endDate_calendars_ 返回 None")
+                return [], "\n".join(debug_info)
+            
+            # 获取事件
+            ek_events = event_store.eventsMatchingPredicate_(predicate)
+            if ek_events is None:
+                logger.error("获取事件失败，返回None")
+                debug_info.append("[EK] eventsMatchingPredicate_ 返回 None")
+                return [], "\n".join(debug_info)
+            
+            logger.info(f"从 EventKit 获取到 {len(ek_events)} 个事件")
+            debug_info.append(f"[EK] 获取到 {len(ek_events)} 个原始事件")
+            
+            # 转换事件
+            for ek_event in ek_events:
+                try:
+                    event_dict = _convert_eventkit_event_to_dict(ek_event)
+                    if event_dict:
+                        events.append(event_dict)
+                except Exception as e:
+                    logger.warning(f"转换事件失败：{e}")
+                    debug_info.append(f"[EK] 转换事件失败：{e}")
+                    continue
+            
+            logger.info(f"成功转换 {len(events)} 个 EventKit 事件")
+            debug_info.append(f"[EK] 成功转换 {len(events)} 个事件")
+            
     except Exception as e:
         logger.error(f"从 EventKit 读取事件失败：{e}")
-        return []
+        debug_info.append(f"[EK] 异常：{e}")
+        import traceback
+        debug_info.append(f"[EK] 异常堆栈：\n{traceback.format_exc()}")
+    
+    # 确保永远返回列表和诊断信息，而不是None
+    return events, "\n".join(debug_info)
 
 
 def _convert_eventkit_event_to_dict(ek_event: EKEvent) -> Optional[Dict]:

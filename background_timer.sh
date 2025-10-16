@@ -13,8 +13,8 @@ run_sync() {
     export PATH="/usr/local/bin:/usr/bin:/bin"
     export PYTHONPATH="$SCRIPT_DIR"
     
-    # 执行同步（让Python脚本自己处理日志）
-    /usr/local/bin/python3 cal_sync.py --once
+    # 执行同步（使用caffeinate防止系统休眠，让Python脚本自己处理日志）
+    caffeinate -i /usr/local/bin/python3 cal_sync.py --once
 }
 
 # 主函数

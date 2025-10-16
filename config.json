@@ -2,21 +2,21 @@
     "caldav": {
         "server": "caldav.wecom.work",
         "base_url": "https://caldav.wecom.work/calendar/",
-        "username": "x@jfrjeffery.wecom.work",
-        "password": "x",
+        "username": "zhengminzhi@jfrjeffery.wecom.workx",
+        "password": "PtyNsrvmoikzcE5ex",
         "calendar_url": "",
-        "selected_calendars": [6]
+        "selected_calendars": [4]
     },
     "icloud": {
         "username": "x",
         "password": "x",
-        "calendar_name": "x",
+        "calendar_name": "运佳",
         "app_private_password": "x"
     },
     "sync": {
-        "interval_minutes": 5,
+        "interval_minutes": 1,
         "sync_past_days": 1,
-        "sync_future_days": 20,
+        "sync_future_days": 30,
         "expand_recurring": true,
         "verify_threshold": 1,
         "override_icloud_deletions": false,
@@ -31,7 +31,7 @@
     },
     "source_routing": {
         "caldav_indices": [],
-        "eventkit_indices": [6],
+        "eventkit_indices": [4],
         "fallback_on_404": true
     }
 }

@@ -35,6 +35,7 @@
   - 添加了进程检测和清理功能，避免多个守护进程同时运行
   - 改进了重启功能，确保旧进程完全终止后再启动新进程
   - 增强了进程管理的稳定性，防止进程泄漏
+  - 添加了 `psutil>=5.9.0` 依赖到 requirements.txt，用于进程管理
 - **使用方法**：
   - `./daemon_control.sh stop` - 停止所有守护进程
   - `./daemon_control.sh restart` - 重启守护进程（先停止再启动）
@@ -329,7 +330,8 @@ CalSync/
 - **ICloudIntegration类**：iCloud日历操作类
 - **create_calendar()**：创建iCloud日历
 - **create_event()**：创建日历事件
-- **delete_event_by_summary()**：根据标题删除事件
+- **delete_event_by_summary()**：根据标题删除事件（会删除所有匹配标题的事件）
+- **delete_event_by_sync_uid()**：根据同步UID精确删除特定事件（推荐用于循环事件）
 - **get_existing_events()**：获取现有事件列表
 - **clear_all_events()**：清空所有事件
 
@@ -406,6 +408,17 @@ grep -i error logs/cal_sync_error.log
    - 检查iCloud日历状态是否正常
    - 临时禁用安全功能：设置 `"skip_sync_on_too_many_missing": false`
    - 查看详细日志了解具体情况
+5. **EventKit读取失败**：如果出现"cannot unpack non-iterable NoneType object"错误，这通常是由于长时间运行后EventKit状态异常导致的。已通过以下方式修复：
+   - **每次调用都新建`EKEventStore`实例**，避免长期复用导致的状态异常
+   - **使用`objc.autorelease_pool()`包装EventKit操作**，避免内存累积导致的返回值异常
+   - **添加详细的诊断信息和重试机制**，便于问题定位和自动恢复
+   - **使用`caffeinate -i`防止系统休眠影响EventKit访问**，确保后台任务稳定运行
+   - **确保函数永远返回列表而不是None**，避免上层代码解包失败
+6. **循环事件删除问题**：修复了删除循环事件时会误删所有同名事件的问题：
+   - **新增`delete_event_by_sync_uid()`方法**，根据同步UID精确删除特定事件
+   - **修改删除逻辑**，优先使用精确删除，避免误删循环事件的其他实例
+   - **保留回退机制**，如果精确删除失败，会回退到按标题删除并记录警告
+   - **确保匹配检验成功**，避免因误删导致的同步验证失败
 
 #### 调试命令
 ```bash

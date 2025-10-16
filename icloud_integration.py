@@ -298,7 +298,7 @@ class ICloudIntegration:
         return False
     
     def delete_event_by_summary(self, event_summary: str) -> bool:
-        """根据事件标题删除日历事件"""
+        """根据事件标题删除日历事件（会删除所有匹配标题的事件）"""
         script = f'''
         tell application "Calendar"
             try
@@ -330,6 +330,43 @@ class ICloudIntegration:
         success, result = self._run_applescript(script)
         if success:
             self.logger.info(f"根据标题删除事件结果：{result}")
+            return "Error:" not in result and "Deleted" in result
+        return False
+    
+    def delete_event_by_sync_uid(self, sync_uid: str) -> bool:
+        """根据同步UID精确删除特定事件"""
+        script = f'''
+        tell application "Calendar"
+            try
+                set targetCalendar to calendar "{self.calendar_name}"
+                set eventList to events of targetCalendar
+                set deletedCount to 0
+                
+                -- 创建要删除的事件列表
+                set eventsToDelete to {{}}
+                repeat with evt in eventList
+                    set eventDescription to description of evt
+                    if eventDescription contains "[SYNC_UID:{self._escape_string(sync_uid)}]" then
+                        set end of eventsToDelete to evt
+                    end if
+                end repeat
+                
+                -- 删除找到的事件
+                repeat with evt in eventsToDelete
+                    delete evt
+                    set deletedCount to deletedCount + 1
+                end repeat
+                
+                return "Deleted " & deletedCount & " events"
+            on error errMsg
+                return "Error: " & errMsg
+            end try
+        end tell
+        '''
+        
+        success, result = self._run_applescript(script)
+        if success:
+            self.logger.info(f"根据同步UID删除事件结果：{result}")
             return "Error:" not in result and "Deleted" in result
         return False
     

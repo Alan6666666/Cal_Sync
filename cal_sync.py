@@ -600,8 +600,20 @@ class CalSync:
             days_past = self.config["sync"]["sync_past_days"]
             days_future = self.config["sync"]["sync_future_days"]
             
-            # 调用EventKit桥接函数
-            events = read_events_from_eventkit(calendar_names, days_past, days_future)
+            # 调用EventKit桥接函数（现在返回元组）
+            events, debug_info = read_events_from_eventkit(calendar_names, days_past, days_future)
+            
+            # 如果没有事件但有调试信息，记录诊断信息
+            if not events and debug_info:
+                self.logger.warning(f"EventKit返回为空，诊断信息：\n{debug_info}")
+                
+                # 尝试一次重试
+                self.logger.info("尝试EventKit重试...")
+                import time
+                time.sleep(2)  # 短暂等待
+                events, debug_info2 = read_events_from_eventkit(calendar_names, days_past, days_future)
+                if not events and debug_info2:
+                    self.logger.warning(f"EventKit重试仍为空，诊断信息：\n{debug_info2}")
             
             # 为每个事件添加来源信息
             for event in events:
@@ -654,8 +666,20 @@ class CalSync:
             days_past = self.config["sync"]["sync_past_days"]
             days_future = self.config["sync"]["sync_future_days"]
             
-            # 调用EventKit桥接函数
-            events = read_events_from_eventkit_by_indices(caldav_calendar_indices, caldav_calendar_names, days_past, days_future)
+            # 调用EventKit桥接函数（现在返回元组）
+            events, debug_info = read_events_from_eventkit_by_indices(caldav_calendar_indices, caldav_calendar_names, days_past, days_future)
+            
+            # 如果没有事件但有调试信息，记录诊断信息
+            if not events and debug_info:
+                self.logger.warning(f"EventKit返回为空，诊断信息：\n{debug_info}")
+                
+                # 尝试一次重试
+                self.logger.info("尝试EventKit重试...")
+                import time
+                time.sleep(2)  # 短暂等待
+                events, debug_info2 = read_events_from_eventkit_by_indices(caldav_calendar_indices, caldav_calendar_names, days_past, days_future)
+                if not events and debug_info2:
+                    self.logger.warning(f"EventKit重试仍为空，诊断信息：\n{debug_info2}")
             
             # 为每个事件添加来源信息
             for event in events:
@@ -1016,7 +1040,7 @@ class CalSync:
                 return False
             
             # 检查真正需要的方法
-            required_methods = ('create_event', 'delete_event_by_summary', 'get_existing_events')
+            required_methods = ('create_event', 'delete_event_by_summary', 'delete_event_by_sync_uid', 'get_existing_events')
             missing_methods = [m for m in required_methods if not hasattr(self.icloud_client, m)]
             if missing_methods:
                 self.logger.error(f"iCloud客户端缺少必要方法: {', '.join(missing_methods)}")
@@ -1055,14 +1079,20 @@ class CalSync:
                 stable_key = event["stable_key"]
                 event_summary = event.get('summary', 'Unknown')
                 
-                # 先尝试根据标题删除旧事件
+                # 优先使用精确的同步UID删除旧事件，避免误删循环事件的其他实例
                 self.logger.info(f"正在删除旧事件：{event_summary} (Key: {stable_key})")
-                delete_success = self.icloud_client.delete_event_by_summary(event_summary)
+                delete_success = self.icloud_client.delete_event_by_sync_uid(stable_key)
                 
                 if delete_success:
-                    self.logger.info(f"旧事件删除成功：{event_summary}")
+                    self.logger.info(f"旧事件精确删除成功：{event_summary}")
                 else:
-                    self.logger.warning(f"旧事件删除失败，继续创建新事件：{event_summary}")
+                    # 如果精确删除失败，回退到按标题删除（但会记录警告）
+                    self.logger.warning(f"精确删除失败，尝试按标题删除：{event_summary}")
+                    delete_success = self.icloud_client.delete_event_by_summary(event_summary)
+                    if delete_success:
+                        self.logger.warning(f"旧事件按标题删除成功：{event_summary} - 可能误删了其他同名事件")
+                    else:
+                        self.logger.warning(f"旧事件删除失败，继续创建新事件：{event_summary}")
                 
                 # 然后创建新事件
                 if self.icloud_client.create_event(event):
@@ -1082,14 +1112,22 @@ class CalSync:
                 stable_key = event["stable_key"]
                 event_summary = event.get("summary", stable_key)
                 
-                # 使用根据标题删除的方法
-                if self.icloud_client.delete_event_by_summary(event_summary):
+                # 优先使用精确的同步UID删除方法，避免误删循环事件的其他实例
+                if self.icloud_client.delete_event_by_sync_uid(stable_key):
                     if stable_key in self.sync_state["events"]:
                         del self.sync_state["events"][stable_key]
                     success_count += 1
                     self.logger.info(f"✅ 删除事件：{event_summary} (Key: {stable_key})")
                 else:
-                    self.logger.error(f"❌ 删除事件失败：{event_summary}")
+                    # 如果精确删除失败，回退到按标题删除（但会记录警告）
+                    self.logger.warning(f"精确删除失败，尝试按标题删除：{event_summary}")
+                    if self.icloud_client.delete_event_by_summary(event_summary):
+                        if stable_key in self.sync_state["events"]:
+                            del self.sync_state["events"][stable_key]
+                        success_count += 1
+                        self.logger.warning(f"✅ 按标题删除事件成功：{event_summary} (Key: {stable_key}) - 可能误删了其他同名事件")
+                    else:
+                        self.logger.error(f"❌ 删除事件失败：{event_summary}")
             
             # 处理iCloud恢复事件（重新创建被手动删除的事件）
             for event in icloud_recovery_events:
