@@ -681,10 +681,10 @@ class CalSync:
                 if not events and debug_info2:
                     self.logger.warning(f"EventKit重试仍为空，诊断信息：\n{debug_info2}")
             
-            # 为每个事件添加来源信息
+            # 为每个事件添加来源信息（EventKit桥接模块已经正确设置了source_calendar，这里只需要添加URL信息）
             for event in events:
-                event["source_calendar"] = f"EventKit:{caldav_calendar_names[0]}" if caldav_calendar_names else "EventKit:Unknown"
-                event["source_calendar_url"] = "EventKit://local"
+                if "source_calendar_url" not in event:
+                    event["source_calendar_url"] = "EventKit://local"
             
             self.logger.info(f"从EventKit获取到 {len(events)} 个事件")
             
@@ -1505,7 +1505,7 @@ class CalSync:
             self.logger.error(f"创建备份文件夹失败：{e}")
             return False
     
-    def export_events_to_ics(self, events: List[Dict]) -> str:
+    def export_events_to_ics(self, events: List[Dict], calendar_name: str = None) -> str:
         """将事件列表导出为ICS格式字符串"""
         try:
             # 创建iCalendar对象
@@ -1514,6 +1514,10 @@ class CalSync:
             cal.add('version', '2.0')
             cal.add('calscale', 'GREGORIAN')
             cal.add('method', 'PUBLISH')
+            
+            # 添加日历名称信息
+            if calendar_name:
+                cal.add('x-wr-calname', calendar_name)
             
             # 按UID分组事件，处理循环事件
             events_by_uid = {}
@@ -1556,6 +1560,9 @@ class CalSync:
                 # 移除 [SYNC_UID:xxx] 标记
                 import re
                 description = re.sub(r'\s*\[SYNC_UID:[^\]]+\]', '', description)
+                # 限制描述长度，避免过长的内容
+                if len(description) > 10000:  # 限制为10KB
+                    description = description[:10000] + "... [内容已截断]"
                 if description.strip():
                     event.add('description', description.strip())
             if event_data.get('location'):
@@ -1598,6 +1605,9 @@ class CalSync:
                 # 移除 [SYNC_UID:xxx] 标记
                 import re
                 description = re.sub(r'\s*\[SYNC_UID:[^\]]+\]', '', description)
+                # 限制描述长度，避免过长的内容
+                if len(description) > 10000:  # 限制为10KB
+                    description = description[:10000] + "... [内容已截断]"
                 if description.strip():
                     event.add('description', description.strip())
             if main_event.get('location'):
@@ -1681,6 +1691,9 @@ class CalSync:
                 # 移除 [SYNC_UID:xxx] 标记
                 import re
                 description = re.sub(r'\s*\[SYNC_UID:[^\]]+\]', '', description)
+                # 限制描述长度，避免过长的内容
+                if len(description) > 10000:  # 限制为10KB
+                    description = description[:10000] + "... [内容已截断]"
                 if description.strip():
                     event.add('description', description.strip())
             if event_data.get('location'):
@@ -1868,6 +1881,18 @@ class CalSync:
         date_str = now.strftime("%Y%m%d_%H%M%S")
         return f"backup_{date_str}.ics"
     
+    def _sanitize_filename(self, filename: str) -> str:
+        """清理文件名，移除或替换非法字符"""
+        import re
+        # 移除或替换非法字符
+        safe_name = re.sub(r'[<>:"/\\|?*]', '_', filename)
+        # 移除多余的空格
+        safe_name = re.sub(r'\s+', '_', safe_name.strip())
+        # 限制长度
+        if len(safe_name) > 50:
+            safe_name = safe_name[:50]
+        return safe_name
+    
     def cleanup_old_backups(self) -> bool:
         """清理旧的备份文件，保留最近的备份"""
         try:
@@ -1904,6 +1929,54 @@ class CalSync:
             
         except Exception as e:
             self.logger.error(f"清理旧备份失败：{e}")
+            return False
+    
+    def cleanup_old_backup_folders(self) -> bool:
+        """清理旧的备份文件夹，保留最近的备份"""
+        try:
+            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
+            max_backups = self.config.get("backup", {}).get("max_backups", 5)
+            
+            if not os.path.exists(backup_folder):
+                return True
+            
+            # 获取所有备份文件夹（包含时间戳的文件夹）
+            backup_folders = []
+            for item in os.listdir(backup_folder):
+                item_path = os.path.join(backup_folder, item)
+                if os.path.isdir(item_path) and (item.startswith("backup_") or item.startswith("manual_backup_")):
+                    # 提取时间戳
+                    try:
+                        if item.startswith("manual_backup_"):
+                            timestamp_str = item[14:]  # 移除 "manual_backup_" 前缀
+                        else:
+                            timestamp_str = item[7:]   # 移除 "backup_" 前缀
+                        
+                        # 解析时间戳
+                        folder_time = datetime.strptime(timestamp_str, "%Y%m%d_%H%M%S")
+                        backup_folders.append((folder_time, item_path))
+                    except ValueError:
+                        # 无法解析时间戳的文件夹，跳过
+                        continue
+            
+            # 按时间排序，最新的在前
+            backup_folders.sort(key=lambda x: x[0], reverse=True)
+            
+            # 删除超出限制的旧文件夹
+            if len(backup_folders) > max_backups:
+                folders_to_delete = backup_folders[max_backups:]
+                for _, folder_path in folders_to_delete:
+                    try:
+                        import shutil
+                        shutil.rmtree(folder_path)
+                        self.logger.info(f"删除旧备份文件夹：{folder_path}")
+                    except Exception as e:
+                        self.logger.warning(f"删除备份文件夹失败 {folder_path}：{e}")
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"清理旧备份文件夹失败：{e}")
             return False
     
     def should_run_backup(self) -> bool:
@@ -1943,7 +2016,7 @@ class CalSync:
             self.logger.error(f"保存备份状态失败：{e}")
     
     def backup_caldav_events(self, events: List[Dict]) -> bool:
-        """备份CalDAV事件到ICS文件"""
+        """备份CalDAV事件到ICS文件（按日历分别备份）"""
         try:
             # 检查是否应该执行备份
             if not self.should_run_backup():
@@ -1951,29 +2024,58 @@ class CalSync:
             
             self.logger.info("开始备份CalDAV事件...")
             
+            # 生成备份文件夹名称（包含时间戳）
+            now = datetime.now()
+            backup_timestamp = now.strftime("%Y%m%d_%H%M%S")
+            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
+            backup_dir = os.path.join(backup_folder, f"backup_{backup_timestamp}")
+            
             # 确保备份文件夹存在
             if not self.ensure_backup_folder():
                 return False
             
-            # 导出事件为ICS格式
-            ics_content = self.export_events_to_ics(events)
-            if not ics_content:
-                self.logger.error("导出ICS内容失败")
+            # 创建时间戳备份文件夹
+            os.makedirs(backup_dir, exist_ok=True)
+            
+            # 按日历分组事件
+            events_by_calendar = {}
+            for event in events:
+                calendar_name = event.get('source_calendar', 'Unknown Calendar')
+                if calendar_name not in events_by_calendar:
+                    events_by_calendar[calendar_name] = []
+                events_by_calendar[calendar_name].append(event)
+            
+            # 为每个日历创建单独的ICS文件
+            backup_files = []
+            for calendar_name, calendar_events in events_by_calendar.items():
+                # 清理日历名称，用于文件名
+                safe_calendar_name = self._sanitize_filename(calendar_name)
+                
+                # 导出事件为ICS格式
+                ics_content = self.export_events_to_ics(calendar_events, calendar_name)
+                if not ics_content:
+                    self.logger.error(f"导出日历 '{calendar_name}' 的ICS内容失败")
+                    continue
+                
+                # 生成备份文件名
+                backup_filename = f"{safe_calendar_name}.ics"
+                backup_path = os.path.join(backup_dir, backup_filename)
+                
+                # 写入备份文件
+                with open(backup_path, 'w', encoding='utf-8') as f:
+                    f.write(ics_content)
+                
+                backup_files.append(backup_path)
+                self.logger.info(f"备份日历 '{calendar_name}' 成功：{backup_filename} ({len(calendar_events)} 个事件)")
+            
+            if not backup_files:
+                self.logger.error("没有成功备份任何日历")
                 return False
             
-            # 生成备份文件名
-            backup_filename = self.generate_backup_filename()
-            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
-            backup_path = os.path.join(backup_folder, backup_filename)
+            self.logger.info(f"备份完成，共备份 {len(backup_files)} 个日历到文件夹：backup_{backup_timestamp}")
             
-            # 写入备份文件
-            with open(backup_path, 'w', encoding='utf-8') as f:
-                f.write(ics_content)
-            
-            self.logger.info(f"备份成功：{backup_filename} ({len(events)} 个事件)")
-            
-            # 清理旧备份
-            self.cleanup_old_backups()
+            # 清理旧备份文件夹
+            self.cleanup_old_backup_folders()
             
             # 保存备份状态
             self.save_backup_state()
@@ -1985,33 +2087,62 @@ class CalSync:
             return False
     
     def force_backup_caldav_events(self, events: List[Dict]) -> bool:
-        """强制执行CalDAV事件备份（手动备份）"""
+        """强制执行CalDAV事件备份（手动备份，按日历分别备份）"""
         try:
             self.logger.info("开始手动备份CalDAV事件...")
+            
+            # 生成备份文件夹名称（包含时间戳）
+            now = datetime.now()
+            backup_timestamp = now.strftime("%Y%m%d_%H%M%S")
+            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
+            backup_dir = os.path.join(backup_folder, f"manual_backup_{backup_timestamp}")
             
             # 确保备份文件夹存在
             if not self.ensure_backup_folder():
                 return False
             
-            # 导出事件为ICS格式
-            ics_content = self.export_events_to_ics(events)
-            if not ics_content:
-                self.logger.error("导出ICS内容失败")
+            # 创建时间戳备份文件夹
+            os.makedirs(backup_dir, exist_ok=True)
+            
+            # 按日历分组事件
+            events_by_calendar = {}
+            for event in events:
+                calendar_name = event.get('source_calendar', 'Unknown Calendar')
+                if calendar_name not in events_by_calendar:
+                    events_by_calendar[calendar_name] = []
+                events_by_calendar[calendar_name].append(event)
+            
+            # 为每个日历创建单独的ICS文件
+            backup_files = []
+            for calendar_name, calendar_events in events_by_calendar.items():
+                # 清理日历名称，用于文件名
+                safe_calendar_name = self._sanitize_filename(calendar_name)
+                
+                # 导出事件为ICS格式
+                ics_content = self.export_events_to_ics(calendar_events, calendar_name)
+                if not ics_content:
+                    self.logger.error(f"导出日历 '{calendar_name}' 的ICS内容失败")
+                    continue
+                
+                # 生成备份文件名
+                backup_filename = f"{safe_calendar_name}.ics"
+                backup_path = os.path.join(backup_dir, backup_filename)
+                
+                # 写入备份文件
+                with open(backup_path, 'w', encoding='utf-8') as f:
+                    f.write(ics_content)
+                
+                backup_files.append(backup_path)
+                self.logger.info(f"手动备份日历 '{calendar_name}' 成功：{backup_filename} ({len(calendar_events)} 个事件)")
+            
+            if not backup_files:
+                self.logger.error("没有成功备份任何日历")
                 return False
             
-            # 生成备份文件名
-            backup_filename = self.generate_backup_filename()
-            backup_folder = self.config.get("backup", {}).get("backup_folder", "backup")
-            backup_path = os.path.join(backup_folder, backup_filename)
+            self.logger.info(f"手动备份完成，共备份 {len(backup_files)} 个日历到文件夹：manual_backup_{backup_timestamp}")
             
-            # 写入备份文件
-            with open(backup_path, 'w', encoding='utf-8') as f:
-                f.write(ics_content)
-            
-            self.logger.info(f"手动备份成功：{backup_filename} ({len(events)} 个事件)")
-            
-            # 清理旧备份
-            self.cleanup_old_backups()
+            # 清理旧备份文件夹
+            self.cleanup_old_backup_folders()
             
             # 保存备份状态
             self.save_backup_state()

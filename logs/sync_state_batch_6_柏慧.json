@@ -1,24 +1,6 @@
 {
-    "last_sync": "2025-10-16T11:57:53.791265",
+    "last_sync": "2025-10-17T00:46:45.159669",
     "events": {
-        "3F596CBA-451D-47D5-9721-62E1450B91A6#2025-10-15T14:00:00": {
-            "uid": "3F596CBA-451D-47D5-9721-62E1450B91A6",
-            "summary": "【SMU X Jeffery】WIP Meeting",
-            "hash": "1f144c7e8796762d3bfd579d89c4ce55",
-            "last_sync": "2025-10-16T11:57:53.791236"
-        },
-        "F1B48F0D-CD1B-44D9-A935-07334519EA3A": {
-            "uid": "F1B48F0D-CD1B-44D9-A935-07334519EA3A",
-            "summary": "Jeffery Adventure x YouBiz",
-            "hash": "bacd1c9bb756adae15e8b6f6c5b515e0",
-            "last_sync": "2025-10-16T11:57:53.791240"
-        },
-        "306B9F23-878F-4418-817E-E263C5CDDF6B": {
-            "uid": "306B9F23-878F-4418-817E-E263C5CDDF6B",
-            "summary": "NUS EMBA伯克利直播【彩排】暂定",
-            "hash": "ca0f1a00ebb37f736825885a82a7b8d0",
-            "last_sync": "2025-10-16T11:57:53.791241"
-        },
         "D137FBF5-3885-4024-A81C-E0F729769F02#2025-10-16T11:00:00": {
             "uid": "D137FBF5-3885-4024-A81C-E0F729769F02",
             "summary": "[Chinese social media] JA content bi-weekly calls",
@@ -120,6 +102,18 @@
             "summary": "[Chinese social media] JA content bi-weekly calls",
             "hash": "7ce2725085b249e0cd3258ab0c59303a",
             "last_sync": "2025-10-16T11:57:53.791264"
+        },
+        "FDA7EC13-1B75-45B4-9996-4DB60773CD82": {
+            "uid": "FDA7EC13-1B75-45B4-9996-4DB60773CD82",
+            "summary": "AI冷电邮—Meeting with Divyang Ledwani",
+            "hash": "c7cf67df6b4864d48d81807a56e09aca",
+            "last_sync": "2025-10-16T18:08:32.210429"
+        },
+        "D8653D10-03B0-48B1-B267-411BE79B40B3": {
+            "uid": "D8653D10-03B0-48B1-B267-411BE79B40B3",
+            "summary": "Mutty Dad",
+            "hash": "5159b1fd22170a197959be7badf0f1d3",
+            "last_sync": "2025-10-16T18:08:32.918529"
         }
     }
 }

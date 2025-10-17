@@ -1,42 +1,6 @@
 {
-    "last_sync": "2025-10-16T11:56:27.567488",
+    "last_sync": "2025-10-17T10:31:06.624009",
     "events": {
-        "130D7675-0443-4EF6-89D8-6CA4A014D6A9": {
-            "uid": "130D7675-0443-4EF6-89D8-6CA4A014D6A9",
-            "summary": "[线下] 和 WPP 在他们 Office 见面",
-            "hash": "1de5d320bc93a28b035e76e170784be6",
-            "last_sync": "2025-10-16T11:56:27.567268"
-        },
-        "225510E1-4402-432D-9268-8E08B8E07173#2025-10-15T14:00:00": {
-            "uid": "225510E1-4402-432D-9268-8E08B8E07173",
-            "summary": "【SMU X Jeffery】WIP Meeting",
-            "hash": "700984856c5ac7e98adf2873d9e60ced",
-            "last_sync": "2025-10-16T11:56:27.567278"
-        },
-        "B38B8EA1-2BD2-4FB1-A6F4-6B8F37AC6455": {
-            "uid": "B38B8EA1-2BD2-4FB1-A6F4-6B8F37AC6455",
-            "summary": "Jeffery Adventure x YouBiz",
-            "hash": "0d21ab3e8dc8f4a0d170e0e1b2bae14a",
-            "last_sync": "2025-10-16T11:56:27.567282"
-        },
-        "A346DBB0-A8C5-463F-9949-4C04DB17B6BD": {
-            "uid": "A346DBB0-A8C5-463F-9949-4C04DB17B6BD",
-            "summary": "力量",
-            "hash": "9162aa0448ddfa6724ad0fb75e6b5f51",
-            "last_sync": "2025-10-16T11:56:27.567286"
-        },
-        "E70AF4E5-B9D2-43F6-A0B0-7DB96A28FEB2": {
-            "uid": "E70AF4E5-B9D2-43F6-A0B0-7DB96A28FEB2",
-            "summary": "8坡度三公里",
-            "hash": "4eb3be8231601728d99a497729650a3f",
-            "last_sync": "2025-10-16T11:56:27.567290"
-        },
-        "15BADE3B-56D6-4945-B7E8-BC9EA56F4FA6": {
-            "uid": "15BADE3B-56D6-4945-B7E8-BC9EA56F4FA6",
-            "summary": "[线下] 在新加坡办公室和 NBS EE 老师见面",
-            "hash": "08ba31cec7c075985d4cd37bdb41ba12",
-            "last_sync": "2025-10-16T11:56:27.567293"
-        },
         "DCD700EC-0E1D-4404-90CC-1A1002EE4858": {
             "uid": "DCD700EC-0E1D-4404-90CC-1A1002EE4858",
             "summary": "姵萱Selena晓红",
@@ -58,26 +22,26 @@
         "F2758261-096F-4219-B51F-832F24150A0D": {
             "uid": "F2758261-096F-4219-B51F-832F24150A0D",
             "summary": "【内部】NUS EMBA的财务沟通方法论",
-            "hash": "a360dd9fc2dde5cc9dfded894a352654",
-            "last_sync": "2025-10-16T11:56:27.567309"
+            "hash": "a319ff7d0823438a0c7cc560b2e036ab",
+            "last_sync": "2025-10-16T18:06:47.559409"
         },
         "41B18222-5954-41D7-B991-B40742DEDB84": {
             "uid": "41B18222-5954-41D7-B991-B40742DEDB84",
             "summary": "用友财务系统DEMO演示",
-            "hash": "cd5be195b6411ab795fc8eb3455c1308",
-            "last_sync": "2025-10-16T11:56:27.567313"
+            "hash": "6e9fbe853aed988832416ec3d331bc15",
+            "last_sync": "2025-10-16T18:06:53.786404"
         },
         "F07AEC10-7D71-44C6-8C37-2F62BDE1C39C": {
             "uid": "F07AEC10-7D71-44C6-8C37-2F62BDE1C39C",
             "summary": "创研部例会",
-            "hash": "4d08ba5ecc204946752e8d22cae7d988",
-            "last_sync": "2025-10-16T11:56:27.567317"
+            "hash": "651cc70cefc8484f27ff92abe5544443",
+            "last_sync": "2025-10-16T18:06:59.934075"
         },
         "45E4B061-AAC2-445C-994F-A007C568911C": {
             "uid": "45E4B061-AAC2-445C-994F-A007C568911C",
             "summary": "Dinner @ 1-Alfaro",
-            "hash": "c9f6e91269ebcecc0d517185d6949309",
-            "last_sync": "2025-10-16T11:56:27.567320"
+            "hash": "f39fac79dd692b0d7197b8d25fe892be",
+            "last_sync": "2025-10-16T18:07:06.464364"
         },
         "DAFA817F-B6D5-400D-B0B2-6D8A183D72C2": {
             "uid": "DAFA817F-B6D5-400D-B0B2-6D8A183D72C2",
@@ -160,8 +124,8 @@
         "2A5F2641-670D-4922-AF9B-4EE5F2F83389": {
             "uid": "2A5F2641-670D-4922-AF9B-4EE5F2F83389",
             "summary": "和Mark吃饭",
-            "hash": "eeeb6a185dd55428533a9ac34d0b905b",
-            "last_sync": "2025-10-16T11:56:27.567369"
+            "hash": "c186e764e24402d499d4efdf60ecaeba",
+            "last_sync": "2025-10-16T18:07:13.329182"
         },
         "B188892E-A11B-4052-A861-B403941B81BB#2025-10-23T09:45:00": {
             "uid": "B188892E-A11B-4052-A861-B403941B81BB",
@@ -360,6 +324,36 @@
             "summary": "创研部例会",
             "hash": "db6c63c975fb67a6b03996b31c19c8ed",
             "last_sync": "2025-10-16T11:56:27.567486"
+        },
+        "18B5F3C2-C2DE-424A-A349-B8D6F1903289": {
+            "uid": "18B5F3C2-C2DE-424A-A349-B8D6F1903289",
+            "summary": "Shawn Huang 活动",
+            "hash": "90b8456186cac599b5106ed4ddbf6e41",
+            "last_sync": "2025-10-16T13:01:26.899879"
+        },
+        "6D7A5FC5-62DE-4C6B-9654-F8352D65F427": {
+            "uid": "6D7A5FC5-62DE-4C6B-9654-F8352D65F427",
+            "summary": "开车去NBS+简餐",
+            "hash": "325f47133b0a57401850b1764aca54c0",
+            "last_sync": "2025-10-16T18:06:39.811857"
+        },
+        "04A5B0D9-95F1-418D-A63A-FAA960A8173F": {
+            "uid": "04A5B0D9-95F1-418D-A63A-FAA960A8173F",
+            "summary": "[线下] 和NBS EE 老师在 NTU 见面",
+            "hash": "cb2c29a9747a031c0a16211005e9e271",
+            "last_sync": "2025-10-16T18:06:40.556059"
+        },
+        "713ACE19-1B33-417F-B37B-79ED49F0272C": {
+            "uid": "713ACE19-1B33-417F-B37B-79ED49F0272C",
+            "summary": "AI冷电邮—Meeting with Divyang Ledwani",
+            "hash": "7ea29002972808f9da047b177da424c8",
+            "last_sync": "2025-10-16T18:06:41.277801"
+        },
+        "EE9C1374-ABF0-4F55-B2EF-0389327863B9#2025-11-16T10:30:00": {
+            "uid": "EE9C1374-ABF0-4F55-B2EF-0389327863B9",
+            "summary": "给北京爸妈买水果",
+            "hash": "77190b0a4317b31783f71495713cab95",
+            "last_sync": "2025-10-17T10:31:01.768191"
         }
     }
 }

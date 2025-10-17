@@ -479,6 +479,10 @@ def _convert_eventkit_event_to_dict(ek_event: EKEvent) -> Optional[Dict]:
         else:
             description = f"[SYNC_UID:{stable_key}]"
         
+        # 获取日历信息
+        calendar = ek_event.calendar()
+        calendar_name = calendar.title() if calendar else "Unknown Calendar"
+        
         # 构建事件字典
         event_dict = {
             "uid": uid,
@@ -494,6 +498,7 @@ def _convert_eventkit_event_to_dict(ek_event: EKEvent) -> Optional[Dict]:
             "rrule": rrule,
             "exdate": "",  # EventKit 不直接提供 EXDATE，暂时为空
             "is_recurring_instance": is_recurring_instance,
+            "source_calendar": f"EventKit:{calendar_name}",
             "raw_data": f"EventKit:{uid}"  # 简化的原始数据标识
         }
         

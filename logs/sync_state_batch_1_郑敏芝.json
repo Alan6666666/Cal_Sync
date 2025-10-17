@@ -1,18 +1,6 @@
 {
-    "last_sync": "2025-10-16T11:55:18.426409",
+    "last_sync": "2025-10-17T00:44:02.363853",
     "events": {
-        "9700B653-593A-4062-80A5-631153D8ED55#2025-10-15T14:00:00": {
-            "uid": "9700B653-593A-4062-80A5-631153D8ED55",
-            "summary": "【SMU X Jeffery】WIP Meeting",
-            "hash": "68937d53795d1b00fd84fdc6b209605f",
-            "last_sync": "2025-10-16T11:55:18.426346"
-        },
-        "42E87D7D-BE8C-4EE4-A66F-AB9B88F093AA": {
-            "uid": "42E87D7D-BE8C-4EE4-A66F-AB9B88F093AA",
-            "summary": "Jeffery Adventure x YouBiz",
-            "hash": "06b693cd96df8277e6d45870c2301b4e",
-            "last_sync": "2025-10-16T11:55:18.426357"
-        },
         "D1D24293-D9B1-4DB5-B837-AD7359AAA8D2": {
             "uid": "D1D24293-D9B1-4DB5-B837-AD7359AAA8D2",
             "summary": "内部沟通",
@@ -22,20 +10,20 @@
         "2E1E5D7F-E310-42BC-ABF1-7E1B191AB4FA": {
             "uid": "2E1E5D7F-E310-42BC-ABF1-7E1B191AB4FA",
             "summary": "【内部】NUS EMBA的财务沟通方法论",
-            "hash": "c8e9ec423c1cc8a7429389d82438427d",
-            "last_sync": "2025-10-16T11:55:18.426364"
+            "hash": "f1f9c28bf7a46d22e5d5d131a9bee04f",
+            "last_sync": "2025-10-16T18:06:14.008575"
         },
         "31BD79FC-C696-4CE7-BEE5-474BCC0DB857": {
             "uid": "31BD79FC-C696-4CE7-BEE5-474BCC0DB857",
             "summary": "用友财务系统DEMO演示",
-            "hash": "6c4f48b57a17bbfd737aa275e3132e9f",
-            "last_sync": "2025-10-16T11:55:18.426368"
+            "hash": "719d17b852bbd3df163624c39aefa1b7",
+            "last_sync": "2025-10-16T18:06:16.533767"
         },
         "24C604DF-D717-4FE4-8074-E535349157C0": {
             "uid": "24C604DF-D717-4FE4-8074-E535349157C0",
             "summary": "创研部例会",
-            "hash": "db0586dcc4889f939a00b73e312bd1ef",
-            "last_sync": "2025-10-16T11:55:18.426372"
+            "hash": "c1ae5d7ebf77c580ead14e1b4c5e4188",
+            "last_sync": "2025-10-16T18:06:19.540503"
         },
         "D047AEA8-98E1-45DF-8C9F-42E6DF344D64#2025-10-23T09:45:00": {
             "uid": "D047AEA8-98E1-45DF-8C9F-42E6DF344D64",
@@ -90,6 +78,12 @@
             "summary": "创研部例会",
             "hash": "c01aec1023b5a938d4993b829d200955",
             "last_sync": "2025-10-16T11:55:18.426406"
+        },
+        "26C8FB85-A1EA-427B-9B55-FFDACBE18066": {
+            "uid": "26C8FB85-A1EA-427B-9B55-FFDACBE18066",
+            "summary": "AI冷电邮—Meeting with Divyang Ledwani",
+            "hash": "38bb7618ac8a030589230c7be403b7f9",
+            "last_sync": "2025-10-16T18:06:11.320381"
         }
     }
 }
